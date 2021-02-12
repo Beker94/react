@@ -1,13 +1,11 @@
 import { Component } from "react";
 
-class ClassComponent extends Component {
+export default class ClassComponent extends Component {
   render() {
     return (
-      <div className="ClassComponent">
+      <div>
         <h1>Hello World(Component)</h1>
       </div>
     );
   }
 }
-
-export default ClassComponent;

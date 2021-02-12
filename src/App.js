@@ -1,8 +1,8 @@
 import "./App.css";
 import { createElement } from "react";
-import FunctionalComponent from "./components/FunctionalComponent/FunctionalComponent";
-import Pure from "./components/PureComponent/PureComponent";
-import ClassComponent from "./components/Component/Component";
+import { FunctionalComponent } from "./components/FunctionalComponent";
+import { Pure } from "./components/PureComponent";
+import { ClassComponent } from "./components/ClassComponent";
 
 function App() {
   const element = createElement(
@@ -13,9 +13,9 @@ function App() {
   return (
     <div className="App">
       {element}
-      <ClassComponent></ClassComponent>
-      <Pure></Pure>
-      <FunctionalComponent></FunctionalComponent>
+      <ClassComponent />
+      <Pure />
+      <FunctionalComponent />
     </div>
   );
 }
