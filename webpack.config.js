@@ -11,20 +11,6 @@ const filename = (ext) => {
   return isDev ? `bundle.${ext}` : `bundle.[hash].${ext}`;
 };
 
-const jsLoaders = () => {
-  const loaders = [
-    {
-      loader: "babel-loader",
-      options: {
-        presets: ["@babel/preset-env"],
-        plugins: ["@babel/plugin-proposal-class-properties"],
-      },
-    },
-  ];
-
-  return loaders;
-};
-
 module.exports = {
   context: path.resolve(__dirname, "src"),
   mode: "development",
@@ -37,7 +23,6 @@ module.exports = {
     extensions: [".js"],
     alias: {
       "@": path.resolve(__dirname, "src"),
-      "@core ": path.resolve(__dirname, "src/core"),
     },
   },
   devtool: isDev ? "source-map" : false,
@@ -69,31 +54,22 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.s[ac]ss$/i,
+        test: /\.(sa|sc|c)ss$/,
         use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              hmr: isDev,
-              reloadAll: true,
-            },
-          },
+          isDev ? "style-loader" : MiniCssExtractPlugin.loader,
           "css-loader",
+          "postcss-loader",
           "sass-loader",
         ],
       },
       {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: jsLoaders(),
-      },
-      {
-        test: /\.m?js$/,
+        test: /\.(js|jsx|ts|tsx)$/,
         exclude: /node_modules/,
         use: {
           loader: "babel-loader",
           options: {
             presets: ["@babel/preset-env", "@babel/preset-react"],
+            plugins: ["@babel/plugin-proposal-class-properties"],
           },
         },
       },
