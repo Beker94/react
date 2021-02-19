@@ -13,8 +13,8 @@ const filename = (ext) => {
 
 module.exports = {
   context: path.resolve(__dirname, "src"),
-  mode: "development",
-  entry: ["@babel/polyfill", "./index.js"],
+  mode: isDev ? "development" : "production",
+  entry: ["./index.js"],
   output: {
     filename: filename("js"),
     path: path.resolve(__dirname, "dist"),
@@ -68,7 +68,15 @@ module.exports = {
         use: {
           loader: "babel-loader",
           options: {
-            presets: ["@babel/preset-env", "@babel/preset-react"],
+            presets: [
+              [
+                "@babel/preset-env",
+                {
+                  useBuiltIns: "entry",
+                },
+              ],
+              "@babel/preset-react",
+            ],
             plugins: ["@babel/plugin-proposal-class-properties"],
           },
         },
