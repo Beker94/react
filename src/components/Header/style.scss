@@ -1,0 +1,50 @@
+.header {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  height: 450px;
+  background: url("https://top-reyting.ru/images/glavnie/kino/reyting-serialov.jpg")
+    center / cover no-repeat;
+  width: 100%;
+  color: white;
+  z-index: 2;
+  &:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 100%;
+    bottom: 0;
+    z-index: 1;
+    background-color: black;
+    filter: opacity(80%) brightness(0.9);
+  }
+  .header-nav {
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    z-index: 2;
+    h3 {
+      margin-top: 7px;
+      color: #f65261;
+      font-weight: normal;
+      font-size: 22px;
+      span {
+        font-weight: 900;
+      }
+    }
+
+    button {
+      height: 40px;
+      width: 110px;
+      background-color: rgba(255, 255, 255, 0.199);
+      color: #f65261;
+      font-weight: 600;
+      border: none;
+      border-radius: 3px;
+    }
+  }
+}
