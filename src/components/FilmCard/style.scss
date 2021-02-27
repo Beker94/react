@@ -2,16 +2,19 @@
   color: white;
   margin: 0 auto;
   color: #555;
+  img {
+    width: 375px;
+  }
   .film-title {
     display: flex;
     justify-content: space-between;
     margin-top: 10px;
     margin-bottom: 10px;
-    .film-title__name {
+    &_name {
       font-size: 20px;
       font-weight: 500;
     }
-    .film-title__year {
+    &__year {
       border: 1px solid #555;
       padding: 3px 7px;
       border-radius: 3px;

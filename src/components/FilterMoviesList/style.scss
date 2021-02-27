@@ -1,9 +1,11 @@
-.filter {
+@import "../../variables";
+
+.filter-movies {
   display: flex;
   justify-content: space-between;
   width: 90%;
   align-items: center;
-  .filter-genre {
+  &__genre {
     list-style: none;
     display: flex;
     color: white;
@@ -14,11 +16,11 @@
       cursor: pointer;
     }
     .active {
-      border-bottom: 2px solid #f65261;
+      border-bottom: 2px solid $primary-color;
     }
   }
 
-  .filter-sort {
+  &__sort {
     color: #555;
     span {
       margin-right: 10px;
@@ -28,7 +30,7 @@
       border: none;
       background: none;
       font-size: 18px;
-      color: #f65261;
+      color: $primary-color;
     }
   }
 }

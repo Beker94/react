@@ -1,14 +1,17 @@
 import { Component } from "react";
 import "./style.scss";
 
-class ErrorBoundaries extends Component {
+class ErrorBoundary extends Component {
   state = {
     error: false,
   };
 
   componentDidCatch(error: Error, info: any) {
-    console.log("error", error);
-    console.log("info", info);
+    if (process.env.NODE_ENV === "development") {
+      console.log("error", error);
+      console.log("info", info);
+    }
+
     this.setState({ error: true });
   }
 
@@ -21,4 +24,4 @@ class ErrorBoundaries extends Component {
   }
 }
 
-export default ErrorBoundaries;
+export default ErrorBoundary;

@@ -5,17 +5,17 @@ import { Header } from "./components/Header";
 import { Main } from "./components/Main";
 
 const App: React.FC = () => {
-  const [searchFilm, setSearchFilm] = useState<string>("");
+  const [searchedFilm, setSearchFilm] = useState("");
 
-  const onSearch = (e: React.ChangeEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onSearch = (event: React.ChangeEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-    setSearchFilm(() => (e.target[0] as HTMLInputElement).value);
+    setSearchFilm(() => (event.target[0] as HTMLInputElement).value);
   };
   return (
     <>
       <Header onSearch={onSearch} />
-      <Main searchFilm={searchFilm} />
+      <Main searchedFilm={searchedFilm} />
       <Footer />
     </>
   );

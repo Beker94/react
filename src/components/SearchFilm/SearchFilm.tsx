@@ -1,7 +1,7 @@
 import "./style.scss";
 
 interface SearchFilmProps {
-  onSearch(e: React.ChangeEvent<HTMLFormElement>): void;
+  onSearch(event: React.ChangeEvent<HTMLFormElement>): void;
 }
 
 const SearchFilm: React.FC<SearchFilmProps> = ({ onSearch }) => {

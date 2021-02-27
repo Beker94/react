@@ -2,7 +2,7 @@ import { SearchFilm } from "../SearchFilm";
 import "./style.scss";
 
 interface HeaderProps {
-  onSearch(e: React.ChangeEvent<HTMLFormElement>): void;
+  onSearch(event: React.ChangeEvent<HTMLFormElement>): void;
 }
 
 const Header: React.FC<HeaderProps> = ({ onSearch }) => {

@@ -1,36 +1,49 @@
 import { useState } from "react";
 
 import { FilmList } from "../FilmList";
-import { Filter } from "../Filter";
+import { FilterMoviesList } from "../FilterMoviesList";
 import { genreList } from "../../films";
 
 import "./style.scss";
 
+const CONSTANTS = {
+  defaultSort: "date",
+  defaultGenre: "All",
+};
+
 interface MainProps {
-  searchFilm: string;
+  searchedFilm: string;
 }
 
-const Main: React.FC<MainProps> = ({ searchFilm }) => {
-  const [genre, setGenre] = useState<string>(genreList[0].id);
-  const [sort, setSort] = useState<string>("date");
+const Main: React.FC<MainProps> = ({ searchedFilm }) => {
+  const [selectedGenre, setGenre] = useState(CONSTANTS.defaultGenre);
+  const [sortBy, setSort] = useState(CONSTANTS.defaultSort);
 
-  const chengeGenre = (e: React.MouseEvent) => {
-    setGenre(() => (e.target as HTMLInputElement).id);
+  const onChangeGenre = (event: React.MouseEvent) => {
+    setGenre((prevGenre) =>
+      (event.target as HTMLInputElement).id
+        ? (event.target as HTMLInputElement).id
+        : prevGenre
+    );
   };
 
-  const chengeSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSort(() => e.target.value);
+  const chengeSort = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSort(() => event.target.value);
   };
 
   return (
     <div className="main">
-      <Filter
-        genre={genre}
+      <FilterMoviesList
+        selectedGenre={selectedGenre}
         genreList={genreList}
-        chengeGenre={chengeGenre}
+        onChangeGenre={onChangeGenre}
         chengeSort={chengeSort}
       />
-      <FilmList genre={genre} searchFilm={searchFilm} sort={sort} />
+      <FilmList
+        selectedGenre={selectedGenre}
+        searchedFilm={searchedFilm}
+        sortBy={sortBy}
+      />
     </div>
   );
 };
