@@ -1,43 +1,71 @@
 export const films = [
   {
-    name: "Wind",
-    year: 2006,
-    id: Math.floor(Math.random() * 10000),
-    genre: ["Horror", "Documentary"],
-    src:
+    title: "Wind",
+    releaseDate: new Date("2006"),
+    id: `${Math.floor(Math.random() * 10000)}`,
+    genre: [
+      { value: "Horror", label: "Horror" },
+      {
+        value: "Documentary",
+        label: "Documentary",
+      },
+    ],
+    movieURL:
       "https://upload.wikimedia.org/wikipedia/ru/5/56/Tenet_%28poster%29.jpg",
+    overviev: "overviev",
+    runtime: "300",
   },
   {
-    name: "Dono",
-    year: 2004,
-    id: Math.floor(Math.random() * 10000),
-    genre: ["Documentary", "Comedy"],
-    src:
+    title: "Dono",
+    releaseDate: new Date("2004"),
+    id: `${Math.floor(Math.random() * 10000)}`,
+    genre: [
+      { value: "Documentary", label: "Documentary" },
+      { value: "Comedy", label: "Comedy" },
+    ],
+    movieURL:
       "https://upload.wikimedia.org/wikipedia/ru/5/56/Tenet_%28poster%29.jpg",
+    overviev: "overviev",
+    runtime: "300",
   },
   {
-    name: "Bono",
-    year: 2003,
-    id: Math.floor(Math.random() * 10000),
-    genre: ["Comedy", "Horror"],
-    src:
+    title: "Bono",
+    releaseDate: new Date("2003"),
+    id: `${Math.floor(Math.random() * 10000)}`,
+    genre: [
+      { value: "Comedy", label: "Comedy" },
+      { value: "Horror", label: "Horror" },
+    ],
+    movieURL:
       "https://upload.wikimedia.org/wikipedia/ru/5/56/Tenet_%28poster%29.jpg",
+    overviev: "overviev",
+    runtime: "300",
   },
   {
-    name: "Click",
-    year: 2008,
-    id: Math.floor(Math.random() * 10000),
-    genre: ["Comedy", "Crime"],
-    src:
+    title: "Click",
+    releaseDate: new Date("2008"),
+    id: `${Math.floor(Math.random() * 10000)}`,
+    genre: [
+      { value: "Comedy", label: "Comedy" },
+      { value: "Crime", label: "Crime" },
+    ],
+    movieURL:
       "https://upload.wikimedia.org/wikipedia/ru/5/56/Tenet_%28poster%29.jpg",
+    overviev: "overviev",
+    runtime: "300",
   },
   {
-    name: "Avatar",
-    year: 2001,
-    id: Math.floor(Math.random() * 10000),
-    genre: ["Horror", "Crime"],
-    src:
+    title: "Avatar",
+    releaseDate: new Date("2001"),
+    id: `${Math.floor(Math.random() * 10000)}`,
+    genre: [
+      { value: "Horror", label: "Horror" },
+      { value: "Crime", label: "Crime" },
+    ],
+    movieURL:
       "https://upload.wikimedia.org/wikipedia/ru/5/56/Tenet_%28poster%29.jpg",
+    overviev: "overviev",
+    runtime: "300",
   },
 ];
 

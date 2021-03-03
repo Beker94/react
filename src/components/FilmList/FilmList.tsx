@@ -1,22 +1,17 @@
-import { useMemo } from "react";
-import { renderFilms } from "./helpers";
+import { Film } from "../../interfaces";
+import { FilmCard } from "../FilmCard";
 
 import "./style.scss";
 
 interface FilmListProps {
-  selectedGenre: string;
-  searchedFilm: string;
-  sortBy: string;
+  movies: Film[];
+  openModal(type: string, filmID: string): void;
 }
 
-const FilmList: React.FC<FilmListProps> = ({
-  selectedGenre,
-  searchedFilm,
-  sortBy,
-}) => {
-  const movies = useMemo(() => {
-    return renderFilms(selectedGenre, searchedFilm, sortBy);
-  }, [selectedGenre, searchedFilm, sortBy]);
+const FilmList: React.FC<FilmListProps> = ({ movies, openModal }) => {
+  const filmsCards: any = movies.map((el) => {
+    return <FilmCard film={el} key={el.id} openModal={openModal} />;
+  });
 
   const noFilm = <div>No movie found</div>;
   return (
@@ -27,7 +22,7 @@ const FilmList: React.FC<FilmListProps> = ({
         </h3>
       </div>
       <div className={movies.length ? "film-list" : "film-list__none"}>
-        {movies.length ? movies : noFilm}
+        {movies.length ? filmsCards : noFilm}
       </div>
     </>
   );

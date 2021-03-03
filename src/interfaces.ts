@@ -4,11 +4,22 @@
   };
 
   interface Film {
-    name: string;
-    year: number;
-    genre: Array<string>;
-    id: number;
-    src: string;
+    title: string;
+    releaseDate: Date;
+    genre: Array<object>;
+    id: string;
+    movieURL: string;
+    overviev: string;
+    runtime: string;
   };
 
-  export type {Film,Genre}
+  interface Modal {
+    type: string;
+    isOpen: boolean;
+    filmID: string;
+  }
+
+  
+  
+
+  export type {Film,Genre,Modal}

@@ -1,7 +1,10 @@
+@import "../../variables";
+
 .film {
   color: white;
   margin: 0 auto;
   color: #555;
+  position: relative;
   img {
     width: 375px;
   }
@@ -23,5 +26,74 @@
   }
   .film-genre {
     font-size: 15px;
+  }
+
+  &-edit__button {
+    display: none;
+    position: absolute;
+    background-color: #232323;
+    width: 40px;
+    height: 40px;
+    top: 10px;
+    right: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    &:after {
+      content: "\2807";
+      font-size: 35px;
+      position: absolute;
+      color: white;
+      top: -1px;
+      right: 4px;
+      cursor: pointer;
+    }
+  }
+  &-edit__options {
+    position: absolute;
+    width: 150px;
+    background-color: #232323;
+    top: 10px;
+    right: 10px;
+    border-radius: 4px;
+    ul {
+      margin-top: 30px;
+      list-style: none;
+      padding: 0;
+      color: white;
+      li {
+        padding-left: 15px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        cursor: pointer;
+        &:hover {
+          background-color: $primary-color;
+        }
+      }
+    }
+    .close {
+      width: 15px;
+      height: 15px;
+      font-weight: 300;
+      top: 10px;
+      right: 10px;
+      position: absolute;
+      color: white;
+      cursor: pointer;
+      &:after {
+        font-size: 25px;
+        display: block;
+        content: "×";
+        position: absolute;
+        line-height: 0;
+        top: 6px;
+        right: 0px;
+      }
+    }
+  }
+
+  &:hover {
+    .film-edit__button {
+      display: block;
+    }
   }
 }

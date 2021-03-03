@@ -3,23 +3,33 @@ import { useState } from "react";
 import { FilmList } from "../FilmList";
 import { FilterMoviesList } from "../FilterMoviesList";
 import { genreList } from "../../films";
+import { Film, Modal } from "../../interfaces";
+import { CONSTANTS } from "../../constants";
 
 import "./style.scss";
-
-const CONSTANTS = {
-  defaultSort: "date",
-  defaultGenre: "All",
-};
+import { Form } from "../Form";
+import { filterByGenre, sorting } from "../../helpers";
 
 interface MainProps {
-  searchedFilm: string;
+  modalState: Modal;
+  closeModal(): void;
+  movies: Film[];
+  openModal(type: string, filmID: string): void;
 }
 
-const Main: React.FC<MainProps> = ({ searchedFilm }) => {
-  const [selectedGenre, setGenre] = useState(CONSTANTS.defaultGenre);
-  const [sortBy, setSort] = useState(CONSTANTS.defaultSort);
+const Main: React.FC<MainProps> = ({
+  modalState,
+  closeModal,
+  movies,
+  openModal,
+}) => {
+  const [selectedGenre, setGenre] = useState(
+    CONSTANTS.DEFAULT_FILTERS.defaultGenre
+  );
+  const [sortBy, setSort] = useState("");
 
   const onChangeGenre = (event: React.MouseEvent) => {
+    setSort("");
     setGenre((prevGenre) =>
       (event.target as HTMLInputElement).id
         ? (event.target as HTMLInputElement).id
@@ -28,7 +38,8 @@ const Main: React.FC<MainProps> = ({ searchedFilm }) => {
   };
 
   const chengeSort = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSort(() => event.target.value);
+    setGenre(CONSTANTS.DEFAULT_FILTERS.defaultGenre);
+    setSort(event.target.value);
   };
 
   return (
@@ -40,10 +51,14 @@ const Main: React.FC<MainProps> = ({ searchedFilm }) => {
         chengeSort={chengeSort}
       />
       <FilmList
-        selectedGenre={selectedGenre}
-        searchedFilm={searchedFilm}
-        sortBy={sortBy}
+        movies={filterByGenre(sorting(movies, sortBy), selectedGenre)}
+        openModal={openModal}
       />
+      {modalState.isOpen ? (
+        <Form closeModal={closeModal} modalState={modalState} />
+      ) : (
+        <></>
+      )}
     </div>
   );
 };
