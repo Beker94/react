@@ -4,6 +4,7 @@ import { Modal } from "../../interfaces";
 import { films } from "../../films";
 import { CONSTANTS } from "../../constants";
 import Select from "react-select";
+import DeleteForm from "./DeleteForm";
 
 const selectStyle: any = {
   menu: () => {
@@ -57,6 +58,8 @@ const Form: React.FC<FormProps> = ({ closeModal, modalState }) => {
       values.releaseDate = new Date(values.releaseDate);
       if (modalState.type === CONSTANTS.FORM_TYPE.EDIT) {
         films[films.indexOf(movie)] = values;
+      } else if (modalState.type === CONSTANTS.FORM_TYPE.DELETE) {
+        films.splice(films.indexOf(movie), films.indexOf(movie));
       } else {
         films.push(values);
       }
@@ -75,66 +78,71 @@ const Form: React.FC<FormProps> = ({ closeModal, modalState }) => {
       >
         <div className="close" onClick={closeModal}></div>
         <h3>{modalState.type.toUpperCase()} MOVIE</h3>
+        {modalState.type === CONSTANTS.FORM_TYPE.DELETE ? (
+          <DeleteForm />
+        ) : (
+          <>
+            <label htmlFor="title">TITLE</label>
+            <input
+              id="title"
+              name="title"
+              type="text"
+              onChange={formik.handleChange}
+              value={formik.values.title}
+            />
+            <label htmlFor="releaseDate">RELEASE DATE</label>
+            <input
+              id="releaseDate"
+              name="releaseDate"
+              type="date"
+              onChange={formik.handleChange}
+              value={formik.values.releaseDate}
+            />
+            <label htmlFor="movieURL">MOVIE URL</label>
+            <input
+              id="movieURL"
+              name="movieURL"
+              type="text"
+              onChange={formik.handleChange}
+              value={formik.values.movieURL}
+            />
+            <label htmlFor="genre">GENRE</label>
 
-        <label htmlFor="title">TITLE</label>
-        <input
-          id="title"
-          name="title"
-          type="text"
-          onChange={formik.handleChange}
-          value={formik.values.title}
-        />
-        <label htmlFor="releaseDate">RELEASE DATE</label>
-        <input
-          id="releaseDate"
-          name="releaseDate"
-          type="date"
-          onChange={formik.handleChange}
-          value={formik.values.releaseDate}
-        />
-        <label htmlFor="movieURL">MOVIE URL</label>
-        <input
-          id="movieURL"
-          name="movieURL"
-          type="text"
-          onChange={formik.handleChange}
-          value={formik.values.movieURL}
-        />
-        <label htmlFor="genre">GENRE</label>
+            <Select
+              className="select"
+              options={CONSTANTS.GENRES}
+              isMulti={true}
+              value={formik.values.genre}
+              onChange={(value) => formik.setFieldValue("genre", value)}
+              styles={selectStyle}
+            ></Select>
+            <label htmlFor="overviev">OVERVIEW</label>
+            <input
+              id="overviev"
+              name="overviev"
+              type="text"
+              onChange={formik.handleChange}
+              value={formik.values.overviev}
+            />
+            <label htmlFor="runtime">RUNTIME</label>
+            <input
+              id="runtime"
+              name="runtime"
+              type="text"
+              onChange={formik.handleChange}
+              value={formik.values.runtime}
+            />
 
-        <Select
-          className="select"
-          options={CONSTANTS.GENRES}
-          isMulti={true}
-          value={formik.values.genre}
-          onChange={(value) => formik.setFieldValue("genre", value)}
-          styles={selectStyle}
-        ></Select>
-        <label htmlFor="overviev">OVERVIEW</label>
-        <input
-          id="overviev"
-          name="overviev"
-          type="text"
-          onChange={formik.handleChange}
-          value={formik.values.overviev}
-        />
-        <label htmlFor="runtime">RUNTIME</label>
-        <input
-          id="runtime"
-          name="runtime"
-          type="text"
-          onChange={formik.handleChange}
-          value={formik.values.runtime}
-        />
-
-        <div className="buttons-section">
-          <button type="reset" className="button-reset">
-            Reset
-          </button>
-          <button type="submit" className="button-submit">
-            Submit
-          </button>
-        </div>
+            <div className="buttons-section">
+              <button type="reset" className="button-reset">
+                Reset
+              </button>
+              <button type="submit" className="button-submit">
+                Submit
+              </button>
+            </div>
+          </>
+        )}
       </form>
     </div>
   );

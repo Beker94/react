@@ -1,9 +1,9 @@
-import { ChangeEvent } from "react";
+import { Genre } from "../../interfaces";
 import "./style.scss";
 
 interface FilterMoviesListProps {
   selectedGenre: String;
-  genreList: Array<object>;
+  genreList: Array<Genre>;
   onChangeGenre(event: React.MouseEvent): void;
   chengeSort(event: React.ChangeEvent<HTMLSelectElement>): void;
 }
@@ -14,14 +14,14 @@ const FilterMoviesList: React.FC<FilterMoviesListProps> = ({
   onChangeGenre,
   chengeSort,
 }) => {
-  const genreListDom = genreList.map((el: any, index: number) => {
+  const genreListDom = genreList.map((el: Genre) => {
     return (
       <li
-        id={el.id}
-        className={selectedGenre === el.id ? "active" : ""}
-        key={el.id}
+        id={el.value}
+        className={selectedGenre === el.value ? "active" : ""}
+        key={el.value}
       >
-        {el.genre}
+        {el.value}
       </li>
     );
   });

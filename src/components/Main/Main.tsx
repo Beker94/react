@@ -9,6 +9,7 @@ import { CONSTANTS } from "../../constants";
 import "./style.scss";
 import { Form } from "../Form";
 import { filterByGenre, sorting } from "../../helpers";
+import { ErrorBoundary } from "../ErrorBoundary";
 
 interface MainProps {
   modalState: Modal;
@@ -50,10 +51,12 @@ const Main: React.FC<MainProps> = ({
         onChangeGenre={onChangeGenre}
         chengeSort={chengeSort}
       />
-      <FilmList
-        movies={filterByGenre(sorting(movies, sortBy), selectedGenre)}
-        openModal={openModal}
-      />
+      <ErrorBoundary>
+        <FilmList
+          movies={filterByGenre(sorting(movies, sortBy), selectedGenre)}
+          openModal={openModal}
+        />
+      </ErrorBoundary>
       {modalState.isOpen ? (
         <Form closeModal={closeModal} modalState={modalState} />
       ) : (

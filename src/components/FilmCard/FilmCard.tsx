@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Film } from "../../interfaces";
+import { Film, Genre } from "../../interfaces";
 import { CONSTANTS } from "../../constants";
 import "./style.scss";
 
@@ -11,7 +11,7 @@ interface FilmProps {
 const FilmCard: React.FC<FilmProps> = ({ film, openModal }) => {
   const [editList, openEditList] = useState(false);
   const genres = film.genre
-    .map((el: any) => {
+    .map((el: Genre) => {
       return el.value;
     })
     .join(" , ");

@@ -5,7 +5,7 @@ const filterByGenre = (movies: Film[], selectedGenre: string) => {
     return movies;
   }
 
-  return movies.filter((el: any) => {
+  return movies.filter((el: Film) => {
     for (let i = 0; i < el.genre.length; i++) {
       if (el.genre[i].value === selectedGenre) {
         return true;

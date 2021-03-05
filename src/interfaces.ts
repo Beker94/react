@@ -1,12 +1,12 @@
   interface Genre {
-    genre: string;
-    id: string; 
+    label: string;
+    value: string; 
   };
 
   interface Film {
     title: string;
     releaseDate: Date;
-    genre: Array<object>;
+    genre: Array<Genre>;
     id: string;
     movieURL: string;
     overviev: string;

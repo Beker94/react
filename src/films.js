@@ -23,8 +23,7 @@ export const films = [
       { value: "Documentary", label: "Documentary" },
       { value: "Comedy", label: "Comedy" },
     ],
-    movieURL:
-      "https://upload.wikimedia.org/wikipedia/ru/5/56/Tenet_%28poster%29.jpg",
+    movieURL: "https://static.hdrezka.ac/i/2016/5/26/g9742ec543f53yi47i55t.jpg",
     overviev: "overviev",
     runtime: "300",
   },
@@ -37,7 +36,7 @@ export const films = [
       { value: "Horror", label: "Horror" },
     ],
     movieURL:
-      "https://upload.wikimedia.org/wikipedia/ru/5/56/Tenet_%28poster%29.jpg",
+      "https://static.hdrezka.ac/i/2014/12/19/d633520dbca39yj82e20a.jpg",
     overviev: "overviev",
     runtime: "300",
   },
@@ -49,8 +48,7 @@ export const films = [
       { value: "Comedy", label: "Comedy" },
       { value: "Crime", label: "Crime" },
     ],
-    movieURL:
-      "https://upload.wikimedia.org/wikipedia/ru/5/56/Tenet_%28poster%29.jpg",
+    movieURL: "https://static.hdrezka.ac/i/2016/5/1/za4647f6ddfe4zq39v46t.jpg",
     overviev: "overviev",
     runtime: "300",
   },
@@ -62,8 +60,7 @@ export const films = [
       { value: "Horror", label: "Horror" },
       { value: "Crime", label: "Crime" },
     ],
-    movieURL:
-      "https://upload.wikimedia.org/wikipedia/ru/5/56/Tenet_%28poster%29.jpg",
+    movieURL: "https://static.hdrezka.ac/i/2013/12/3/o2cf4888d925efm10v54x.jpg",
     overviev: "overviev",
     runtime: "300",
   },
@@ -71,23 +68,23 @@ export const films = [
 
 export const genreList = [
   {
-    genre: "All",
-    id: "All",
+    value: "All",
+    label: "All",
   },
   {
-    genre: "Documentary",
-    id: "Documentary",
+    value: "Documentary",
+    label: "Documentary",
   },
   {
-    genre: "Comedy",
-    id: "Comedy",
+    value: "Comedy",
+    label: "Comedy",
   },
   {
-    genre: "Horror",
-    id: "Horror",
+    value: "Horror",
+    label: "Horror",
   },
   {
-    genre: "Crime",
-    id: "Crime",
+    value: "Crime",
+    label: "Crime",
   },
 ];
