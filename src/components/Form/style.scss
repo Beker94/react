@@ -10,6 +10,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: scroll;
 }
 
 .form {
@@ -32,13 +33,15 @@
     background-color: #555;
     margin: 20px;
     border: none;
-    height: 26px;
+    height: 33px;
     border-radius: 3px;
     color: white;
+    font-size: 20px;
   }
   label {
     margin-left: 20px;
     color: $primary-color;
+    font-size: 23px;
   }
   .buttons-section {
     display: flex;

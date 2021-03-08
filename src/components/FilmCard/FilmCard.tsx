@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
+import { FormType } from "../../constants";
 import { Film, Genre } from "../../interfaces";
-import { CONSTANTS } from "../../constants";
 import "./style.scss";
 
 interface FilmProps {
@@ -9,39 +9,44 @@ interface FilmProps {
 }
 
 const FilmCard: React.FC<FilmProps> = ({ film, openModal }) => {
-  const [editList, openEditList] = useState(false);
+  const [filmSettings, showFilmSettings] = useState(false);
   const genres = film.genre
     .map((el: Genre) => {
       return el.value;
     })
     .join(" , ");
 
-  function filmEdit(type = "", filmID: string) {
-    openModal(type, filmID);
-    openEditList(false);
-  }
+  const openClosePopup = useCallback(() => {
+    showFilmSettings(!filmSettings);
+  }, [showFilmSettings, filmSettings]);
+
+  const filmEdit = useCallback(() => {
+    openModal(FormType.EDIT, film.id);
+    showFilmSettings(false);
+  }, [openModal, showFilmSettings, film.id]);
+
+  const filmDelete = useCallback(() => {
+    openModal(FormType.DELETE, film.id);
+    showFilmSettings(false);
+  }, [openModal, showFilmSettings, film.id]);
 
   const editButton = (
-    <div className="film-edit__button" onClick={() => openEditList(true)}></div>
+    <div className="film-edit__button" onClick={openClosePopup}></div>
   );
 
   const list = (
     <div className="film-edit__options">
-      <span className="close" onClick={() => openEditList(false)}></span>
+      <span className="close" onClick={openClosePopup}></span>
       <ul>
-        <li onClick={filmEdit.bind(this, CONSTANTS.FORM_TYPE.EDIT, film.id)}>
-          Edit
-        </li>
-        <li onClick={filmEdit.bind(this, CONSTANTS.FORM_TYPE.DELETE, film.id)}>
-          Delete
-        </li>
+        <li onClick={filmEdit}>Edit</li>
+        <li onClick={filmDelete}>Delete</li>
       </ul>
     </div>
   );
 
   return (
     <div className="film">
-      {editList ? list : editButton}
+      {filmSettings ? list : editButton}
       <img src={film.movieURL} alt={film.title} />
       <div className="film-title">
         <span className="film-title__name">{film.title}</span>

@@ -4,12 +4,11 @@ import { FilmList } from "../FilmList";
 import { FilterMoviesList } from "../FilterMoviesList";
 import { genreList } from "../../films";
 import { Film, Modal } from "../../interfaces";
-import { CONSTANTS } from "../../constants";
 
 import "./style.scss";
 import { Form } from "../Form";
 import { filterByGenre, sorting } from "../../helpers";
-import { ErrorBoundary } from "../ErrorBoundary";
+import { DefaultFilters } from "../../constants";
 
 interface MainProps {
   modalState: Modal;
@@ -24,9 +23,7 @@ const Main: React.FC<MainProps> = ({
   movies,
   openModal,
 }) => {
-  const [selectedGenre, setGenre] = useState(
-    CONSTANTS.DEFAULT_FILTERS.defaultGenre
-  );
+  const [selectedGenre, setGenre] = useState(DefaultFilters.defaultGenre);
   const [sortBy, setSort] = useState("");
 
   const onChangeGenre = (event: React.MouseEvent) => {
@@ -39,7 +36,7 @@ const Main: React.FC<MainProps> = ({
   };
 
   const chengeSort = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setGenre(CONSTANTS.DEFAULT_FILTERS.defaultGenre);
+    setGenre(DefaultFilters.defaultGenre);
     setSort(event.target.value);
   };
 
@@ -51,12 +48,12 @@ const Main: React.FC<MainProps> = ({
         onChangeGenre={onChangeGenre}
         chengeSort={chengeSort}
       />
-      <ErrorBoundary>
-        <FilmList
-          movies={filterByGenre(sorting(movies, sortBy), selectedGenre)}
-          openModal={openModal}
-        />
-      </ErrorBoundary>
+
+      <FilmList
+        movies={filterByGenre(sorting(movies, sortBy), selectedGenre)}
+        openModal={openModal}
+      />
+
       {modalState.isOpen ? (
         <Form closeModal={closeModal} modalState={modalState} />
       ) : (
