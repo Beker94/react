@@ -1,0 +1,87 @@
+@import "../../variables";
+
+.form-wrapper {
+  z-index: 100;
+  position: fixed;
+  height: 100%;
+  top: 0;
+  background-color: #232323ad;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: scroll;
+}
+
+.form {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  color: white;
+  background-color: #232323;
+  width: 375px;
+  justify-content: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.801);
+
+  h3 {
+    margin-left: 20px;
+    margin-top: 40px;
+    font-size: 25px;
+    font-weight: 200;
+  }
+  input {
+    background-color: #555;
+    margin: 20px;
+    border: none;
+    height: 33px;
+    border-radius: 3px;
+    color: white;
+    font-size: 20px;
+  }
+  label {
+    margin-left: 20px;
+    color: $primary-color;
+    font-size: 23px;
+  }
+  .buttons-section {
+    display: flex;
+    margin: 20px;
+    justify-content: flex-end;
+
+    button {
+      height: 41px;
+      width: 95px;
+      border: 1px solid $primary-color;
+      border-radius: 3px;
+      margin-left: 10px;
+      font-size: 20px;
+    }
+    .button-submit {
+      background-color: $primary-color;
+      color: white;
+    }
+    .button-reset {
+      background-color: #232323;
+      color: $primary-color;
+    }
+  }
+
+  .close {
+    width: 27px;
+    height: 27px;
+    font-weight: 300;
+    top: 10px;
+    right: 10px;
+    position: absolute;
+    cursor: pointer;
+    &:after {
+      font-size: 40px;
+      display: block;
+      content: "×";
+      position: absolute;
+      line-height: 0;
+      top: 9px;
+      right: 0px;
+    }
+  }
+}

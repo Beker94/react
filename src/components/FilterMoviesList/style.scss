@@ -1,0 +1,36 @@
+@import "../../variables";
+
+.filter-movies {
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  align-items: center;
+  &__genre {
+    list-style: none;
+    display: flex;
+    color: white;
+    padding-left: 0;
+    li {
+      padding-left: 7px;
+      padding-bottom: 10px;
+      cursor: pointer;
+    }
+    .active {
+      border-bottom: 2px solid $primary-color;
+    }
+  }
+
+  &__sort {
+    color: #555;
+    span {
+      margin-right: 10px;
+    }
+
+    select {
+      border: none;
+      background: none;
+      font-size: 18px;
+      color: $primary-color;
+    }
+  }
+}
