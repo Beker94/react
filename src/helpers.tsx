@@ -1,3 +1,5 @@
+import { newMovie } from "./constants";
+import { films } from "./films";
 import { Film } from "./interfaces";
 
 const filterByGenre = (movies: Film[], selectedGenre: string) => {
@@ -6,9 +8,11 @@ const filterByGenre = (movies: Film[], selectedGenre: string) => {
   }
 
   return movies.filter((el: Film) => {
-    for (let i = 0; i < el.genre.length; i++) {
+    for (let i = 0; i < el.genre.length; ) {
       if (el.genre[i].value === selectedGenre) {
         return true;
+      } else {
+        i++;
       }
     }
     return false;
@@ -35,9 +39,20 @@ const sorting = (movies: Film[], sortBy: string) => {
       }
       return 0;
     } else {
-      return a.releaseDate.getFullYear() - b.releaseDate.getFullYear();
+      return (
+        new Date(a.releaseDate).getFullYear() -
+        new Date(b.releaseDate).getFullYear()
+      );
     }
   });
 };
 
-export { sorting, filterByUserInput, filterByGenre };
+const finedFilm = (filmID: string) => {
+  return (
+    films.find((el: Film) => {
+      return el.id === filmID;
+    }) || newMovie
+  );
+};
+
+export { sorting, filterByUserInput, filterByGenre, finedFilm };

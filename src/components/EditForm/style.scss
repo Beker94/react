@@ -1,0 +1,66 @@
+@import "../../variables";
+
+.form {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  color: white;
+  background-color: #232323;
+  width: 375px;
+  justify-content: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.801);
+
+  h3 {
+    margin-left: 20px;
+    margin-top: 40px;
+    font-size: 25px;
+    font-weight: 200;
+  }
+  input {
+    background-color: #555;
+    margin: 20px;
+    border: none;
+    height: 33px;
+    border-radius: 3px;
+    color: white;
+    font-size: 20px;
+  }
+  label {
+    margin-left: 20px;
+    color: $primary-color;
+    font-size: 23px;
+  }
+  .buttons-section {
+    display: flex;
+    margin: 20px;
+    justify-content: flex-end;
+
+    button {
+      height: 41px;
+      width: 95px;
+      border: 1px solid $primary-color;
+      border-radius: 3px;
+      margin-left: 10px;
+      font-size: 20px;
+    }
+    .button-submit {
+      background-color: $primary-color;
+      color: white;
+    }
+    .button-reset {
+      background-color: #232323;
+      color: $primary-color;
+    }
+  }
+
+  @media (max-width: 400px) {
+    height: 100%;
+    input {
+      margin: 5px 20px 5px 20px !important;
+    }
+    .css-ljyx4p-Control {
+      margin: 5px 20px 5px 20px;
+      height: 35px;
+    }
+  }
+}

@@ -1,3 +1,5 @@
+import moment from "moment";
+
 const FormType = {
   EDIT: "edit",
   DELETE: "delete",
@@ -16,14 +18,25 @@ const Genres = [
   { value: "Crime", label: "Crime" },
 ];
 
+const formfields = {
+  title: "title",
+  releaseDate: "releaseDate",
+  genre: "genre",
+  movieURL: "movieURL",
+  overviev: "overviev",
+  runtime: "runtime",
+  rating: "rating",
+};
+
 const newMovie = {
   title: " ",
-  releaseDate: new Date(),
+  releaseDate: moment(new Date()).format("yyyy-MM-DD"),
   id: `${Math.floor(Math.random() * 10000)}`,
   genre: [],
   movieURL: "",
   overviev: "",
   runtime: "",
+  rating: "",
 };
 
-export { newMovie, FormType, DefaultFilters, Genres };
+export { newMovie, FormType, DefaultFilters, Genres, formfields };

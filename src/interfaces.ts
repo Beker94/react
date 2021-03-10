@@ -5,12 +5,13 @@
 
   interface Film {
     title: string;
-    releaseDate: Date;
+    releaseDate: string;
     genre: Array<Genre>;
     id: string;
     movieURL: string;
     overviev: string;
     runtime: string;
+    rating: string
   };
 
   interface Modal {

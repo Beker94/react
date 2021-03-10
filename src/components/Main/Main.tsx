@@ -6,13 +6,15 @@ import { genreList } from "../../films";
 import { Film, Modal } from "../../interfaces";
 
 import "./style.scss";
-import { Form } from "../Form";
-import { filterByGenre, sorting } from "../../helpers";
-import { DefaultFilters } from "../../constants";
+import { EditForm } from "../EditForm";
+import { DefaultFilters, FormType } from "../../constants";
+import { FormWrapper } from "../FormWrapper";
+import { DeleteForm } from "../DeleteForm";
 
 interface MainProps {
   modalState: Modal;
   closeModal(): void;
+  setOpenedFilmId(filmID: string): void;
   movies: Film[];
   openModal(type: string, filmID: string): void;
 }
@@ -22,12 +24,12 @@ const Main: React.FC<MainProps> = ({
   closeModal,
   movies,
   openModal,
+  setOpenedFilmId,
 }) => {
   const [selectedGenre, setGenre] = useState(DefaultFilters.defaultGenre);
-  const [sortBy, setSort] = useState("");
+  const [sortBy, setSort] = useState(DefaultFilters.defaultSort);
 
   const onChangeGenre = (event: React.MouseEvent) => {
-    setSort("");
     setGenre((prevGenre) =>
       (event.target as HTMLInputElement).id
         ? (event.target as HTMLInputElement).id
@@ -36,7 +38,6 @@ const Main: React.FC<MainProps> = ({
   };
 
   const chengeSort = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setGenre(DefaultFilters.defaultGenre);
     setSort(event.target.value);
   };
 
@@ -50,12 +51,21 @@ const Main: React.FC<MainProps> = ({
       />
 
       <FilmList
-        movies={filterByGenre(sorting(movies, sortBy), selectedGenre)}
+        selectedGenre={selectedGenre}
+        sortBy={sortBy}
+        movies={movies}
         openModal={openModal}
+        setOpenedFilmId={setOpenedFilmId}
       />
 
       {modalState.isOpen ? (
-        <Form closeModal={closeModal} modalState={modalState} />
+        <FormWrapper closeModal={closeModal}>
+          {modalState.type === FormType.DELETE ? (
+            <DeleteForm closeModal={closeModal} modalState={modalState} />
+          ) : (
+            <EditForm closeModal={closeModal} modalState={modalState} />
+          )}
+        </FormWrapper>
       ) : (
         <></>
       )}

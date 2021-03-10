@@ -9,9 +9,11 @@ import { filterByUserInput } from "./helpers";
 
 import "./app-styles.scss";
 import { ErrorBoundary } from "./components/ErrorBoundary";
+import { MovieDetails } from "./components/MovieDetails";
 
 const App: React.FC = () => {
   const [searchedFilm, setSearchFilm] = useState("");
+  const [openedFilmId, setOpenedFilmId] = useState("");
   const [modalState, setmodalState] = useState<Modal>({
     type: "",
     isOpen: false,
@@ -21,7 +23,7 @@ const App: React.FC = () => {
   const onSearch = (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    setSearchFilm(() => (event.target[0] as HTMLInputElement).value);
+    setSearchFilm((event.target[0] as HTMLInputElement).value);
   };
 
   const openModal = (type: string, film?: string) => {
@@ -40,15 +42,30 @@ const App: React.FC = () => {
     });
   };
 
+  const closeFilm = () => {
+    setOpenedFilmId("");
+  };
+
+  const changeOpenFilm = (filmID: string) => {
+    window.scrollTo(0, 0);
+    setOpenedFilmId(filmID);
+  };
+
   return (
     <>
       <ErrorBoundary>
-        <Header onSearch={onSearch} openModal={openModal} />
+        {openedFilmId.length ? (
+          <MovieDetails closeFilm={closeFilm} filmID={openedFilmId} />
+        ) : (
+          <Header onSearch={onSearch} openModal={openModal} />
+        )}
+
         <Main
           modalState={modalState}
           closeModal={closeModal}
           openModal={openModal}
           movies={filterByUserInput(films, searchedFilm)}
+          setOpenedFilmId={changeOpenFilm}
         />
         <Footer />
       </ErrorBoundary>
