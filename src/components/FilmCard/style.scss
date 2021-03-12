@@ -1,11 +1,21 @@
 @import "../../variables";
 
+.film-wrapper {
+  position: relative;
+  &:hover {
+    .film-edit__button {
+      display: block;
+    }
+  }
+}
+
 .film {
   color: white;
   margin: 0 auto;
   color: #555;
   position: relative;
   cursor: pointer;
+  width: 375px;
   img {
     width: 375px;
     height: 548px;
@@ -37,8 +47,9 @@
     width: 40px;
     height: 40px;
     top: 10px;
-    right: 10px;
+    right: 20px;
     border-radius: 50%;
+    z-index: 100;
     cursor: pointer;
     &:after {
       content: "\2807";
@@ -55,8 +66,9 @@
     width: 150px;
     background-color: #232323;
     top: 10px;
-    right: 10px;
+    right: 20px;
     border-radius: 4px;
+    z-index: 2;
     ul {
       margin-top: 30px;
       list-style: none;
@@ -90,12 +102,6 @@
         top: 6px;
         right: 0px;
       }
-    }
-  }
-
-  &:hover {
-    .film-edit__button {
-      display: block;
     }
   }
 }

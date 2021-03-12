@@ -1,4 +1,4 @@
-import moment from "moment";
+import { dateFormatter } from "./helpers";
 
 const FormType = {
   EDIT: "edit",
@@ -18,7 +18,7 @@ const Genres = [
   { value: "Crime", label: "Crime" },
 ];
 
-const formfields = {
+const Formfields = {
   title: "title",
   releaseDate: "releaseDate",
   genre: "genre",
@@ -30,7 +30,7 @@ const formfields = {
 
 const newMovie = {
   title: " ",
-  releaseDate: moment(new Date()).format("yyyy-MM-DD"),
+  releaseDate: dateFormatter(),
   id: `${Math.floor(Math.random() * 10000)}`,
   genre: [],
   movieURL: "",
@@ -39,4 +39,4 @@ const newMovie = {
   rating: "",
 };
 
-export { newMovie, FormType, DefaultFilters, Genres, formfields };
+export { newMovie, FormType, DefaultFilters, Genres, Formfields };

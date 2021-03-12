@@ -17,7 +17,7 @@
   interface Modal {
     type: string;
     isOpen: boolean;
-    filmID: string;
+    film: Film | null;
   }
 
   

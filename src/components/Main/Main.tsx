@@ -3,38 +3,23 @@ import { useState } from "react";
 import { FilmList } from "../FilmList";
 import { FilterMoviesList } from "../FilterMoviesList";
 import { genreList } from "../../films";
-import { Film, Modal } from "../../interfaces";
+import { Film } from "../../interfaces";
 
 import "./style.scss";
-import { EditForm } from "../EditForm";
-import { DefaultFilters, FormType } from "../../constants";
-import { FormWrapper } from "../FormWrapper";
-import { DeleteForm } from "../DeleteForm";
+import { DefaultFilters } from "../../constants";
 
 interface MainProps {
-  modalState: Modal;
-  closeModal(): void;
-  setOpenedFilmId(filmID: string): void;
+  onMovieItemClick(film: Film): void;
   movies: Film[];
-  openModal(type: string, filmID: string): void;
+  openModal(type: string, film: Film): void;
 }
 
-const Main: React.FC<MainProps> = ({
-  modalState,
-  closeModal,
-  movies,
-  openModal,
-  setOpenedFilmId,
-}) => {
+const Main: React.FC<MainProps> = ({ movies, openModal, onMovieItemClick }) => {
   const [selectedGenre, setGenre] = useState(DefaultFilters.defaultGenre);
   const [sortBy, setSort] = useState(DefaultFilters.defaultSort);
 
   const onChangeGenre = (event: React.MouseEvent) => {
-    setGenre((prevGenre) =>
-      (event.target as HTMLInputElement).id
-        ? (event.target as HTMLInputElement).id
-        : prevGenre
-    );
+    setGenre((event.target as HTMLInputElement).id);
   };
 
   const chengeSort = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -55,20 +40,8 @@ const Main: React.FC<MainProps> = ({
         sortBy={sortBy}
         movies={movies}
         openModal={openModal}
-        setOpenedFilmId={setOpenedFilmId}
+        onMovieItemClick={onMovieItemClick}
       />
-
-      {modalState.isOpen ? (
-        <FormWrapper closeModal={closeModal}>
-          {modalState.type === FormType.DELETE ? (
-            <DeleteForm closeModal={closeModal} modalState={modalState} />
-          ) : (
-            <EditForm closeModal={closeModal} modalState={modalState} />
-          )}
-        </FormWrapper>
-      ) : (
-        <></>
-      )}
     </div>
   );
 };

@@ -1,43 +1,34 @@
 import "./style.scss";
 import { useFormik } from "formik";
-import { Film, Modal } from "../../interfaces";
+import { Modal } from "../../interfaces";
 import { films } from "../../films";
 import Select from "react-select";
-import { useEffect, useState } from "react";
-import { newMovie, FormType, Genres, formfields } from "../../constants";
+import { FormType, Genres, Formfields } from "../../constants";
 import { selectStyle } from "./selectConfig";
+import { useRef } from "react";
+import { useOutsideClickHook } from "../../hooks/outsideClickHook";
 
 interface FormProps {
   closeModal(): void;
   modalState: Modal;
 }
 
-const EditForm: React.FC<FormProps> = ({ closeModal, modalState }) => {
-  const [movie] = useState<Film>(
-    films.find((el) => {
-      return el.id === modalState.filmID;
-    }) || newMovie
-  );
-
-  useEffect(() => {
-    document.querySelector("body")?.classList.add("overflow-hidden");
-    return () => {
-      document.querySelector("body")?.classList.remove("overflow-hidden");
-    };
-  });
+const FilmForm: React.FC<FormProps> = ({ closeModal, modalState }) => {
+  const wrapperRef = useRef(null);
+  useOutsideClickHook(wrapperRef, closeModal);
 
   const formik = useFormik({
-    initialValues: movie,
+    initialValues: modalState.film!,
     onSubmit: (values) => {
       if (modalState.type === FormType.EDIT) {
-        films[films.indexOf(movie)] = values;
+        films[films.indexOf(modalState.film!)] = values;
       } else {
         films.push(values);
       }
       closeModal();
     },
     onReset: (values) => {
-      values = movie;
+      values = modalState.film!;
     },
   });
 
@@ -46,34 +37,35 @@ const EditForm: React.FC<FormProps> = ({ closeModal, modalState }) => {
       className="form"
       onSubmit={formik.handleSubmit}
       onReset={formik.handleReset}
+      ref={wrapperRef}
     >
       <h3>{modalState.type.toUpperCase()} MOVIE</h3>
 
-      <label htmlFor="title">TITLE</label>
+      <label htmlFor={Formfields.title}>TITLE</label>
       <input
-        id={formfields.title}
-        name={formfields.title}
+        id={Formfields.title}
+        name={Formfields.title}
         type="text"
         onChange={formik.handleChange}
         value={formik.values.title}
       />
-      <label htmlFor="releaseDate">RELEASE DATE</label>
+      <label htmlFor={Formfields.releaseDate}>RELEASE DATE</label>
       <input
-        id={formfields.releaseDate}
-        name={formfields.releaseDate}
+        id={Formfields.releaseDate}
+        name={Formfields.releaseDate}
         type="date"
         onChange={formik.handleChange}
         value={formik.values.releaseDate}
       />
-      <label htmlFor="movieURL">MOVIE URL</label>
+      <label htmlFor={Formfields.movieURL}>MOVIE URL</label>
       <input
-        id={formfields.movieURL}
-        name={formfields.movieURL}
+        id={Formfields.movieURL}
+        name={Formfields.movieURL}
         type="text"
         onChange={formik.handleChange}
         value={formik.values.movieURL}
       />
-      <label htmlFor="genre">GENRE</label>
+      <label htmlFor={Formfields.genre}>GENRE</label>
 
       <Select
         className="select"
@@ -83,26 +75,26 @@ const EditForm: React.FC<FormProps> = ({ closeModal, modalState }) => {
         onChange={(value) => formik.setFieldValue("genre", value)}
         styles={selectStyle}
       />
-      <label htmlFor="overviev">OVERVIEW</label>
+      <label htmlFor={Formfields.overviev}>OVERVIEW</label>
       <input
-        id={formfields.overviev}
-        name={formfields.overviev}
+        id={Formfields.overviev}
+        name={Formfields.overviev}
         type="text"
         onChange={formik.handleChange}
         value={formik.values.overviev}
       />
-      <label htmlFor="runtime">RUNTIME</label>
+      <label htmlFor={Formfields.runtime}>RUNTIME</label>
       <input
-        id={formfields.runtime}
-        name={formfields.runtime}
+        id={Formfields.runtime}
+        name={Formfields.runtime}
         type="text"
         onChange={formik.handleChange}
         value={formik.values.runtime}
       />
-      <label htmlFor="runtime">RATING</label>
+      <label htmlFor={Formfields.rating}>RATING</label>
       <input
-        id={formfields.rating}
-        name={formfields.rating}
+        id={Formfields.rating}
+        name={Formfields.rating}
         type="text"
         onChange={formik.handleChange}
         value={formik.values.rating}
@@ -120,4 +112,4 @@ const EditForm: React.FC<FormProps> = ({ closeModal, modalState }) => {
   );
 };
 
-export default EditForm;
+export default FilmForm;

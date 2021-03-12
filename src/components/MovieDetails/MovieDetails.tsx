@@ -1,24 +1,13 @@
-import { useEffect, useRef, useState } from "react";
-import { finedFilm } from "../../helpers";
+import { getYearFromString } from "../../helpers";
 import { Film } from "../../interfaces";
 import "./style.scss";
 
 interface MovieDetailsProps {
   closeFilm(): void;
-  filmID: string;
+  film: Film;
 }
 
-const MovieDetails: React.FC<MovieDetailsProps> = ({ closeFilm, filmID }) => {
-  const [movie, setMovie] = useState<Film>(finedFilm(filmID));
-
-  const openedFilm = useRef(filmID);
-
-  useEffect(() => {
-    if (openedFilm.current !== filmID) {
-      setMovie(finedFilm(filmID));
-    }
-  }, [filmID]);
-
+const MovieDetails: React.FC<MovieDetailsProps> = ({ closeFilm, film }) => {
   return (
     <div className="movie-details">
       <div className="movie-details__nav">
@@ -28,19 +17,21 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({ closeFilm, filmID }) => {
         <button onClick={closeFilm}>Search</button>
       </div>
       <div className="movie-details__main">
-        <img src={movie.movieURL} alt={movie.title} />
+        <img src={film.movieURL} alt={film.title} />
         <div className="description">
           <div className="description-header">
             <span className="description-title">
-              {movie.title.toUpperCase()}
+              {film.title.toUpperCase()}
             </span>
-            <span className="description-rating">{movie.rating}</span>
+            <span className="description-rating">{film.rating}</span>
           </div>
           <div className="description-times">
-            <span>{new Date(movie.releaseDate).getFullYear()}</span>
-            <span>{movie.runtime} min</span>
+            <span>
+              {new Date(getYearFromString(film.releaseDate)).getFullYear()}
+            </span>
+            <span>{film.runtime} min</span>
           </div>
-          <p className="description-plot">{movie.overviev}</p>
+          <p className="description-plot">{film.overviev}</p>
         </div>
       </div>
     </div>

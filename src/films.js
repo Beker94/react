@@ -1,9 +1,9 @@
-import moment from "moment";
+import { dateFormatter } from "./helpers";
 
-export const films = [
+const films = [
   {
     title: "Wind",
-    releaseDate: moment(new Date("2006")).format("yyyy-MM-DD"),
+    releaseDate: dateFormatter("2006"),
     id: `${Math.floor(Math.random() * 10000)}`,
     genre: [
       { value: "Horror", label: "Horror" },
@@ -20,7 +20,7 @@ export const films = [
   },
   {
     title: "Dono",
-    releaseDate: moment(new Date("2004")).format("yyyy-MM-DD"),
+    releaseDate: dateFormatter("2004"),
     id: `${Math.floor(Math.random() * 10000)}`,
     genre: [
       { value: "Documentary", label: "Documentary" },
@@ -33,7 +33,7 @@ export const films = [
   },
   {
     title: "Bono",
-    releaseDate: moment(new Date("2003")).format("yyyy-MM-DD"),
+    releaseDate: dateFormatter("2003"),
     id: `${Math.floor(Math.random() * 10000)}`,
     genre: [
       { value: "Comedy", label: "Comedy" },
@@ -47,7 +47,7 @@ export const films = [
   },
   {
     title: "Click",
-    releaseDate: moment(new Date("2008")).format("yyyy-MM-DD"),
+    releaseDate: dateFormatter("2008"),
     id: `${Math.floor(Math.random() * 10000)}`,
     genre: [
       { value: "Comedy", label: "Comedy" },
@@ -60,7 +60,7 @@ export const films = [
   },
   {
     title: "Avatar",
-    releaseDate: moment(new Date("2001")).format("yyyy-MM-DD"),
+    releaseDate: dateFormatter("2001"),
     id: `${Math.floor(Math.random() * 10000)}`,
     genre: [
       { value: "Horror", label: "Horror" },
@@ -73,7 +73,7 @@ export const films = [
   },
 ];
 
-export const genreList = [
+const genreList = [
   {
     value: "All",
     label: "All",
@@ -95,3 +95,5 @@ export const genreList = [
     label: "Crime",
   },
 ];
+
+export { genreList, films };

@@ -1,6 +1,16 @@
-import { newMovie } from "./constants";
-import { films } from "./films";
 import { Film } from "./interfaces";
+
+const dateFormatter = (date: string) => {
+  const newDate = new Date(date);
+
+  return `${newDate.getFullYear()}-${newDate.getMonth()}-${newDate.getDate()}`;
+};
+
+const getYearFromString = (string: string) => {
+  const [year] = string.split("-");
+
+  return year;
+};
 
 const filterByGenre = (movies: Film[], selectedGenre: string) => {
   if (selectedGenre === "All") {
@@ -8,11 +18,9 @@ const filterByGenre = (movies: Film[], selectedGenre: string) => {
   }
 
   return movies.filter((el: Film) => {
-    for (let i = 0; i < el.genre.length; ) {
+    for (let i = 0; i < el.genre.length; i++) {
       if (el.genre[i].value === selectedGenre) {
         return true;
-      } else {
-        i++;
       }
     }
     return false;
@@ -40,19 +48,17 @@ const sorting = (movies: Film[], sortBy: string) => {
       return 0;
     } else {
       return (
-        new Date(a.releaseDate).getFullYear() -
-        new Date(b.releaseDate).getFullYear()
+        new Date(getYearFromString(a.releaseDate)).getFullYear() -
+        new Date(getYearFromString(b.releaseDate)).getFullYear()
       );
     }
   });
 };
 
-const finedFilm = (filmID: string) => {
-  return (
-    films.find((el: Film) => {
-      return el.id === filmID;
-    }) || newMovie
-  );
+export {
+  sorting,
+  filterByUserInput,
+  filterByGenre,
+  dateFormatter,
+  getYearFromString,
 };
-
-export { sorting, filterByUserInput, filterByGenre, finedFilm };

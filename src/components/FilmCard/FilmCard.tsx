@@ -1,20 +1,21 @@
 import { useCallback, useState } from "react";
 import { FormType } from "../../constants";
+import { getYearFromString } from "../../helpers";
 import { Film, Genre } from "../../interfaces";
 import "./style.scss";
 
 interface FilmProps {
   film: Film;
-  openModal(type: string, filmID: string): void;
-  setOpenedFilmId(filmID: string): void;
+  openModal(type: string, film: Film): void;
+  onMovieItemClick(film: Film): void;
 }
 
 const FilmCard: React.FC<FilmProps> = ({
   film,
   openModal,
-  setOpenedFilmId,
+  onMovieItemClick,
 }) => {
-  const [filmSettings, showFilmSettings] = useState(false);
+  const [showFilmSettings, setShowFilmSettings] = useState(false);
   const genres = film.genre
     .map((el: Genre) => {
       return el.value;
@@ -24,35 +25,31 @@ const FilmCard: React.FC<FilmProps> = ({
   const openClosePopup = useCallback(
     (event) => {
       event.stopPropagation();
-      showFilmSettings(!filmSettings);
+      setShowFilmSettings(!showFilmSettings);
     },
-    [showFilmSettings, filmSettings]
+    [showFilmSettings]
   );
 
   const filmEdit = useCallback(() => {
-    openModal(FormType.EDIT, film.id);
-    showFilmSettings(false);
-  }, [openModal, showFilmSettings, film.id]);
+    openModal(FormType.EDIT, film);
+    setShowFilmSettings(false);
+  }, [openModal, film]);
 
   const filmDelete = useCallback(() => {
-    openModal(FormType.DELETE, film.id);
-    showFilmSettings(false);
-  }, [openModal, showFilmSettings, film.id]);
+    openModal(FormType.DELETE, film);
+    setShowFilmSettings(false);
+  }, [openModal, film]);
 
   const changeOpenFilm = useCallback(() => {
-    setOpenedFilmId(film.id);
-  }, [film, setOpenedFilmId]);
+    onMovieItemClick(film);
+  }, [film, onMovieItemClick]);
 
   const editButton = (
     <div className="film-edit__button" onClick={openClosePopup}></div>
   );
 
-  const stopPropagation = (event: React.MouseEvent) => {
-    event.stopPropagation();
-  };
-
   const list = (
-    <div className="film-edit__options" onClick={stopPropagation}>
+    <div className="film-edit__options">
       <span className="close" onClick={openClosePopup}></span>
       <ul>
         <li onClick={filmEdit}>Edit</li>
@@ -62,16 +59,18 @@ const FilmCard: React.FC<FilmProps> = ({
   );
 
   return (
-    <div className="film" onClick={changeOpenFilm}>
-      {filmSettings ? list : editButton}
-      <img src={film.movieURL} alt={film.title} />
-      <div className="film-title">
-        <span className="film-title__name">{film.title}</span>
-        <span className="film-title__year">
-          {new Date(film.releaseDate).getFullYear()}
-        </span>
+    <div className="film-wrapper">
+      {showFilmSettings ? list : editButton}
+      <div className="film" onClick={changeOpenFilm}>
+        <img src={film.movieURL} alt={film.title} />
+        <div className="film-title">
+          <span className="film-title__name">{film.title}</span>
+          <span className="film-title__year">
+            {new Date(getYearFromString(film.releaseDate)).getFullYear()}
+          </span>
+        </div>
+        <div className="film-genre">{genres}</div>
       </div>
-      <div className="film-genre">{genres}</div>
     </div>
   );
 };

@@ -8,9 +8,9 @@ import "./style.scss";
 interface FilmListProps {
   selectedGenre: string;
   sortBy: string;
-  setOpenedFilmId(filmID: string): void;
+  onMovieItemClick(film: Film): void;
   movies: Film[];
-  openModal(type: string, filmID: string): void;
+  openModal(type: string, film: Film): void;
 }
 
 const FilmList: React.FC<FilmListProps> = ({
@@ -18,41 +18,54 @@ const FilmList: React.FC<FilmListProps> = ({
   openModal,
   selectedGenre,
   sortBy,
-  setOpenedFilmId,
+  onMovieItemClick,
 }) => {
-  const [moviesConfigs, setMoviesConfigs] = useState(movies);
+  const [moviesConfigs, setMoviesConfigs] = useState({
+    movies: sorting(filterByGenre(movies, selectedGenre), sortBy),
+    sort: selectedGenre,
+    genre: sortBy,
+  });
 
   useEffect(() => {
     setMoviesConfigs((prevState) => {
-      return [...sorting(prevState, sortBy)];
+      if (prevState.genre !== selectedGenre) {
+        return {
+          ...prevState,
+          genre: selectedGenre,
+          movies: sorting(filterByGenre(movies, selectedGenre), sortBy),
+        };
+      }
+
+      return {
+        ...prevState,
+        genre: selectedGenre,
+        movies: sorting(prevState.movies, sortBy),
+      };
     });
-  }, [sortBy]);
+  }, [movies, selectedGenre, sortBy]);
 
-  useEffect(() => {
-    setMoviesConfigs(filterByGenre(movies, selectedGenre));
-  }, [movies, selectedGenre]);
-
-  const noFilm = <div>No movie found</div>;
   return (
     <>
       <div className="film-count">
         <h3>
-          <span>{moviesConfigs.length}</span> movies found
+          <span>{moviesConfigs.movies.length}</span> movies found
         </h3>
       </div>
       <div className={movies.length ? "film-list" : "film-list__none"}>
-        {moviesConfigs.length
-          ? moviesConfigs.map((el) => {
-              return (
-                <FilmCard
-                  film={el}
-                  key={el.id}
-                  openModal={openModal}
-                  setOpenedFilmId={setOpenedFilmId}
-                />
-              );
-            })
-          : noFilm}
+        {moviesConfigs.movies.length ? (
+          moviesConfigs.movies.map((el) => {
+            return (
+              <FilmCard
+                film={el}
+                key={el.id}
+                openModal={openModal}
+                onMovieItemClick={onMovieItemClick}
+              />
+            );
+          })
+        ) : (
+          <div>No movie found</div>
+        )}
       </div>
     </>
   );

@@ -1,6 +1,6 @@
 import "./style.scss";
 
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 
 interface FormWrapperProps {
   closeModal(): void;
@@ -13,19 +13,19 @@ const FormWrapper: React.FC<FormWrapperProps> = ({ children, closeModal }) => {
     return () => {
       document.querySelector("body")?.classList.remove("overflow-hidden");
     };
-  });
+  }, []);
 
-  const closeModalWindow = useCallback(
-    (e) => {
-      if (e.target.id === "wrapper") {
-        closeModal();
-      }
-    },
-    [closeModal]
-  );
+  // const closeModalWindow = useCallback(
+  //   (e) => {
+  //     if (e.target.id === "wrapper") {
+  //       closeModal();
+  //     }
+  //   },
+  //   [closeModal]
+  // );
 
   return (
-    <div className="form-wrapper" onClick={closeModalWindow} id="wrapper">
+    <div className="form-wrapper" id="wrapper">
       <div className="close" onClick={closeModal}></div>
       {children}
     </div>

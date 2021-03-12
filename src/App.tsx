@@ -4,20 +4,24 @@ import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 import { Main } from "./components/Main";
 import { films } from "./films";
-import { Modal } from "./interfaces";
+import { Film, Modal } from "./interfaces";
 import { filterByUserInput } from "./helpers";
 
 import "./app-styles.scss";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { MovieDetails } from "./components/MovieDetails";
+import { FormType, newMovie } from "./constants";
+import { FormWrapper } from "./components/FormWrapper";
+import { DeleteForm } from "./components/DeleteForm";
+import { FilmForm } from "./components/FilmForm";
 
 const App: React.FC = () => {
   const [searchedFilm, setSearchFilm] = useState("");
-  const [openedFilmId, setOpenedFilmId] = useState("");
+  const [openedFilm, setOpenedFilm] = useState<Film | null>(null);
   const [modalState, setmodalState] = useState<Modal>({
     type: "",
     isOpen: false,
-    filmID: "",
+    film: null,
   });
 
   const onSearch = (event: React.ChangeEvent<HTMLFormElement>) => {
@@ -26,11 +30,11 @@ const App: React.FC = () => {
     setSearchFilm((event.target[0] as HTMLInputElement).value);
   };
 
-  const openModal = (type: string, film?: string) => {
+  const openModal = (type: string, film?: Film) => {
     setmodalState({
       type: type,
       isOpen: true,
-      filmID: film || "",
+      film: film || newMovie,
     });
   };
 
@@ -38,36 +42,45 @@ const App: React.FC = () => {
     setmodalState({
       type: "",
       isOpen: false,
-      filmID: "",
+      film: null,
     });
   };
 
   const closeFilm = () => {
-    setOpenedFilmId("");
+    setOpenedFilm(null);
   };
 
-  const changeOpenFilm = (filmID: string) => {
+  const changeOpenFilm = (film: Film) => {
+    setOpenedFilm(film);
     window.scrollTo(0, 0);
-    setOpenedFilmId(filmID);
   };
 
   return (
     <>
       <ErrorBoundary>
-        {openedFilmId.length ? (
-          <MovieDetails closeFilm={closeFilm} filmID={openedFilmId} />
+        {openedFilm ? (
+          <MovieDetails closeFilm={closeFilm} film={openedFilm} />
         ) : (
           <Header onSearch={onSearch} openModal={openModal} />
         )}
 
         <Main
-          modalState={modalState}
-          closeModal={closeModal}
           openModal={openModal}
           movies={filterByUserInput(films, searchedFilm)}
-          setOpenedFilmId={changeOpenFilm}
+          onMovieItemClick={changeOpenFilm}
         />
         <Footer />
+        {modalState.isOpen ? (
+          <FormWrapper closeModal={closeModal}>
+            {modalState.type === FormType.DELETE ? (
+              <DeleteForm closeModal={closeModal} modalState={modalState} />
+            ) : (
+              <FilmForm closeModal={closeModal} modalState={modalState} />
+            )}
+          </FormWrapper>
+        ) : (
+          <></>
+        )}
       </ErrorBoundary>
     </>
   );
