@@ -1,5 +1,12 @@
 @import "../../variables";
 
+.delete-form {
+  .form-header {
+    top: auto !important;
+    height: 262px !important;
+  }
+}
+
 .form-wrapper {
   z-index: 100;
   position: fixed;
@@ -11,24 +18,42 @@
   justify-content: center;
   align-items: center;
   overflow: scroll;
-  .close {
-    width: 27px;
-    height: 27px;
-    font-weight: 300;
-    top: 10px;
-    right: 10px;
+  .form-header {
     position: absolute;
-    cursor: pointer;
-    &:after {
-      font-size: 40px;
-      display: block;
-      content: "×";
-      position: absolute;
-      line-height: 0;
-      top: 9px;
-      right: 0px;
+    display: flex;
+    width: 375px;
+    height: 860px;
+    @media (max-width: 400px) {
+      width: 100%;
+    }
+
+    h3 {
+      margin-left: 20px;
+      margin-top: 13px;
+      font-size: 25px;
+      font-weight: 200;
       color: white;
-      z-index: 1000;
+      z-index: 2;
+    }
+    .close {
+      width: 27px;
+      height: 27px;
+      font-weight: 300;
+      top: 10px;
+      right: 10px;
+      position: absolute;
+      cursor: pointer;
+      &:after {
+        font-size: 40px;
+        display: block;
+        content: "×";
+        position: absolute;
+        line-height: 0;
+        top: 9px;
+        right: 0px;
+        color: white;
+        z-index: 1000;
+      }
     }
   }
 }

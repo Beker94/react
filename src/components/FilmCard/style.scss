@@ -52,13 +52,17 @@
     z-index: 100;
     cursor: pointer;
     &:after {
-      content: "\2807";
+      content: "⠇";
       font-size: 35px;
       position: absolute;
       color: white;
-      top: -1px;
-      right: 4px;
       cursor: pointer;
+      display: flex;
+      width: 40px;
+      height: 40px;
+      align-items: center;
+      justify-content: center;
+      left: 4px;
     }
   }
   &-edit__options {

@@ -14,7 +14,8 @@ const films = [
     ],
     movieURL:
       "https://upload.wikimedia.org/wikipedia/ru/5/56/Tenet_%28poster%29.jpg",
-    overviev: "overviev",
+    overviev:
+      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam, non! Rerum labore ex exercitationem accusamus, tenetur debitis laborum earum non vitae! Reiciendis eos voluptatem numquam culpa sunt pariatur, omnis ex.",
     runtime: "300",
     rating: "4.4",
   },
@@ -27,7 +28,8 @@ const films = [
       { value: "Comedy", label: "Comedy" },
     ],
     movieURL: "https://static.hdrezka.ac/i/2016/5/26/g9742ec543f53yi47i55t.jpg",
-    overviev: "overviev",
+    overviev:
+      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam, non! Rerum labore ex exercitationem accusamus, tenetur debitis laborum earum non vitae! Reiciendis eos voluptatem numquam culpa sunt pariatur, omnis ex.",
     runtime: "300",
     rating: "6.4",
   },
@@ -41,7 +43,8 @@ const films = [
     ],
     movieURL:
       "https://static.hdrezka.ac/i/2014/12/19/d633520dbca39yj82e20a.jpg",
-    overviev: "overviev",
+    overviev:
+      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam, non! Rerum labore ex exercitationem accusamus, tenetur debitis laborum earum non vitae! Reiciendis eos voluptatem numquam culpa sunt pariatur, omnis ex.",
     runtime: "300",
     rating: "7.4",
   },
@@ -54,7 +57,8 @@ const films = [
       { value: "Crime", label: "Crime" },
     ],
     movieURL: "https://static.hdrezka.ac/i/2016/5/1/za4647f6ddfe4zq39v46t.jpg",
-    overviev: "overviev",
+    overviev:
+      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam, non! Rerum labore ex exercitationem accusamus, tenetur debitis laborum earum non vitae! Reiciendis eos voluptatem numquam culpa sunt pariatur, omnis ex.",
     runtime: "300",
     rating: "5.4",
   },
@@ -67,7 +71,8 @@ const films = [
       { value: "Crime", label: "Crime" },
     ],
     movieURL: "https://static.hdrezka.ac/i/2013/12/3/o2cf4888d925efm10v54x.jpg",
-    overviev: "overviev",
+    overviev:
+      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam, non! Rerum labore ex exercitationem accusamus, tenetur debitis laborum earum non vitae! Reiciendis eos voluptatem numquam culpa sunt pariatur, omnis ex.",
     runtime: "300",
     rating: "8.4",
   },

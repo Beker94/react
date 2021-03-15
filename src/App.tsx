@@ -71,7 +71,7 @@ const App: React.FC = () => {
         />
         <Footer />
         {modalState.isOpen ? (
-          <FormWrapper closeModal={closeModal}>
+          <FormWrapper modalState={modalState}>
             {modalState.type === FormType.DELETE ? (
               <DeleteForm closeModal={closeModal} modalState={modalState} />
             ) : (

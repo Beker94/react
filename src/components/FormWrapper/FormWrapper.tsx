@@ -1,13 +1,15 @@
 import "./style.scss";
 
 import { useEffect } from "react";
+import { Modal } from "../../interfaces";
+import { FormType } from "../../constants";
 
 interface FormWrapperProps {
-  closeModal(): void;
   children: any;
+  modalState: Modal;
 }
 
-const FormWrapper: React.FC<FormWrapperProps> = ({ children, closeModal }) => {
+const FormWrapper: React.FC<FormWrapperProps> = ({ children, modalState }) => {
   useEffect(() => {
     document.querySelector("body")?.classList.add("overflow-hidden");
     return () => {
@@ -15,18 +17,17 @@ const FormWrapper: React.FC<FormWrapperProps> = ({ children, closeModal }) => {
     };
   }, []);
 
-  // const closeModalWindow = useCallback(
-  //   (e) => {
-  //     if (e.target.id === "wrapper") {
-  //       closeModal();
-  //     }
-  //   },
-  //   [closeModal]
-  // );
+  const classList =
+    modalState.type === FormType.DELETE
+      ? "form-wrapper delete-form"
+      : "form-wrapper";
 
   return (
-    <div className="form-wrapper" id="wrapper">
-      <div className="close" onClick={closeModal}></div>
+    <div className={classList} id="wrapper">
+      <div className="form-header">
+        <h3>{modalState.type.toUpperCase()} MOVIE</h3>
+        <div className="close"></div>
+      </div>
       {children}
     </div>
   );

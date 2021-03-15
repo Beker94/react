@@ -31,7 +31,7 @@ const FilmForm: React.FC<FormProps> = ({ closeModal, modalState }) => {
       values = modalState.film!;
     },
   });
-
+  console.log(formik.values.releaseDate);
   return (
     <form
       className="form"
@@ -39,9 +39,9 @@ const FilmForm: React.FC<FormProps> = ({ closeModal, modalState }) => {
       onReset={formik.handleReset}
       ref={wrapperRef}
     >
-      <h3>{modalState.type.toUpperCase()} MOVIE</h3>
-
-      <label htmlFor={Formfields.title}>TITLE</label>
+      <label htmlFor={Formfields.title} className="first">
+        TITLE
+      </label>
       <input
         id={Formfields.title}
         name={Formfields.title}

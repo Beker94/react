@@ -2,8 +2,15 @@ import { Film } from "./interfaces";
 
 const dateFormatter = (date: string) => {
   const newDate = new Date(date);
+  const year = newDate.getFullYear();
+  const month =
+    newDate.getMonth() + 1 < 10
+      ? `0${newDate.getMonth() + 1}`
+      : newDate.getMonth() + 1;
+  const day =
+    newDate.getDate() < 10 ? `0${newDate.getDate()}` : newDate.getDate();
 
-  return `${newDate.getFullYear()}-${newDate.getMonth()}-${newDate.getDate()}`;
+  return `${year}-${month}-${day}`;
 };
 
 const getYearFromString = (string: string) => {
