@@ -1,34 +1,48 @@
 import { useCallback, useState } from "react";
 import { FormType } from "../../constants";
+import { getYearFromString } from "../../helpers";
 import { Film, Genre } from "../../interfaces";
 import "./style.scss";
 
 interface FilmProps {
   film: Film;
-  openModal(type: string, filmID: string): void;
+  openModal(type: string, film: Film): void;
+  onMovieItemClick(film: Film): void;
 }
 
-const FilmCard: React.FC<FilmProps> = ({ film, openModal }) => {
-  const [filmSettings, showFilmSettings] = useState(false);
+const FilmCard: React.FC<FilmProps> = ({
+  film,
+  openModal,
+  onMovieItemClick,
+}) => {
+  const [showFilmSettings, setShowFilmSettings] = useState(false);
   const genres = film.genre
     .map((el: Genre) => {
       return el.value;
     })
     .join(" , ");
 
-  const openClosePopup = useCallback(() => {
-    showFilmSettings(!filmSettings);
-  }, [showFilmSettings, filmSettings]);
+  const openClosePopup = useCallback(
+    (event) => {
+      event.stopPropagation();
+      setShowFilmSettings(!showFilmSettings);
+    },
+    [showFilmSettings]
+  );
 
   const filmEdit = useCallback(() => {
-    openModal(FormType.EDIT, film.id);
-    showFilmSettings(false);
-  }, [openModal, showFilmSettings, film.id]);
+    openModal(FormType.EDIT, film);
+    setShowFilmSettings(false);
+  }, [openModal, film]);
 
   const filmDelete = useCallback(() => {
-    openModal(FormType.DELETE, film.id);
-    showFilmSettings(false);
-  }, [openModal, showFilmSettings, film.id]);
+    openModal(FormType.DELETE, film);
+    setShowFilmSettings(false);
+  }, [openModal, film]);
+
+  const changeOpenFilm = useCallback(() => {
+    onMovieItemClick(film);
+  }, [film, onMovieItemClick]);
 
   const editButton = (
     <div className="film-edit__button" onClick={openClosePopup}></div>
@@ -45,16 +59,18 @@ const FilmCard: React.FC<FilmProps> = ({ film, openModal }) => {
   );
 
   return (
-    <div className="film">
-      {filmSettings ? list : editButton}
-      <img src={film.movieURL} alt={film.title} />
-      <div className="film-title">
-        <span className="film-title__name">{film.title}</span>
-        <span className="film-title__year">
-          {film.releaseDate.getFullYear()}
-        </span>
+    <div className="film-wrapper">
+      {showFilmSettings ? list : editButton}
+      <div className="film" onClick={changeOpenFilm}>
+        <img src={film.movieURL} alt={film.title} />
+        <div className="film-title">
+          <span className="film-title__name">{film.title}</span>
+          <span className="film-title__year">
+            {new Date(getYearFromString(film.releaseDate)).getFullYear()}
+          </span>
+        </div>
+        <div className="film-genre">{genres}</div>
       </div>
-      <div className="film-genre">{genres}</div>
     </div>
   );
 };

@@ -1,3 +1,5 @@
+import { dateFormatter } from "./helpers";
+
 const FormType = {
   EDIT: "edit",
   DELETE: "delete",
@@ -16,14 +18,25 @@ const Genres = [
   { value: "Crime", label: "Crime" },
 ];
 
+const Formfields = {
+  title: "title",
+  releaseDate: "releaseDate",
+  genre: "genre",
+  movieURL: "movieURL",
+  overviev: "overviev",
+  runtime: "runtime",
+  rating: "rating",
+};
+
 const newMovie = {
   title: " ",
-  releaseDate: new Date(),
+  releaseDate: dateFormatter(),
   id: `${Math.floor(Math.random() * 10000)}`,
   genre: [],
   movieURL: "",
   overviev: "",
   runtime: "",
+  rating: "",
 };
 
-export { newMovie, FormType, DefaultFilters, Genres };
+export { newMovie, FormType, DefaultFilters, Genres, Formfields };

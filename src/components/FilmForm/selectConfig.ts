@@ -1,3 +1,5 @@
+
+
 export const selectStyle:any = {
   menu: () => {
     return {
@@ -27,6 +29,14 @@ export const selectStyle:any = {
       borderRadius: "3px",
       color: "white",
       display: "flex",
+      justifyContent: "space-between"
+    };
+  },
+  valueContainer: () => {
+    return {
+      width: "80%",
+      display: "flex",
+      
     };
   },
 };

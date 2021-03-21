@@ -1,16 +1,17 @@
 import { useCallback } from "react";
-import { FormType } from "../../constants";
+import { FormType, newMovie } from "../../constants";
+import { Film } from "../../interfaces";
 import { SearchFilm } from "../SearchFilm";
 import "./style.scss";
 
 interface HeaderProps {
   onSearch(event: React.ChangeEvent<HTMLFormElement>): void;
-  openModal(type: string, filmID: string): void;
+  openModal(type: string, film: Film): void;
 }
 
 const Header: React.FC<HeaderProps> = ({ onSearch, openModal }) => {
   const openAddMovieModal = useCallback(() => {
-    openModal(FormType.ADD, "");
+    openModal(FormType.ADD, newMovie);
   }, [openModal]);
 
   return (

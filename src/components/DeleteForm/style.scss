@@ -1,18 +1,5 @@
 @import "../../variables";
 
-.form-wrapper {
-  z-index: 100;
-  position: fixed;
-  height: 100%;
-  top: 0;
-  background-color: #232323ad;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: scroll;
-}
-
 .form {
   display: flex;
   position: relative;
@@ -25,7 +12,7 @@
 
   h3 {
     margin-left: 20px;
-    margin-top: 40px;
+    margin-top: 100px;
     font-size: 25px;
     font-weight: 200;
   }
@@ -63,25 +50,6 @@
     .button-reset {
       background-color: #232323;
       color: $primary-color;
-    }
-  }
-
-  .close {
-    width: 27px;
-    height: 27px;
-    font-weight: 300;
-    top: 10px;
-    right: 10px;
-    position: absolute;
-    cursor: pointer;
-    &:after {
-      font-size: 40px;
-      display: block;
-      content: "×";
-      position: absolute;
-      line-height: 0;
-      top: 9px;
-      right: 0px;
     }
   }
 }

@@ -1,7 +1,9 @@
-export const films = [
+import { dateFormatter } from "./helpers";
+
+const films = [
   {
     title: "Wind",
-    releaseDate: new Date("2006"),
+    releaseDate: dateFormatter("2006"),
     id: `${Math.floor(Math.random() * 10000)}`,
     genre: [
       { value: "Horror", label: "Horror" },
@@ -12,24 +14,28 @@ export const films = [
     ],
     movieURL:
       "https://upload.wikimedia.org/wikipedia/ru/5/56/Tenet_%28poster%29.jpg",
-    overviev: "overviev",
+    overviev:
+      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam, non! Rerum labore ex exercitationem accusamus, tenetur debitis laborum earum non vitae! Reiciendis eos voluptatem numquam culpa sunt pariatur, omnis ex.",
     runtime: "300",
+    rating: "4.4",
   },
   {
     title: "Dono",
-    releaseDate: new Date("2004"),
+    releaseDate: dateFormatter("2004"),
     id: `${Math.floor(Math.random() * 10000)}`,
     genre: [
       { value: "Documentary", label: "Documentary" },
       { value: "Comedy", label: "Comedy" },
     ],
     movieURL: "https://static.hdrezka.ac/i/2016/5/26/g9742ec543f53yi47i55t.jpg",
-    overviev: "overviev",
+    overviev:
+      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam, non! Rerum labore ex exercitationem accusamus, tenetur debitis laborum earum non vitae! Reiciendis eos voluptatem numquam culpa sunt pariatur, omnis ex.",
     runtime: "300",
+    rating: "6.4",
   },
   {
     title: "Bono",
-    releaseDate: new Date("2003"),
+    releaseDate: dateFormatter("2003"),
     id: `${Math.floor(Math.random() * 10000)}`,
     genre: [
       { value: "Comedy", label: "Comedy" },
@@ -37,36 +43,42 @@ export const films = [
     ],
     movieURL:
       "https://static.hdrezka.ac/i/2014/12/19/d633520dbca39yj82e20a.jpg",
-    overviev: "overviev",
+    overviev:
+      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam, non! Rerum labore ex exercitationem accusamus, tenetur debitis laborum earum non vitae! Reiciendis eos voluptatem numquam culpa sunt pariatur, omnis ex.",
     runtime: "300",
+    rating: "7.4",
   },
   {
     title: "Click",
-    releaseDate: new Date("2008"),
+    releaseDate: dateFormatter("2008"),
     id: `${Math.floor(Math.random() * 10000)}`,
     genre: [
       { value: "Comedy", label: "Comedy" },
       { value: "Crime", label: "Crime" },
     ],
     movieURL: "https://static.hdrezka.ac/i/2016/5/1/za4647f6ddfe4zq39v46t.jpg",
-    overviev: "overviev",
+    overviev:
+      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam, non! Rerum labore ex exercitationem accusamus, tenetur debitis laborum earum non vitae! Reiciendis eos voluptatem numquam culpa sunt pariatur, omnis ex.",
     runtime: "300",
+    rating: "5.4",
   },
   {
     title: "Avatar",
-    releaseDate: new Date("2001"),
+    releaseDate: dateFormatter("2001"),
     id: `${Math.floor(Math.random() * 10000)}`,
     genre: [
       { value: "Horror", label: "Horror" },
       { value: "Crime", label: "Crime" },
     ],
     movieURL: "https://static.hdrezka.ac/i/2013/12/3/o2cf4888d925efm10v54x.jpg",
-    overviev: "overviev",
+    overviev:
+      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam, non! Rerum labore ex exercitationem accusamus, tenetur debitis laborum earum non vitae! Reiciendis eos voluptatem numquam culpa sunt pariatur, omnis ex.",
     runtime: "300",
+    rating: "8.4",
   },
 ];
 
-export const genreList = [
+const genreList = [
   {
     value: "All",
     label: "All",
@@ -88,3 +100,5 @@ export const genreList = [
     label: "Crime",
   },
 ];
+
+export { genreList, films };

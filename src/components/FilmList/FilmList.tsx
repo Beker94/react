@@ -1,28 +1,57 @@
+import { useMemo } from "react";
+import { filterByGenre, sorting } from "../../helpers";
 import { Film } from "../../interfaces";
 import { FilmCard } from "../FilmCard";
 
 import "./style.scss";
 
 interface FilmListProps {
+  selectedGenre: string;
+  sortBy: string;
+  onMovieItemClick(film: Film): void;
   movies: Film[];
-  openModal(type: string, filmID: string): void;
+  openModal(type: string, film: Film): void;
 }
 
-const FilmList: React.FC<FilmListProps> = ({ movies, openModal }) => {
-  const filmsCards: any = movies.map((el) => {
-    return <FilmCard film={el} key={el.id} openModal={openModal} />;
-  });
+const FilmList: React.FC<FilmListProps> = ({
+  movies,
+  openModal,
+  selectedGenre,
+  sortBy,
+  onMovieItemClick,
+}) => {
+  const filteredMoviesByGenre = useMemo(
+    () => filterByGenre(movies, selectedGenre),
+    [movies, selectedGenre]
+  );
 
-  const noFilm = <div>No movie found</div>;
+  const sortedMovies = useMemo(() => sorting(filteredMoviesByGenre, sortBy), [
+    filteredMoviesByGenre,
+    sortBy,
+  ]);
+
   return (
     <>
       <div className="film-count">
         <h3>
-          <span>{movies.length}</span> movies found
+          <span>{sortedMovies.length}</span> movies found
         </h3>
       </div>
       <div className={movies.length ? "film-list" : "film-list__none"}>
-        {movies.length ? filmsCards : noFilm}
+        {sortedMovies.length ? (
+          sortedMovies.map((el) => {
+            return (
+              <FilmCard
+                film={el}
+                key={el.id}
+                openModal={openModal}
+                onMovieItemClick={onMovieItemClick}
+              />
+            );
+          })
+        ) : (
+          <div>No movie found</div>
+        )}
       </div>
     </>
   );

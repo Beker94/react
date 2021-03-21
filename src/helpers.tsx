@@ -1,5 +1,24 @@
 import { Film } from "./interfaces";
 
+const dateFormatter = (date: string) => {
+  const newDate = new Date(date);
+  const year = newDate.getFullYear();
+  const month =
+    newDate.getMonth() + 1 < 10
+      ? `0${newDate.getMonth() + 1}`
+      : newDate.getMonth() + 1;
+  const day =
+    newDate.getDate() < 10 ? `0${newDate.getDate()}` : newDate.getDate();
+
+  return `${year}-${month}-${day}`;
+};
+
+const getYearFromString = (string: string) => {
+  const [year] = string.split("-");
+
+  return year;
+};
+
 const filterByGenre = (movies: Film[], selectedGenre: string) => {
   if (selectedGenre === "All") {
     return movies;
@@ -35,9 +54,18 @@ const sorting = (movies: Film[], sortBy: string) => {
       }
       return 0;
     } else {
-      return a.releaseDate.getFullYear() - b.releaseDate.getFullYear();
+      return (
+        new Date(getYearFromString(a.releaseDate)).getFullYear() -
+        new Date(getYearFromString(b.releaseDate)).getFullYear()
+      );
     }
   });
 };
 
-export { sorting, filterByUserInput, filterByGenre };
+export {
+  sorting,
+  filterByUserInput,
+  filterByGenre,
+  dateFormatter,
+  getYearFromString,
+};
