@@ -1,5 +1,4 @@
 import { put, call, takeEvery, fork, all } from "redux-saga/effects";
-import { Film } from "../../../interfaces";
 import { formAddFilm } from "../actions/form.actions";
 
 export async function fetchFilms(film) {
