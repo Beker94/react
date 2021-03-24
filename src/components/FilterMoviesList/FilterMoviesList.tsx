@@ -1,30 +1,34 @@
-import { Genre } from "../../interfaces";
+import { useDispatch } from "react-redux";
+import { fetchSortByGenreList } from "../../redux/filmList/actions/sortByGenreList";
+import { genreList } from "../../films";
 import "./style.scss";
+import { useState } from "react";
+import { DefaultFilters } from "../../constants";
+import { chengeSorting } from "../../redux/filmList/actions/filmList.actions";
 
-interface FilterMoviesListProps {
-  selectedGenre: String;
-  genreList: Array<Genre>;
-  onChangeGenre(event: React.MouseEvent): void;
-  chengeSort(event: React.ChangeEvent<HTMLSelectElement>): void;
-}
+const FilterMoviesList: React.FC = () => {
+  const dispatch = useDispatch();
+  const [selectedGenre, setGenre] = useState(DefaultFilters.defaultGenre);
 
-const FilterMoviesList: React.FC<FilterMoviesListProps> = ({
-  selectedGenre,
-  genreList,
-  onChangeGenre,
-  chengeSort,
-}) => {
-  const genreListDom = genreList.map((el: Genre) => {
+  const onChangeGenre = (event: React.MouseEvent) => {
+    dispatch(
+      fetchSortByGenreList.request((event.target as HTMLInputElement).id)
+    );
+    setGenre((event.target as HTMLInputElement).id);
+  };
+
+  const chengeSort = () => {
+    dispatch(chengeSorting);
+  };
+
+  const genreListDom = genreList.map((el) => {
     return (
-      <li
-        id={el.value}
-        className={selectedGenre === el.value ? "active" : ""}
-        key={el.value}
-      >
-        {el.value}
+      <li id={el} className={selectedGenre === el ? "active" : ""} key={el}>
+        {el}
       </li>
     );
   });
+
   return (
     <div className="filter-movies">
       <ul className="filter-movies__genre" onClick={onChangeGenre}>

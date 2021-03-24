@@ -1,53 +1,45 @@
-import { useMemo } from "react";
-import { filterByGenre, sorting } from "../../helpers";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { sorting } from "../../helpers";
 import { Film } from "../../interfaces";
+
+import {
+  clearfilmsList,
+  fetchfilmsList,
+} from "../../redux/filmList/actions/filmList.actions";
+
 import { FilmCard } from "../FilmCard";
 
 import "./style.scss";
 
-interface FilmListProps {
-  selectedGenre: string;
-  sortBy: string;
-  onMovieItemClick(film: Film): void;
-  movies: Film[];
-  openModal(type: string, film: Film): void;
-}
+const FilmList: React.FC = () => {
+  const dispatch = useDispatch();
 
-const FilmList: React.FC<FilmListProps> = ({
-  movies,
-  openModal,
-  selectedGenre,
-  sortBy,
-  onMovieItemClick,
-}) => {
-  const filteredMoviesByGenre = useMemo(
-    () => filterByGenre(movies, selectedGenre),
-    [movies, selectedGenre]
-  );
+  const petProfile: Film[] = useSelector((state: any) => {
+    return state.films.films;
+  });
+  const sortBy: string = useSelector((state: any) => {
+    return state.films.sortByDate;
+  });
 
-  const sortedMovies = useMemo(() => sorting(filteredMoviesByGenre, sortBy), [
-    filteredMoviesByGenre,
-    sortBy,
-  ]);
+  useEffect(() => {
+    dispatch(fetchfilmsList.request());
+    return () => {
+      dispatch(clearfilmsList);
+    };
+  }, [dispatch]);
 
   return (
     <>
       <div className="film-count">
         <h3>
-          <span>{sortedMovies.length}</span> movies found
+          <span>{petProfile.length}</span> films found
         </h3>
       </div>
-      <div className={movies.length ? "film-list" : "film-list__none"}>
-        {sortedMovies.length ? (
-          sortedMovies.map((el) => {
-            return (
-              <FilmCard
-                film={el}
-                key={el.id}
-                openModal={openModal}
-                onMovieItemClick={onMovieItemClick}
-              />
-            );
+      <div className={petProfile.length ? "film-list" : "film-list__none"}>
+        {petProfile.length ? (
+          sorting(petProfile, sortBy).map((el: any) => {
+            return <FilmCard film={el} key={el.id} />;
           })
         ) : (
           <div>No movie found</div>

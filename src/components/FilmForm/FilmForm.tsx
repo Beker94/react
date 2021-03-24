@@ -1,37 +1,44 @@
 import "./style.scss";
 import { useFormik } from "formik";
-import { Modal } from "../../interfaces";
-import { films } from "../../films";
+import { Film } from "../../interfaces";
 import Select from "react-select";
 import { FormType, Genres, Formfields } from "../../constants";
 import { selectStyle } from "./selectConfig";
 import { useRef } from "react";
 import { useOutsideClickHook } from "../../hooks/outsideClickHook";
+import { closeForm } from "../../redux/modal/actions/modal.actions";
+import { useDispatch } from "react-redux";
+import {
+  formAddFilm,
+  formEditFilm,
+} from "../../redux/form/actions/form.actions";
 
 interface FormProps {
-  closeModal(): void;
-  modalState: Modal;
+  film: Film;
+  modalType: string;
 }
 
-const FilmForm: React.FC<FormProps> = ({ closeModal, modalState }) => {
+const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
   const wrapperRef = useRef(null);
-  useOutsideClickHook(wrapperRef, closeModal);
+
+  const dispatch = useDispatch();
+  useOutsideClickHook(wrapperRef, () => dispatch(closeForm));
 
   const formik = useFormik({
-    initialValues: modalState.film!,
+    initialValues: film!,
     onSubmit: (values) => {
-      if (modalState.type === FormType.EDIT) {
-        films[films.indexOf(modalState.film!)] = values;
+      if (modalType === FormType.EDIT) {
+        dispatch(formEditFilm.request(values));
       } else {
-        films.push(values);
+        dispatch(formAddFilm.request(values));
       }
-      closeModal();
+      dispatch(closeForm);
     },
     onReset: (values) => {
-      values = modalState.film!;
+      values = film!;
     },
   });
-  console.log(formik.values.releaseDate);
+  console.log(formik.values.release_date);
   return (
     <form
       className="form"
@@ -49,39 +56,39 @@ const FilmForm: React.FC<FormProps> = ({ closeModal, modalState }) => {
         onChange={formik.handleChange}
         value={formik.values.title}
       />
-      <label htmlFor={Formfields.releaseDate}>RELEASE DATE</label>
+      <label htmlFor={Formfields.release_date}>RELEASE DATE</label>
       <input
-        id={Formfields.releaseDate}
-        name={Formfields.releaseDate}
+        id={Formfields.release_date}
+        name={Formfields.release_date}
         type="date"
         onChange={formik.handleChange}
-        value={formik.values.releaseDate}
+        value={formik.values.release_date}
       />
-      <label htmlFor={Formfields.movieURL}>MOVIE URL</label>
+      <label htmlFor={Formfields.poster_path}>MOVIE URL</label>
       <input
-        id={Formfields.movieURL}
-        name={Formfields.movieURL}
+        id={Formfields.poster_path}
+        name={Formfields.poster_path}
         type="text"
         onChange={formik.handleChange}
-        value={formik.values.movieURL}
+        value={formik.values.poster_path}
       />
-      <label htmlFor={Formfields.genre}>GENRE</label>
+      <label htmlFor={Formfields.genres}>GENRE</label>
 
       <Select
         className="select"
         options={Genres}
         isMulti={true}
-        value={formik.values.genre}
-        onChange={(value) => formik.setFieldValue("genre", value)}
+        value={formik.values.genres}
+        onChange={(value) => formik.setFieldValue("genres", value)}
         styles={selectStyle}
       />
-      <label htmlFor={Formfields.overviev}>OVERVIEW</label>
+      <label htmlFor={Formfields.overview}>OVERVIEW</label>
       <input
-        id={Formfields.overviev}
-        name={Formfields.overviev}
+        id={Formfields.overview}
+        name={Formfields.overview}
         type="text"
         onChange={formik.handleChange}
-        value={formik.values.overviev}
+        value={formik.values.overview}
       />
       <label htmlFor={Formfields.runtime}>RUNTIME</label>
       <input
@@ -97,7 +104,7 @@ const FilmForm: React.FC<FormProps> = ({ closeModal, modalState }) => {
         name={Formfields.rating}
         type="text"
         onChange={formik.handleChange}
-        value={formik.values.rating}
+        value={formik.values.vote_average}
       />
 
       <div className="buttons-section">

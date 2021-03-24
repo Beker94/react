@@ -1,18 +1,19 @@
-  interface Genre {
-    label: string;
-    value: string; 
-  };
-
   interface Film {
     title: string;
-    releaseDate: string;
-    genre: Array<Genre>;
-    id: string;
-    movieURL: string;
-    overviev: string;
-    runtime: string;
-    rating: string
+    tagline:	string;
+    release_date: string;
+    genres: Array<string>;
+    id: number;
+    poster_path: string;
+    overview: string;
+    runtime: number;
+    vote_average: number;
+    vote_count: number;
+    budget: number;
+    revenue: number;
   };
+
+
 
   interface Modal {
     type: string;
@@ -23,4 +24,4 @@
   
   
 
-  export type {Film,Genre,Modal}
+  export type {Film,Modal}

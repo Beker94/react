@@ -1,81 +1,49 @@
 import React from "react";
-import { useState } from "react";
+
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 import { Main } from "./components/Main";
-import { films } from "./films";
-import { Film, Modal } from "./interfaces";
-import { filterByUserInput } from "./helpers";
 
 import "./app-styles.scss";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { MovieDetails } from "./components/MovieDetails";
-import { FormType, newMovie } from "./constants";
+import { FormType } from "./constants";
 import { FormWrapper } from "./components/FormWrapper";
 import { DeleteForm } from "./components/DeleteForm";
 import { FilmForm } from "./components/FilmForm";
+import { useSelector } from "react-redux";
+import { Film } from "./interfaces";
 
 const App: React.FC = () => {
-  const [searchedFilm, setSearchFilm] = useState("");
-  const [openedFilm, setOpenedFilm] = useState<Film | null>(null);
-  const [modalState, setmodalState] = useState<Modal>({
-    type: "",
-    isOpen: false,
-    film: null,
+  const film: Film = useSelector((state: any) => {
+    return state.modal.film;
   });
 
-  const onSearch = (event: React.ChangeEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const openedFilm: Film = useSelector((state: any) => {
+    return state.filmDescription.openedFilm;
+  });
 
-    setSearchFilm((event.target[0] as HTMLInputElement).value);
-  };
+  const isOpen: boolean = useSelector((state: any) => {
+    return state.modal.isOpen;
+  });
 
-  const openModal = (type: string, film?: Film) => {
-    setmodalState({
-      type: type,
-      isOpen: true,
-      film: film || newMovie,
-    });
-  };
-
-  const closeModal = () => {
-    setmodalState({
-      type: "",
-      isOpen: false,
-      film: null,
-    });
-  };
-
-  const closeFilm = () => {
-    setOpenedFilm(null);
-  };
-
-  const changeOpenFilm = (film: Film) => {
-    setOpenedFilm(film);
-    window.scrollTo(0, 0);
-  };
+  const modalType: string = useSelector((state: any) => {
+    return state.modal.modal;
+  });
 
   return (
     <>
       <ErrorBoundary>
-        {openedFilm ? (
-          <MovieDetails closeFilm={closeFilm} film={openedFilm} />
-        ) : (
-          <Header onSearch={onSearch} openModal={openModal} />
-        )}
+        {openedFilm ? <MovieDetails film={openedFilm} /> : <Header />}
 
-        <Main
-          openModal={openModal}
-          movies={filterByUserInput(films, searchedFilm)}
-          onMovieItemClick={changeOpenFilm}
-        />
+        <Main />
         <Footer />
-        {modalState.isOpen ? (
-          <FormWrapper modalState={modalState}>
-            {modalState.type === FormType.DELETE ? (
-              <DeleteForm closeModal={closeModal} modalState={modalState} />
+        {isOpen ? (
+          <FormWrapper modalType={modalType}>
+            {modalType === FormType.DELETE ? (
+              <DeleteForm film={film} />
             ) : (
-              <FilmForm closeModal={closeModal} modalState={modalState} />
+              <FilmForm film={film} modalType={modalType} />
             )}
           </FormWrapper>
         ) : (

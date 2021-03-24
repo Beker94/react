@@ -1,20 +1,23 @@
 import { useRef } from "react";
-import { films } from "../../films";
+import { useDispatch } from "react-redux";
 import { useOutsideClickHook } from "../../hooks/outsideClickHook";
-import { Modal } from "../../interfaces";
+import { Film } from "../../interfaces";
+import { formDeleteFilm } from "../../redux/form/actions/form.actions";
+import { closeForm } from "../../redux/modal/actions/modal.actions";
 import "./style.scss";
 
 interface DeleteFormrops {
-  modalState: Modal;
-  closeModal(): void;
+  film: Film;
 }
 
-const DeleteForm: React.FC<DeleteFormrops> = ({ modalState, closeModal }) => {
+const DeleteForm: React.FC<DeleteFormrops> = ({ film }) => {
   const wrapperRef = useRef(null);
-  useOutsideClickHook(wrapperRef, closeModal);
+  const dispatch = useDispatch();
+  useOutsideClickHook(wrapperRef, () => dispatch(closeForm));
+
   const onSubmit = () => {
-    films.splice(films.indexOf(modalState.film!), 1);
-    closeModal();
+    dispatch(formDeleteFilm.request(film));
+    dispatch(closeForm);
   };
 
   return (

@@ -25,8 +25,8 @@ const filterByGenre = (movies: Film[], selectedGenre: string) => {
   }
 
   return movies.filter((el: Film) => {
-    for (let i = 0; i < el.genre.length; i++) {
-      if (el.genre[i].value === selectedGenre) {
+    for (let i = 0; i < el.genres.length; i++) {
+      if (el.genres[i] === selectedGenre) {
         return true;
       }
     }
@@ -41,11 +41,8 @@ const filterByUserInput = (movies: Film[], searchFilm: string) => {
 };
 
 const sorting = (movies: Film[], sortBy: string) => {
-  if (!sortBy) {
-    return movies;
-  }
   return movies.sort((a: Film, b: Film) => {
-    if (sortBy === "name") {
+    if (!sortBy) {
       if (a.title < b.title) {
         return -1;
       }
@@ -55,8 +52,8 @@ const sorting = (movies: Film[], sortBy: string) => {
       return 0;
     } else {
       return (
-        new Date(getYearFromString(a.releaseDate)).getFullYear() -
-        new Date(getYearFromString(b.releaseDate)).getFullYear()
+        new Date(getYearFromString(a.release_date)).getFullYear() -
+        new Date(getYearFromString(b.release_date)).getFullYear()
       );
     }
   });
