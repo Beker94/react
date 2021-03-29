@@ -6,7 +6,6 @@ import { formEditFilm } from "../actions/form.actions";
 import { Film } from "../../../interfaces";
 
 export async function editFilm(film: Film) {
-  debugger;
   const films = await fetch(URL, {
     method: "PUT",
     headers: {
@@ -24,7 +23,6 @@ export async function editFilm(film: Film) {
 export function* editFilmTask(data: {
   payload: FormPayload;
 }): Generator<StrictEffect, void, any> {
-  debugger;
   try {
     const film = data.payload.film;
     const genre = data.payload.genre;

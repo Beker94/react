@@ -99,7 +99,6 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
         isMulti={true}
         value={formik.values.genres}
         onChange={(value: any) => {
-          debugger;
           return formik.setFieldValue("genres", value.label);
         }}
         styles={selectStyle}
