@@ -7,7 +7,7 @@ import "./style.scss";
 const Header: React.FC = () => {
   const dispatch = useDispatch();
   const openAddMovieModal = useCallback(() => {
-    dispatch(openAddForm);
+    dispatch(openAddForm());
   }, [dispatch]);
 
   return (

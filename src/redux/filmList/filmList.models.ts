@@ -1,9 +1,10 @@
-
-import { Film } from '../../interfaces';
+import { Film } from "../../interfaces";
 
 export interface FilmsListState {
   films: Film[] | [];
-  errors: string;
+  error: string | ErrorEvent;
   loading: boolean;
-  sortByDate: boolean
+  sortingType: string;
+  genre: string;
+  needReload: false;
 }

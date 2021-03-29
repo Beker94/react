@@ -17,7 +17,7 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({ film }) => {
         <h3>
           <span>netflix</span>roulette
         </h3>
-        <button onClick={() => dispatch(closeFilmDetails)}>Search</button>
+        <button onClick={() => dispatch(closeFilmDetails())}>Search</button>
       </div>
       <div className="movie-details__main">
         <img src={film.poster_path} alt={film.title} />

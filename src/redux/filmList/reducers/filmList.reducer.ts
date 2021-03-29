@@ -1,83 +1,59 @@
-import { searchFilm } from "./../actions/searchFilm.action";
+import { changeSorting, changeGenre } from "./../actions/filmList.actions";
 import { FilmsListState } from "../filmList.models";
-import { fetchSortByGenreList } from "./../actions/sortByGenreList";
-import { createReducer } from "typesafe-actions";
-import { fetchfilmsList } from "../actions/filmList.actions";
-import { Film } from "../../../interfaces";
+
+import { ActionType, createReducer } from "typesafe-actions";
+import { fetchfilmsList, searchFilm } from "../actions/filmList.actions";
+
+import * as Actions from "../actions/filmList.actions";
+
+export type FilmListActions = ActionType<typeof Actions>;
 
 export const initialState: FilmsListState = {
   films: [],
-  errors: "",
+  error: "",
   loading: false,
-  sortByDate: true,
+  sortingType: "date",
+  genre: "",
+  needReload: false,
 };
 
-export const filmListReducer = createReducer(initialState)
-  .handleAction(
-    fetchfilmsList.success,
-    (state: FilmsListState, action: { payload: Film[] }) => ({
-      ...state,
-      loading: false,
-      films: action.payload,
-    })
-  )
-  .handleAction(fetchfilmsList.request, (state: FilmsListState) => ({
+export const filmListReducer = createReducer<FilmsListState, FilmListActions>(
+  initialState
+)
+  .handleAction(fetchfilmsList.success, (state, action) => ({
+    ...state,
+    loading: false,
+    films: action.payload,
+  }))
+  .handleAction(fetchfilmsList.request, (state, action) => ({
     ...state,
     loading: true,
   }))
-  .handleAction(
-    fetchfilmsList.failure,
-    (state: FilmsListState, action: { payload: string }) => ({
-      ...state,
-      loading: false,
-      errors: action.payload,
-    })
-  )
-  .handleAction(
-    fetchSortByGenreList.success,
-    (state: FilmsListState, action: { payload: Film[] }) => ({
-      ...state,
-      loading: false,
-      films: action.payload,
-    })
-  )
-  .handleAction(fetchSortByGenreList.request, (state: FilmsListState) => ({
+  .handleAction(fetchfilmsList.failure, (state, action) => ({
+    ...state,
+    loading: false,
+    error: action.payload,
+  }))
+  .handleAction(searchFilm.success, (state, action) => ({
+    ...state,
+    loading: false,
+    films: action.payload,
+  }))
+  .handleAction(searchFilm.request, (state, action) => ({
     ...state,
     loading: true,
   }))
-  .handleAction(
-    fetchSortByGenreList.failure,
-    (state: FilmsListState, action: { payload: string }) => ({
-      ...state,
-      loading: false,
-      errors: action.payload,
-    })
-  )
-  .handleAction(
-    searchFilm.success,
-    (state: FilmsListState, action: { payload: Film[] }) => ({
-      ...state,
-      loading: false,
-      films: action.payload,
-    })
-  )
-  .handleAction(searchFilm.request, (state: FilmsListState) => ({
+  .handleAction(searchFilm.failure, (state, action) => ({
     ...state,
+    loading: false,
+    error: action.payload,
+  }))
+  .handleAction(changeSorting, (state, action) => ({
+    ...state,
+    sortingType: action.payload,
+  }))
+  .handleAction(changeGenre, (state, action) => ({
+    ...state,
+    genre: action.payload,
     loading: true,
-  }))
-  .handleAction(
-    searchFilm.failure,
-    (state: FilmsListState, action: { payload: string }) => ({
-      ...state,
-      loading: false,
-      errors: action.payload,
-    })
-  )
-  .handleAction("@filmList/CHENGE_SORTING", (state: FilmsListState) => ({
-    ...state,
-    sortByDate: !state.sortByDate,
-  }))
-  .handleAction("@filmList/CLEAR_FILM_LIST", (state: FilmsListState) => ({
-    ...state,
-    films: [],
   }));

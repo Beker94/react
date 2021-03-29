@@ -1,3 +1,1 @@
-const genreList = ["All", "Fantasy", "Adventure", "Romance"];
-
-export { genreList };
+export const genreList = ["All", "Fantasy", "Adventure", "Romance"];

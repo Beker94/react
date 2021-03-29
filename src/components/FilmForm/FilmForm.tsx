@@ -7,38 +7,53 @@ import { selectStyle } from "./selectConfig";
 import { useRef } from "react";
 import { useOutsideClickHook } from "../../hooks/outsideClickHook";
 import { closeForm } from "../../redux/modal/actions/modal.actions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   formAddFilm,
   formEditFilm,
 } from "../../redux/form/actions/form.actions";
+import { RootState } from "../../redux/rootStore";
+import { genreSelector } from "../../redux/selectors";
+import { objectToString, stringToObject } from "../../helpers";
 
 interface FormProps {
   film: Film;
-  modalType: string;
+  modalType: string | null;
 }
 
 const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
   const wrapperRef = useRef(null);
 
   const dispatch = useDispatch();
-  useOutsideClickHook(wrapperRef, () => dispatch(closeForm));
+  useOutsideClickHook(wrapperRef, () => dispatch(closeForm()));
+
+  const genre: string = useSelector<RootState, string>(genreSelector);
 
   const formik = useFormik({
-    initialValues: film!,
+    initialValues: { ...film, genres: stringToObject(film.genres) },
     onSubmit: (values) => {
       if (modalType === FormType.EDIT) {
-        dispatch(formEditFilm.request(values));
+        dispatch(
+          formEditFilm.request({
+            film: { ...values, genres: objectToString(values.genres) },
+            genre: genre,
+          })
+        );
       } else {
-        dispatch(formAddFilm.request(values));
+        dispatch(
+          formAddFilm.request({
+            film: { ...values, genres: objectToString(values.genres) },
+            genre: genre,
+          })
+        );
       }
-      dispatch(closeForm);
+      dispatch(closeForm());
     },
     onReset: (values) => {
-      values = film!;
+      values = { ...film, genres: stringToObject(film.genres) };
     },
   });
-  console.log(formik.values.release_date);
+
   return (
     <form
       className="form"
@@ -46,6 +61,10 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
       onReset={formik.handleReset}
       ref={wrapperRef}
     >
+      <div className="form-header">
+        <h3>{modalType?.toUpperCase()} MOVIE</h3>
+        <div className="close" onClick={() => dispatch(closeForm())}></div>
+      </div>
       <label htmlFor={Formfields.title} className="first">
         TITLE
       </label>
@@ -79,7 +98,10 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
         options={Genres}
         isMulti={true}
         value={formik.values.genres}
-        onChange={(value) => formik.setFieldValue("genres", value)}
+        onChange={(value: any) => {
+          debugger;
+          return formik.setFieldValue("genres", value.label);
+        }}
         styles={selectStyle}
       />
       <label htmlFor={Formfields.overview}>OVERVIEW</label>

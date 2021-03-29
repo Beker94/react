@@ -1,21 +1,22 @@
+import { FormPayload } from "./../form.models";
 import { createAsyncAction } from "typesafe-actions";
 
 import { Film } from "../../../interfaces";
 
 export const formEditFilm = createAsyncAction(
-  "@form/FETCH_REQUEST",
-  "@form/FETCH_SUCCESS",
-  "@form/FETCH_ERROR"
-)<Film, Film, string>();
+  "@form/FORM_EDIT_REQUEST",
+  "@form/FORM_EDIT_SUCCESS",
+  "@form/FORM_EDIT_ERROR"
+)<FormPayload, Film, string>();
 
 export const formDeleteFilm = createAsyncAction(
-  "@form/FETCH_REQUEST",
-  "@form/FETCH_SUCCESS",
-  "@form/FETCH_ERROR"
-)<Film, Film, string>();
+  "@form/FORM_DELETE_REQUEST",
+  "@form/FORM_DELETE_SUCCESS",
+  "@form/FORM_DELETE_ERROR"
+)<FormPayload, Film, string>();
 
 export const formAddFilm = createAsyncAction(
-  "@form/FETCH_REQUEST",
-  "@form/FETCH_SUCCESS",
-  "@form/FETCH_ERROR"
-)<Film, Film, string>();
+  "@form/FORM_ADD_REQUEST",
+  "@form/FORM_ADD_SUCCESS",
+  "@form/FORM_ADD_ERROR"
+)<FormPayload, Film, string>();

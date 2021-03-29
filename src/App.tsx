@@ -13,23 +13,19 @@ import { DeleteForm } from "./components/DeleteForm";
 import { FilmForm } from "./components/FilmForm";
 import { useSelector } from "react-redux";
 import { Film } from "./interfaces";
+import {
+  isOpenSelector,
+  modalTypeSelector,
+  movieSelector,
+  openedFilmSelector,
+} from "./redux/selectors";
+import { RootState } from "./redux/rootStore";
 
 const App: React.FC = () => {
-  const film: Film = useSelector((state: any) => {
-    return state.modal.film;
-  });
-
-  const openedFilm: Film = useSelector((state: any) => {
-    return state.filmDescription.openedFilm;
-  });
-
-  const isOpen: boolean = useSelector((state: any) => {
-    return state.modal.isOpen;
-  });
-
-  const modalType: string = useSelector((state: any) => {
-    return state.modal.modal;
-  });
+  const film = useSelector<RootState, Film>(movieSelector);
+  const openedFilm = useSelector<RootState, Film | null>(openedFilmSelector);
+  const isOpen = useSelector<RootState, boolean>(isOpenSelector);
+  const modalType = useSelector<RootState, string | null>(modalTypeSelector);
 
   return (
     <>
@@ -41,7 +37,7 @@ const App: React.FC = () => {
         {isOpen ? (
           <FormWrapper modalType={modalType}>
             {modalType === FormType.DELETE ? (
-              <DeleteForm film={film} />
+              <DeleteForm film={film} modalType={modalType} />
             ) : (
               <FilmForm film={film} modalType={modalType} />
             )}

@@ -1,44 +1,26 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { sorting } from "../../helpers";
 import { Film } from "../../interfaces";
-
-import {
-  clearfilmsList,
-  fetchfilmsList,
-} from "../../redux/filmList/actions/filmList.actions";
 
 import { FilmCard } from "../FilmCard";
 
 import "./style.scss";
 
-const FilmList: React.FC = () => {
-  const dispatch = useDispatch();
+interface FilmListProps {
+  films: Film[];
+  sortingType: string;
+}
 
-  const petProfile: Film[] = useSelector((state: any) => {
-    return state.films.films;
-  });
-  const sortBy: string = useSelector((state: any) => {
-    return state.films.sortByDate;
-  });
-
-  useEffect(() => {
-    dispatch(fetchfilmsList.request());
-    return () => {
-      dispatch(clearfilmsList);
-    };
-  }, [dispatch]);
-
+const FilmList: React.FC<FilmListProps> = ({ films, sortingType }) => {
   return (
     <>
       <div className="film-count">
         <h3>
-          <span>{petProfile.length}</span> films found
+          <span>{films.length}</span> films found
         </h3>
       </div>
-      <div className={petProfile.length ? "film-list" : "film-list__none"}>
-        {petProfile.length ? (
-          sorting(petProfile, sortBy).map((el: any) => {
+      <div className={films.length ? "film-list" : "film-list__none"}>
+        {films.length ? (
+          sorting(films, sortingType).map((el: any) => {
             return <FilmCard film={el} key={el.id} />;
           })
         ) : (

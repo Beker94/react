@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { searchFilm } from "../../redux/filmList/actions/searchFilm.action";
+import { searchFilm } from "../../redux/filmList/actions/filmList.actions";
+
 import "./style.scss";
 
 const SearchFilm: React.FC = () => {

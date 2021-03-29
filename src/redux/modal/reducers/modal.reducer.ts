@@ -1,7 +1,10 @@
-import { createReducer } from "typesafe-actions";
-import { Film } from "../../../interfaces";
+import { ActionType, createReducer } from "typesafe-actions";
 import { ModalState } from "../modal.models";
 import { FormType, newMovie } from "../../../constants";
+
+import * as Actions from "../actions/modal.actions";
+
+export type ModalActions = ActionType<typeof Actions>;
 
 export const initialState: ModalState = {
   modal: null,
@@ -9,29 +12,25 @@ export const initialState: ModalState = {
   isOpen: false,
 };
 
-export const modalReducer = createReducer(initialState)
-  .handleAction(
-    "@modal/OPEN_DELETE_FORM",
-    (state: ModalState, action: { payload: Film }) => ({
-      modal: FormType.DELETE,
-      film: action.payload,
-      isOpen: true,
-    })
-  )
-  .handleAction("@modal/OPEN_ADD_FORM", (state: ModalState) => ({
+export const modalReducer = createReducer<ModalState, ModalActions>(
+  initialState
+)
+  .handleType("@modal/OPEN_DELETE_FORM", (state, action) => ({
+    modal: FormType.DELETE,
+    film: action.payload,
+    isOpen: true,
+  }))
+  .handleType("@modal/OPEN_ADD_FORM", (state: ModalState) => ({
     modal: FormType.ADD,
     film: newMovie,
     isOpen: true,
   }))
-  .handleAction(
-    "@modal/OPEN_EDIT_FORM",
-    (state: ModalState, action: { payload: Film }) => ({
-      modal: FormType.EDIT,
-      film: action.payload,
-      isOpen: true,
-    })
-  )
-  .handleAction("@modal/CLOSE_FORM", (state: ModalState) => ({
+  .handleType("@modal/OPEN_EDIT_FORM", (state, action) => ({
+    modal: FormType.EDIT,
+    film: action.payload,
+    isOpen: true,
+  }))
+  .handleType("@modal/CLOSE_FORM", (state: ModalState) => ({
     ...state,
     isOpen: false,
   }));

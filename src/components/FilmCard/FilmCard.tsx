@@ -32,16 +32,23 @@ const FilmCard: React.FC<FilmProps> = ({ film }) => {
 
   const filmEdit = useCallback(() => {
     dispatch(openEditForm(film));
-  }, [film, dispatch]);
+  }, [film]);
 
   const openFilmInHeader = useCallback(() => {
     dispatch(openFilmDetails(film));
     window.scrollTo(0, 0);
-  }, [film, dispatch]);
+  }, [film]);
 
   const filmDelete = useCallback(() => {
     dispatch(openDeleteForm(film));
-  }, [film, dispatch]);
+  }, [film]);
+
+  const errorHandler = useCallback((event: any) => {
+    if (event.type === "error") {
+      event.target.src =
+        "https://www.reelviews.net/resources/img/default_poster.jpg";
+    }
+  }, []);
 
   const editButton = (
     <div className="film-edit__button" onClick={openClosePopup}></div>
@@ -61,16 +68,7 @@ const FilmCard: React.FC<FilmProps> = ({ film }) => {
     <div className="film-wrapper">
       {showFilmSettings ? list : editButton}
       <div className="film" onClick={openFilmInHeader}>
-        <img
-          src={film.poster_path}
-          alt={film.title}
-          onError={(e: any) => {
-            if (e.type === "error") {
-              e.target.src =
-                "https://www.reelviews.net/resources/img/default_poster.jpg";
-            }
-          }}
-        />
+        <img src={film.poster_path} alt={film.title} onError={errorHandler} />
         <div className="film-title">
           <span className="film-title__name">{film.title}</span>
           <span className="film-title__year">

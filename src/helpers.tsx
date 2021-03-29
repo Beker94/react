@@ -1,4 +1,4 @@
-import { Film } from "./interfaces";
+import { Film, Genre } from "./interfaces";
 
 const dateFormatter = (date: string) => {
   const newDate = new Date(date);
@@ -17,6 +17,18 @@ const getYearFromString = (string: string) => {
   const [year] = string.split("-");
 
   return year;
+};
+
+const stringToObject = (genres: string[]) => {
+  return genres.map((el: string) => {
+    return { value: el, label: el };
+  });
+};
+
+const objectToString = (genres: Genre[]) => {
+  return genres.map((el: Genre) => {
+    return el.value;
+  });
 };
 
 const filterByGenre = (movies: Film[], selectedGenre: string) => {
@@ -40,9 +52,14 @@ const filterByUserInput = (movies: Film[], searchFilm: string) => {
   });
 };
 
-const sorting = (movies: Film[], sortBy: string) => {
+const sorting = (movies: Film[], sortingType: string) => {
   return movies.sort((a: Film, b: Film) => {
-    if (!sortBy) {
+    if (sortingType === "date") {
+      return (
+        new Date(getYearFromString(a.release_date)).getFullYear() -
+        new Date(getYearFromString(b.release_date)).getFullYear()
+      );
+    } else {
       if (a.title < b.title) {
         return -1;
       }
@@ -50,11 +67,6 @@ const sorting = (movies: Film[], sortBy: string) => {
         return 1;
       }
       return 0;
-    } else {
-      return (
-        new Date(getYearFromString(a.release_date)).getFullYear() -
-        new Date(getYearFromString(b.release_date)).getFullYear()
-      );
     }
   });
 };
@@ -65,4 +77,6 @@ export {
   filterByGenre,
   dateFormatter,
   getYearFromString,
+  objectToString,
+  stringToObject,
 };

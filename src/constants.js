@@ -1,5 +1,7 @@
 import { dateFormatter } from "./helpers";
 
+const URL = "http://localhost:4000/movies";
+
 const FormType = {
   EDIT: "edit",
   DELETE: "delete",
@@ -12,10 +14,9 @@ const DefaultFilters = {
 };
 
 const Genres = [
-  { value: "Documentary", label: "Documentary" },
-  { value: "Comedy", label: "Comedy" },
-  { value: "Horror", label: "Horror" },
-  { value: "Crime", label: "Crime" },
+  { value: "Fantasy", label: "Fantasy" },
+  { value: "Adventure", label: "Adventure" },
+  { value: "Romance", label: "Romance" },
 ];
 
 const Formfields = {
@@ -44,4 +45,4 @@ const newMovie = {
   revenue: 0,
 };
 
-export { newMovie, FormType, DefaultFilters, Genres, Formfields };
+export { newMovie, FormType, DefaultFilters, Genres, Formfields, URL };
