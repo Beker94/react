@@ -26,10 +26,10 @@ export function* editFilmTask(data: {
   try {
     const film = data.payload.film;
     const genre = data.payload.genre;
-
+    const searchTitle = data.payload.searchTitle;
     const res = yield call(editFilm, film);
     if (res) {
-      yield put(fetchfilmsList.request(genre));
+      yield put(fetchfilmsList.request({ genre, searchTitle }));
     } else {
       yield put(formEditFilm.failure("error"));
     }

@@ -26,19 +26,18 @@ const Formfields = {
   poster_path: "poster_path",
   overview: "overview",
   runtime: "runtime",
-  rating: "rating",
+  vote_average: "vote_average",
 };
 
 const newMovie = {
   title: " ",
-  tagline: "",
+  tagline: "tag",
   release_date: dateFormatter(),
-  id: Math.floor(Math.random() * 10000),
+  id: Math.floor(Math.random() * 1000000),
   genres: [],
-  poster_path: "",
+  poster_path: "https://",
   overview: "",
   runtime: 0,
-  rating: "",
   vote_average: 0,
   vote_count: 0,
   budget: 0,

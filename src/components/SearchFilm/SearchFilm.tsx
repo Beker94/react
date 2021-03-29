@@ -10,7 +10,8 @@ const SearchFilm: React.FC = () => {
   const onSearchFilm = useCallback(
     (event) => {
       event.preventDefault();
-      dispatch(searchFilm.request(event.target[0].value));
+
+      dispatch(searchFilm(event.target[0].value));
     },
     [dispatch]
   );

@@ -1,16 +1,16 @@
+import { FilmOptions } from "./../filmList.models";
 import { put, call, takeLatest, StrictEffect } from "redux-saga/effects";
 import { DefaultFilters, URL } from "../../../constants";
-import { fetchfilmsList, searchFilm } from "../actions/filmList.actions";
-import { getSearchedFilmsTask } from "./searchFilmSaga";
+import { fetchfilmsList } from "../actions/filmList.actions";
 
-export async function getFilms(genre: string) {
+export async function getFilms(options: FilmOptions) {
   let films;
 
-  if (genre) {
+  if (options.genre || options.searchTitle) {
     films = await fetch(
-      `${URL}?search=${
-        genre === DefaultFilters.defaultGenre ? "" : genre
-      }&searchBy=genres`
+      `${URL}?search=${options.searchTitle}&searchBy=title&filter=${
+        options.genre === DefaultFilters.defaultGenre ? "" : options.genre
+      }`
     );
   } else {
     films = await fetch(URL);
@@ -24,13 +24,13 @@ export async function getFilms(genre: string) {
 }
 
 export function* getFilmsTask(data: {
-  payload: string;
+  payload: FilmOptions;
 }): Generator<StrictEffect, void, any> {
   try {
-    const genre = data.payload;
+    const options = data.payload;
 
-    const res = yield call(getFilms, genre);
-    if (res.data.length) {
+    const res = yield call(getFilms, options);
+    if (res.data) {
       yield put(fetchfilmsList.success(res.data));
     } else {
       yield put(fetchfilmsList.failure("error"));
@@ -46,5 +46,4 @@ export function* getFilmsTask(data: {
 
 export function* filmsRootSaga() {
   yield takeLatest(fetchfilmsList.request, getFilmsTask);
-  yield takeLatest(searchFilm.request, getSearchedFilmsTask);
 }

@@ -7,4 +7,5 @@ export interface FormState {
 export interface FormPayload {
   film: Film;
   genre: string;
+  searchTitle: string;
 }

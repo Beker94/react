@@ -5,7 +5,7 @@ import { Film } from "../../interfaces";
 import { formDeleteFilm } from "../../redux/form/actions/form.actions";
 import { closeForm } from "../../redux/modal/actions/modal.actions";
 import { RootState } from "../../redux/rootStore";
-import { genreSelector } from "../../redux/selectors";
+import { genreSelector, searchedFilmSelector } from "../../redux/selectors";
 import "./style.scss";
 
 interface DeleteFormProps {
@@ -19,9 +19,12 @@ const DeleteForm: React.FC<DeleteFormProps> = ({ film, modalType }) => {
   useOutsideClickHook(wrapperRef, () => dispatch(closeForm()));
 
   const genre: string = useSelector<RootState, string>(genreSelector);
+  const searchTitle: string = useSelector<RootState, string>(
+    searchedFilmSelector
+  );
 
   const onSubmit = () => {
-    dispatch(formDeleteFilm.request({ film: film, genre: genre }));
+    dispatch(formDeleteFilm.request({ film: film, genre, searchTitle }));
     dispatch(closeForm());
   };
 

@@ -12,6 +12,7 @@ import { RootState } from "../../redux/rootStore";
 import {
   allMoviesSelector,
   genreSelector,
+  searchedFilmSelector,
   sortingTypeSelector,
 } from "../../redux/selectors";
 import { FilmList } from "../FilmList";
@@ -29,6 +30,9 @@ const Main: React.FC = () => {
   );
 
   const genre: string = useSelector<RootState, string>(genreSelector);
+  const searchTitle: string = useSelector<RootState, string>(
+    searchedFilmSelector
+  );
 
   const [selectedGenre, setGenre] = useState(DefaultFilters.defaultGenre);
 
@@ -44,11 +48,16 @@ const Main: React.FC = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchfilmsList.request(genre));
+    dispatch(
+      fetchfilmsList.request({
+        genre: genre,
+        searchTitle: searchTitle,
+      })
+    );
     return () => {
       dispatch(clearfilmsList());
     };
-  }, [genre]);
+  }, [genre, searchTitle]);
 
   return (
     <div className="main">

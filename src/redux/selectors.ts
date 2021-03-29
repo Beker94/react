@@ -4,6 +4,7 @@ const movieSelector = (state: RootState) => state.modal.film;
 const allMoviesSelector = (state: RootState) => state.films.films;
 const sortingTypeSelector = (state: RootState) => state.films.sortingType;
 const genreSelector = (state: RootState) => state.films.genre;
+const searchedFilmSelector = (state: RootState) => state.films.searchTitle;
 const openedFilmSelector = (state: RootState) =>
   state.filmDescription.openedFilm;
 const isOpenSelector = (state: RootState) => state.modal.isOpen;
@@ -17,4 +18,5 @@ export {
   isOpenSelector,
   modalTypeSelector,
   genreSelector,
+  searchedFilmSelector,
 };

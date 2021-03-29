@@ -3,7 +3,7 @@ interface Film {
   tagline: string;
   release_date: string;
   genres: Array<string>;
-  id: number;
+  id?: number;
   poster_path: string;
   overview: string;
   runtime: number;

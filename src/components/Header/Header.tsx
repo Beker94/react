@@ -1,11 +1,13 @@
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { openAddForm } from "../../redux/modal/actions/modal.actions";
+
 import { SearchFilm } from "../SearchFilm";
 import "./style.scss";
 
 const Header: React.FC = () => {
   const dispatch = useDispatch();
+
   const openAddMovieModal = useCallback(() => {
     dispatch(openAddForm());
   }, [dispatch]);

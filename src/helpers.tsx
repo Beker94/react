@@ -26,9 +26,10 @@ const stringToObject = (genres: string[]) => {
 };
 
 const objectToString = (genres: Genre[]) => {
-  return genres.map((el: Genre) => {
+  const app = genres.map((el: Genre) => {
     return el.value;
   });
+  return app;
 };
 
 const filterByGenre = (movies: Film[], selectedGenre: string) => {

@@ -23,19 +23,20 @@ export function* deleteFilmTask(data: {
   payload: FormPayload;
 }): Generator<StrictEffect, void, any> {
   const genre = data.payload.genre;
+  const searchTitle = data.payload.searchTitle;
   try {
     const film = data.payload.film;
 
     const res = yield call(deleteFilm, film);
 
     if (res) {
-      yield put(fetchfilmsList.request(genre));
+      yield put(fetchfilmsList.request({ genre, searchTitle }));
     } else {
       yield put(formDeleteFilm.failure("error"));
     }
   } catch (err) {
     if (err instanceof Error) {
-      yield put(fetchfilmsList.request(genre));
+      yield put(fetchfilmsList.request({ genre, searchTitle }));
       yield put(formDeleteFilm.failure(err.message));
     } else {
       yield put(formDeleteFilm.failure("Unknown error :("));

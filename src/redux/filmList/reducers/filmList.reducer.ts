@@ -1,8 +1,12 @@
-import { changeSorting, changeGenre } from "./../actions/filmList.actions";
+import {
+  changeSorting,
+  changeGenre,
+  searchFilm,
+} from "./../actions/filmList.actions";
 import { FilmsListState } from "../filmList.models";
 
 import { ActionType, createReducer } from "typesafe-actions";
-import { fetchfilmsList, searchFilm } from "../actions/filmList.actions";
+import { fetchfilmsList } from "../actions/filmList.actions";
 
 import * as Actions from "../actions/filmList.actions";
 
@@ -15,6 +19,7 @@ export const initialState: FilmsListState = {
   sortingType: "date",
   genre: "",
   needReload: false,
+  searchTitle: "",
 };
 
 export const filmListReducer = createReducer<FilmsListState, FilmListActions>(
@@ -34,24 +39,16 @@ export const filmListReducer = createReducer<FilmsListState, FilmListActions>(
     loading: false,
     error: action.payload,
   }))
-  .handleAction(searchFilm.success, (state, action) => ({
-    ...state,
-    loading: false,
-    films: action.payload,
-  }))
-  .handleAction(searchFilm.request, (state, action) => ({
-    ...state,
-    loading: true,
-  }))
-  .handleAction(searchFilm.failure, (state, action) => ({
-    ...state,
-    loading: false,
-    error: action.payload,
-  }))
   .handleAction(changeSorting, (state, action) => ({
     ...state,
     sortingType: action.payload,
   }))
+  .handleAction(searchFilm, (state, action) => {
+    return {
+      ...state,
+      searchTitle: action.payload,
+    };
+  })
   .handleAction(changeGenre, (state, action) => ({
     ...state,
     genre: action.payload,

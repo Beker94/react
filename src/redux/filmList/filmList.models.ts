@@ -7,4 +7,10 @@ export interface FilmsListState {
   sortingType: string;
   genre: string;
   needReload: false;
+  searchTitle: string;
+}
+
+export interface FilmOptions {
+  genre: string;
+  searchTitle: string;
 }

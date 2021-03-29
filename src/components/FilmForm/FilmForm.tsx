@@ -13,7 +13,7 @@ import {
   formEditFilm,
 } from "../../redux/form/actions/form.actions";
 import { RootState } from "../../redux/rootStore";
-import { genreSelector } from "../../redux/selectors";
+import { genreSelector, searchedFilmSelector } from "../../redux/selectors";
 import { objectToString, stringToObject } from "../../helpers";
 
 interface FormProps {
@@ -28,6 +28,9 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
   useOutsideClickHook(wrapperRef, () => dispatch(closeForm()));
 
   const genre: string = useSelector<RootState, string>(genreSelector);
+  const searchTitle: string = useSelector<RootState, string>(
+    searchedFilmSelector
+  );
 
   const formik = useFormik({
     initialValues: { ...film, genres: stringToObject(film.genres) },
@@ -35,15 +38,21 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
       if (modalType === FormType.EDIT) {
         dispatch(
           formEditFilm.request({
-            film: { ...values, genres: objectToString(values.genres) },
+            film: {
+              ...values,
+              genres: objectToString(values.genres),
+            },
             genre: genre,
+            searchTitle: searchTitle,
           })
         );
       } else {
+        delete values.id;
         dispatch(
           formAddFilm.request({
             film: { ...values, genres: objectToString(values.genres) },
             genre: genre,
+            searchTitle: searchTitle,
           })
         );
       }
@@ -99,7 +108,7 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
         isMulti={true}
         value={formik.values.genres}
         onChange={(value: any) => {
-          return formik.setFieldValue("genres", value.label);
+          return formik.setFieldValue("genres", value);
         }}
         styles={selectStyle}
       />
@@ -115,15 +124,15 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
       <input
         id={Formfields.runtime}
         name={Formfields.runtime}
-        type="text"
+        type="number"
         onChange={formik.handleChange}
         value={formik.values.runtime}
       />
-      <label htmlFor={Formfields.rating}>RATING</label>
+      <label htmlFor={Formfields.vote_average}>RATING</label>
       <input
-        id={Formfields.rating}
-        name={Formfields.rating}
-        type="text"
+        id={Formfields.vote_average}
+        name={Formfields.vote_average}
+        type="number"
         onChange={formik.handleChange}
         value={formik.values.vote_average}
       />
