@@ -1,4 +1,4 @@
-import { Film } from "./interfaces";
+import { Film, Genre } from "./interfaces";
 
 const dateFormatter = (date: string) => {
   const newDate = new Date(date);
@@ -19,14 +19,27 @@ const getYearFromString = (string: string) => {
   return year;
 };
 
+const stringToObject = (genres: string[]) => {
+  return genres.map((el: string) => {
+    return { value: el, label: el };
+  });
+};
+
+const objectToString = (genres: Genre[]) => {
+  const app = genres.map((el: Genre) => {
+    return el.value;
+  });
+  return app;
+};
+
 const filterByGenre = (movies: Film[], selectedGenre: string) => {
   if (selectedGenre === "All") {
     return movies;
   }
 
   return movies.filter((el: Film) => {
-    for (let i = 0; i < el.genre.length; i++) {
-      if (el.genre[i].value === selectedGenre) {
+    for (let i = 0; i < el.genres.length; i++) {
+      if (el.genres[i] === selectedGenre) {
         return true;
       }
     }
@@ -40,12 +53,14 @@ const filterByUserInput = (movies: Film[], searchFilm: string) => {
   });
 };
 
-const sorting = (movies: Film[], sortBy: string) => {
-  if (!sortBy) {
-    return movies;
-  }
+const sorting = (movies: Film[], sortingType: string) => {
   return movies.sort((a: Film, b: Film) => {
-    if (sortBy === "name") {
+    if (sortingType === "date") {
+      return (
+        new Date(getYearFromString(a.release_date)).getFullYear() -
+        new Date(getYearFromString(b.release_date)).getFullYear()
+      );
+    } else {
       if (a.title < b.title) {
         return -1;
       }
@@ -53,11 +68,6 @@ const sorting = (movies: Film[], sortBy: string) => {
         return 1;
       }
       return 0;
-    } else {
-      return (
-        new Date(getYearFromString(a.releaseDate)).getFullYear() -
-        new Date(getYearFromString(b.releaseDate)).getFullYear()
-      );
     }
   });
 };
@@ -68,4 +78,6 @@ export {
   filterByGenre,
   dateFormatter,
   getYearFromString,
+  objectToString,
+  stringToObject,
 };

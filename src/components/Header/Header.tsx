@@ -1,18 +1,16 @@
 import { useCallback } from "react";
-import { FormType, newMovie } from "../../constants";
-import { Film } from "../../interfaces";
+import { useDispatch } from "react-redux";
+import { openAddForm } from "../../redux/modal/actions/modal.actions";
+
 import { SearchFilm } from "../SearchFilm";
 import "./style.scss";
 
-interface HeaderProps {
-  onSearch(event: React.ChangeEvent<HTMLFormElement>): void;
-  openModal(type: string, film: Film): void;
-}
+const Header: React.FC = () => {
+  const dispatch = useDispatch();
 
-const Header: React.FC<HeaderProps> = ({ onSearch, openModal }) => {
   const openAddMovieModal = useCallback(() => {
-    openModal(FormType.ADD, newMovie);
-  }, [openModal]);
+    dispatch(openAddForm());
+  }, [dispatch]);
 
   return (
     <div className="header">
@@ -23,7 +21,7 @@ const Header: React.FC<HeaderProps> = ({ onSearch, openModal }) => {
         <button onClick={openAddMovieModal}>+ ADD MOVIE</button>
       </div>
 
-      <SearchFilm onSearch={onSearch} />
+      <SearchFilm />
       <hr />
     </div>
   );

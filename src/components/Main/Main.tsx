@@ -1,47 +1,72 @@
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { DefaultFilters } from "../../constants";
+import { Film } from "../../interfaces";
+import {
+  changeGenre,
+  changeSorting,
+  clearfilmsList,
+  fetchfilmsList,
+} from "../../redux/filmList/actions/filmList.actions";
+import { RootState } from "../../redux/rootStore";
+import {
+  allMoviesSelector,
+  genreSelector,
+  searchedFilmSelector,
+  sortingTypeSelector,
+} from "../../redux/selectors";
 import { FilmList } from "../FilmList";
 import { FilterMoviesList } from "../FilterMoviesList";
-import { genreList } from "../../films";
-import { Film } from "../../interfaces";
 
 import "./style.scss";
-import { DefaultFilters } from "../../constants";
 
-interface MainProps {
-  onMovieItemClick(film: Film): void;
-  movies: Film[];
-  openModal(type: string, film: Film): void;
-}
+const Main: React.FC = () => {
+  const dispatch = useDispatch();
 
-const Main: React.FC<MainProps> = ({ movies, openModal, onMovieItemClick }) => {
+  const films: Film[] = useSelector<RootState, Film[]>(allMoviesSelector);
+
+  const sortingType: string = useSelector<RootState, string>(
+    sortingTypeSelector
+  );
+
+  const genre: string = useSelector<RootState, string>(genreSelector);
+  const searchTitle: string = useSelector<RootState, string>(
+    searchedFilmSelector
+  );
+
   const [selectedGenre, setGenre] = useState(DefaultFilters.defaultGenre);
-  const [sortBy, setSort] = useState(DefaultFilters.defaultSort);
 
-  const onChangeGenre = (event: React.MouseEvent) => {
-    setGenre((event.target as HTMLInputElement).id);
+  const handleChangeGenre = (event: React.MouseEvent) => {
+    const genre = (event.target as HTMLInputElement).id;
+
+    dispatch(changeGenre(genre));
+    setGenre(genre);
   };
 
-  const chengeSort = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSort(event.target.value);
+  const handlechangeSort = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    dispatch(changeSorting(event.target.value));
   };
+
+  useEffect(() => {
+    dispatch(
+      fetchfilmsList.request({
+        genre: genre,
+        searchTitle: searchTitle,
+      })
+    );
+    return () => {
+      dispatch(clearfilmsList());
+    };
+  }, [genre, searchTitle]);
 
   return (
     <div className="main">
       <FilterMoviesList
+        onSortChange={handlechangeSort}
+        onGenreChange={handleChangeGenre}
         selectedGenre={selectedGenre}
-        genreList={genreList}
-        onChangeGenre={onChangeGenre}
-        chengeSort={chengeSort}
       />
-
-      <FilmList
-        selectedGenre={selectedGenre}
-        sortBy={sortBy}
-        movies={movies}
-        openModal={openModal}
-        onMovieItemClick={onMovieItemClick}
-      />
+      <FilmList films={films} sortingType={sortingType} />
     </div>
   );
 };

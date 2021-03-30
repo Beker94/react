@@ -1,5 +1,7 @@
 import { dateFormatter } from "./helpers";
 
+const URL = "http://localhost:4000/movies";
+
 const FormType = {
   EDIT: "edit",
   DELETE: "delete",
@@ -12,31 +14,34 @@ const DefaultFilters = {
 };
 
 const Genres = [
-  { value: "Documentary", label: "Documentary" },
-  { value: "Comedy", label: "Comedy" },
-  { value: "Horror", label: "Horror" },
-  { value: "Crime", label: "Crime" },
+  { value: "Fantasy", label: "Fantasy" },
+  { value: "Adventure", label: "Adventure" },
+  { value: "Romance", label: "Romance" },
 ];
 
 const Formfields = {
   title: "title",
-  releaseDate: "releaseDate",
-  genre: "genre",
-  movieURL: "movieURL",
-  overviev: "overviev",
+  release_date: "release_date",
+  genres: "genres",
+  poster_path: "poster_path",
+  overview: "overview",
   runtime: "runtime",
-  rating: "rating",
+  vote_average: "vote_average",
 };
 
 const newMovie = {
   title: " ",
-  releaseDate: dateFormatter(),
-  id: `${Math.floor(Math.random() * 10000)}`,
-  genre: [],
-  movieURL: "",
-  overviev: "",
-  runtime: "",
-  rating: "",
+  tagline: "tag",
+  release_date: dateFormatter(),
+  id: Math.floor(Math.random() * 1000000),
+  genres: [],
+  poster_path: "https://",
+  overview: "",
+  runtime: 0,
+  vote_average: 0,
+  vote_count: 0,
+  budget: 0,
+  revenue: 0,
 };
 
-export { newMovie, FormType, DefaultFilters, Genres, Formfields };
+export { newMovie, FormType, DefaultFilters, Genres, Formfields, URL };

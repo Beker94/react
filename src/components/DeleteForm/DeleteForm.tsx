@@ -1,24 +1,39 @@
 import { useRef } from "react";
-import { films } from "../../films";
+import { useDispatch, useSelector } from "react-redux";
 import { useOutsideClickHook } from "../../hooks/outsideClickHook";
-import { Modal } from "../../interfaces";
+import { Film } from "../../interfaces";
+import { formDeleteFilm } from "../../redux/form/actions/form.actions";
+import { closeForm } from "../../redux/modal/actions/modal.actions";
+import { RootState } from "../../redux/rootStore";
+import { genreSelector, searchedFilmSelector } from "../../redux/selectors";
 import "./style.scss";
 
-interface DeleteFormrops {
-  modalState: Modal;
-  closeModal(): void;
+interface DeleteFormProps {
+  film: Film;
+  modalType: string;
 }
 
-const DeleteForm: React.FC<DeleteFormrops> = ({ modalState, closeModal }) => {
+const DeleteForm: React.FC<DeleteFormProps> = ({ film, modalType }) => {
   const wrapperRef = useRef(null);
-  useOutsideClickHook(wrapperRef, closeModal);
+  const dispatch = useDispatch();
+  useOutsideClickHook(wrapperRef, () => dispatch(closeForm()));
+
+  const genre: string = useSelector<RootState, string>(genreSelector);
+  const searchTitle: string = useSelector<RootState, string>(
+    searchedFilmSelector
+  );
+
   const onSubmit = () => {
-    films.splice(films.indexOf(modalState.film!), 1);
-    closeModal();
+    dispatch(formDeleteFilm.request({ film: film, genre, searchTitle }));
+    dispatch(closeForm());
   };
 
   return (
     <div className="form" ref={wrapperRef}>
+      <div className="form-header">
+        <h3>{modalType?.toUpperCase()} MOVIE</h3>
+        <div className="close" onClick={() => dispatch(closeForm())}></div>
+      </div>
       <h3>Are you sure you want to delete this movie</h3>
       <div className="buttons-section">
         <button type="submit" className="button-submit" onClick={onSubmit}>

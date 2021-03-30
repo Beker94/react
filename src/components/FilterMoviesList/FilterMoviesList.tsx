@@ -1,38 +1,33 @@
-import { Genre } from "../../interfaces";
+import { genreList } from "../../films";
 import "./style.scss";
 
 interface FilterMoviesListProps {
-  selectedGenre: String;
-  genreList: Array<Genre>;
-  onChangeGenre(event: React.MouseEvent): void;
-  chengeSort(event: React.ChangeEvent<HTMLSelectElement>): void;
+  onSortChange(event: React.ChangeEvent<HTMLSelectElement>): void;
+  onGenreChange(event: React.MouseEvent): void;
+  selectedGenre: string;
 }
 
 const FilterMoviesList: React.FC<FilterMoviesListProps> = ({
+  onSortChange,
+  onGenreChange,
   selectedGenre,
-  genreList,
-  onChangeGenre,
-  chengeSort,
 }) => {
-  const genreListDom = genreList.map((el: Genre) => {
+  const genreListDom = genreList.map((el) => {
     return (
-      <li
-        id={el.value}
-        className={selectedGenre === el.value ? "active" : ""}
-        key={el.value}
-      >
-        {el.value}
+      <li id={el} className={selectedGenre === el ? "active" : ""} key={el}>
+        {el}
       </li>
     );
   });
+
   return (
     <div className="filter-movies">
-      <ul className="filter-movies__genre" onClick={onChangeGenre}>
+      <ul className="filter-movies__genre" onClick={onGenreChange}>
         {genreListDom}
       </ul>
       <div className="filter-movies__sort">
         <span>Sorted by</span>
-        <select name="sort-type" onChange={chengeSort}>
+        <select name="sort-type" onChange={onSortChange}>
           <option value="date">date</option>
           <option value="name">name</option>
         </select>
