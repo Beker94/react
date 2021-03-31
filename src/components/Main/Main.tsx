@@ -12,6 +12,7 @@ import { RootState } from "../../redux/rootStore";
 import {
   allMoviesSelector,
   genreSelector,
+  offsetSelector,
   searchedFilmSelector,
   sortingTypeSelector,
 } from "../../redux/selectors";
@@ -33,18 +34,24 @@ const Main: React.FC = () => {
   const searchTitle: string = useSelector<RootState, string>(
     searchedFilmSelector
   );
+  const offset: number = useSelector<RootState, number>(offsetSelector);
 
   const [selectedGenre, setGenre] = useState(DefaultFilters.defaultGenre);
 
   const handleChangeGenre = (event: React.MouseEvent) => {
-    const genre = (event.target as HTMLInputElement).id;
-
-    dispatch(changeGenre(genre));
-    setGenre(genre);
+    const genreChenged = (event.target as HTMLInputElement).id;
+    if (genre !== genreChenged) {
+      dispatch(clearfilmsList());
+      dispatch(changeGenre(genreChenged));
+      setGenre(genreChenged);
+    }
   };
 
   const handlechangeSort = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(changeSorting(event.target.value));
+    if (event.target.value !== sortingType) {
+      dispatch(clearfilmsList());
+      dispatch(changeSorting(event.target.value));
+    }
   };
 
   useEffect(() => {
@@ -52,12 +59,11 @@ const Main: React.FC = () => {
       fetchfilmsList.request({
         genre: genre,
         searchTitle: searchTitle,
+        offset: offset,
+        sortingType: sortingType,
       })
     );
-    return () => {
-      dispatch(clearfilmsList());
-    };
-  }, [genre, searchTitle]);
+  }, [genre, searchTitle, offset, sortingType]);
 
   return (
     <div className="main">
@@ -66,7 +72,7 @@ const Main: React.FC = () => {
         onGenreChange={handleChangeGenre}
         selectedGenre={selectedGenre}
       />
-      <FilmList films={films} sortingType={sortingType} />
+      <FilmList films={films} />
     </div>
   );
 };

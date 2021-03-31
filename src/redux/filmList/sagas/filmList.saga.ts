@@ -4,17 +4,13 @@ import { DefaultFilters, URL } from "../../../constants";
 import { fetchfilmsList } from "../actions/filmList.actions";
 
 export async function getFilms(options: FilmOptions) {
-  let films;
-
-  if (options.genre || options.searchTitle) {
-    films = await fetch(
-      `${URL}?search=${options.searchTitle}&searchBy=title&filter=${
-        options.genre === DefaultFilters.defaultGenre ? "" : options.genre
-      }`
-    );
-  } else {
-    films = await fetch(URL);
-  }
+  const films = await fetch(
+    `${URL}?sortBy=${options.sortingType}&sortOrder=desc&search=${
+      options.searchTitle
+    }&searchBy=title&filter=${
+      options.genre === DefaultFilters.defaultGenre ? "" : options.genre
+    }&offset=${options.offset}&limit=${options.limit ? options.limit : 9}`
+  );
 
   if (films.ok) {
     return await films.json();

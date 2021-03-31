@@ -41,7 +41,8 @@
 
 .form {
   display: flex;
-  position: relative;
+  position: absolute;
+  top: 0;
   flex-direction: column;
   color: white;
   background-color: #232323;
@@ -87,6 +88,11 @@
       background-color: #232323;
       color: $primary-color;
     }
+  }
+  .error {
+    color: red;
+    margin-left: 20px;
+    margin-top: 5px;
   }
 
   @media (max-width: 400px) {

@@ -53,27 +53,7 @@ const filterByUserInput = (movies: Film[], searchFilm: string) => {
   });
 };
 
-const sorting = (movies: Film[], sortingType: string) => {
-  return movies.sort((a: Film, b: Film) => {
-    if (sortingType === "date") {
-      return (
-        new Date(getYearFromString(a.release_date)).getFullYear() -
-        new Date(getYearFromString(b.release_date)).getFullYear()
-      );
-    } else {
-      if (a.title < b.title) {
-        return -1;
-      }
-      if (a.title > b.title) {
-        return 1;
-      }
-      return 0;
-    }
-  });
-};
-
 export {
-  sorting,
   filterByUserInput,
   filterByGenre,
   dateFormatter,

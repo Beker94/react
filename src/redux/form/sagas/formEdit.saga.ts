@@ -27,9 +27,22 @@ export function* editFilmTask(data: {
     const film = data.payload.film;
     const genre = data.payload.genre;
     const searchTitle = data.payload.searchTitle;
+    const offset = 0;
+    const sortingType = data.payload.sortingType;
+    const limit = data.payload.offset + 9;
+
     const res = yield call(editFilm, film);
+
     if (res) {
-      yield put(fetchfilmsList.request({ genre, searchTitle }));
+      yield put(
+        fetchfilmsList.request({
+          genre,
+          searchTitle,
+          offset,
+          sortingType,
+          limit,
+        })
+      );
     } else {
       yield put(formEditFilm.failure("error"));
     }

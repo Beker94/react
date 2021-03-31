@@ -23,6 +23,8 @@ export const searchFilm = createCustomAction(
   }
 );
 
+export const getMoreFilms = createCustomAction("@filmList/GET_MORE_FILMS");
+
 export const changeGenre = createCustomAction(
   "@filmList/CHANGE_GENRE",
   (genre: string) => {

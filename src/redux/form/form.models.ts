@@ -8,4 +8,6 @@ export interface FormPayload {
   film: Film;
   genre: string;
   searchTitle: string;
+  offset: number;
+  sortingType: string;
 }

@@ -27,6 +27,10 @@ const Formfields = {
   overview: "overview",
   runtime: "runtime",
   vote_average: "vote_average",
+  tagline: "tagline",
+  vote_count: "vote_count",
+  budget: "budget",
+  revenue: "revenue",
 };
 
 const newMovie = {

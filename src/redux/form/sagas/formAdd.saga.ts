@@ -27,10 +27,20 @@ export function* addFilmTask(data: {
     const film = data.payload.film;
     const genre = data.payload.genre;
     const searchTitle = data.payload.searchTitle;
-
+    const offset = 0;
+    const sortingType = data.payload.sortingType;
+    const limit = (data.payload.offset / 8) * 9;
     const res = yield call(addFilm, film);
     if (res.data) {
-      yield put(fetchfilmsList.request({ genre, searchTitle }));
+      yield put(
+        fetchfilmsList.request({
+          genre,
+          searchTitle,
+          offset,
+          sortingType,
+          limit,
+        })
+      );
     } else {
       yield put(formAddFilm.failure("error"));
     }

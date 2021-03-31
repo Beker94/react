@@ -24,19 +24,38 @@ export function* deleteFilmTask(data: {
 }): Generator<StrictEffect, void, any> {
   const genre = data.payload.genre;
   const searchTitle = data.payload.searchTitle;
+  const offset = 8;
+  const sortingType = data.payload.sortingType;
+  const limit = (data.payload.offset / 8) * 9;
   try {
     const film = data.payload.film;
 
     const res = yield call(deleteFilm, film);
 
     if (res) {
-      yield put(fetchfilmsList.request({ genre, searchTitle }));
+      yield put(
+        fetchfilmsList.request({
+          genre,
+          searchTitle,
+          offset,
+          sortingType,
+          limit,
+        })
+      );
     } else {
       yield put(formDeleteFilm.failure("error"));
     }
   } catch (err) {
     if (err instanceof Error) {
-      yield put(fetchfilmsList.request({ genre, searchTitle }));
+      yield put(
+        fetchfilmsList.request({
+          genre,
+          searchTitle,
+          offset,
+          sortingType,
+          limit,
+        })
+      );
       yield put(formDeleteFilm.failure(err.message));
     } else {
       yield put(formDeleteFilm.failure("Unknown error :("));

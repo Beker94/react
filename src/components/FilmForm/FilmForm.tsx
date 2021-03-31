@@ -13,8 +13,15 @@ import {
   formEditFilm,
 } from "../../redux/form/actions/form.actions";
 import { RootState } from "../../redux/rootStore";
-import { genreSelector, searchedFilmSelector } from "../../redux/selectors";
+import {
+  genreSelector,
+  offsetSelector,
+  searchedFilmSelector,
+  sortingTypeSelector,
+} from "../../redux/selectors";
 import { objectToString, stringToObject } from "../../helpers";
+import { clearfilmsList } from "../../redux/filmList/actions/filmList.actions";
+import { SignupSchema } from "./validaion";
 
 interface FormProps {
   film: Film;
@@ -31,10 +38,16 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
   const searchTitle: string = useSelector<RootState, string>(
     searchedFilmSelector
   );
+  const offset: number = useSelector<RootState, number>(offsetSelector);
+  const sortingType: string = useSelector<RootState, string>(
+    sortingTypeSelector
+  );
 
   const formik = useFormik({
     initialValues: { ...film, genres: stringToObject(film.genres) },
+    validationSchema: SignupSchema,
     onSubmit: (values) => {
+      dispatch(clearfilmsList());
       if (modalType === FormType.EDIT) {
         dispatch(
           formEditFilm.request({
@@ -42,8 +55,10 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
               ...values,
               genres: objectToString(values.genres),
             },
-            genre: genre,
-            searchTitle: searchTitle,
+            genre,
+            searchTitle,
+            offset,
+            sortingType,
           })
         );
       } else {
@@ -51,8 +66,10 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
         dispatch(
           formAddFilm.request({
             film: { ...values, genres: objectToString(values.genres) },
-            genre: genre,
-            searchTitle: searchTitle,
+            genre,
+            searchTitle,
+            offset,
+            sortingType,
           })
         );
       }
@@ -77,6 +94,9 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
       <label htmlFor={Formfields.title} className="first">
         TITLE
       </label>
+      {formik.errors.title ? (
+        <div className="error">{formik.errors.title}</div>
+      ) : null}
       <input
         id={Formfields.title}
         name={Formfields.title}
@@ -84,7 +104,21 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
         onChange={formik.handleChange}
         value={formik.values.title}
       />
+      <label htmlFor={Formfields.tagline}>TAGLINE</label>
+      {formik.errors.tagline ? (
+        <div className="error">{formik.errors.tagline}</div>
+      ) : null}
+      <input
+        id={Formfields.tagline}
+        name={Formfields.tagline}
+        type="text"
+        onChange={formik.handleChange}
+        value={formik.values.tagline}
+      />
       <label htmlFor={Formfields.release_date}>RELEASE DATE</label>
+      {formik.errors.release_date ? (
+        <div className="error">{formik.errors.release_date}</div>
+      ) : null}
       <input
         id={Formfields.release_date}
         name={Formfields.release_date}
@@ -93,6 +127,9 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
         value={formik.values.release_date}
       />
       <label htmlFor={Formfields.poster_path}>MOVIE URL</label>
+      {formik.errors.poster_path ? (
+        <div className="error">{formik.errors.poster_path}</div>
+      ) : null}
       <input
         id={Formfields.poster_path}
         name={Formfields.poster_path}
@@ -101,7 +138,9 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
         value={formik.values.poster_path}
       />
       <label htmlFor={Formfields.genres}>GENRE</label>
-
+      {formik.errors.genres ? (
+        <div className="error">{formik.errors.genres}</div>
+      ) : null}
       <Select
         className="select"
         options={Genres}
@@ -113,6 +152,9 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
         styles={selectStyle}
       />
       <label htmlFor={Formfields.overview}>OVERVIEW</label>
+      {formik.errors.overview ? (
+        <div className="error">{formik.errors.overview}</div>
+      ) : null}
       <input
         id={Formfields.overview}
         name={Formfields.overview}
@@ -121,6 +163,9 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
         value={formik.values.overview}
       />
       <label htmlFor={Formfields.runtime}>RUNTIME</label>
+      {formik.errors.runtime ? (
+        <div className="error">{formik.errors.runtime}</div>
+      ) : null}
       <input
         id={Formfields.runtime}
         name={Formfields.runtime}
@@ -129,12 +174,48 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
         value={formik.values.runtime}
       />
       <label htmlFor={Formfields.vote_average}>RATING</label>
+      {formik.errors.vote_average ? (
+        <div className="error">{formik.errors.vote_average}</div>
+      ) : null}
       <input
         id={Formfields.vote_average}
         name={Formfields.vote_average}
         type="number"
         onChange={formik.handleChange}
         value={formik.values.vote_average}
+      />
+      <label htmlFor={Formfields.vote_average}>VOTE COUN</label>
+      {formik.errors.vote_count ? (
+        <div className="error">{formik.errors.vote_count}</div>
+      ) : null}
+      <input
+        id={Formfields.vote_count}
+        name={Formfields.vote_count}
+        type="number"
+        onChange={formik.handleChange}
+        value={formik.values.vote_count}
+      />
+      <label htmlFor={Formfields.vote_average}>BUDGET</label>
+      {formik.errors.budget ? (
+        <div className="error">{formik.errors.budget}</div>
+      ) : null}
+      <input
+        id={Formfields.budget}
+        name={Formfields.budget}
+        type="number"
+        onChange={formik.handleChange}
+        value={formik.values.budget}
+      />
+      <label htmlFor={Formfields.vote_average}>REVENUE</label>
+      {formik.errors.revenue ? (
+        <div className="error">{formik.errors.revenue}</div>
+      ) : null}
+      <input
+        id={Formfields.revenue}
+        name={Formfields.revenue}
+        type="number"
+        onChange={formik.handleChange}
+        value={formik.values.revenue}
       />
 
       <div className="buttons-section">

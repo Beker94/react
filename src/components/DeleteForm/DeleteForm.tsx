@@ -5,7 +5,12 @@ import { Film } from "../../interfaces";
 import { formDeleteFilm } from "../../redux/form/actions/form.actions";
 import { closeForm } from "../../redux/modal/actions/modal.actions";
 import { RootState } from "../../redux/rootStore";
-import { genreSelector, searchedFilmSelector } from "../../redux/selectors";
+import {
+  genreSelector,
+  offsetSelector,
+  searchedFilmSelector,
+  sortingTypeSelector,
+} from "../../redux/selectors";
 import "./style.scss";
 
 interface DeleteFormProps {
@@ -22,14 +27,26 @@ const DeleteForm: React.FC<DeleteFormProps> = ({ film, modalType }) => {
   const searchTitle: string = useSelector<RootState, string>(
     searchedFilmSelector
   );
+  const offset: number = useSelector<RootState, number>(offsetSelector);
+  const sortingType: string = useSelector<RootState, string>(
+    sortingTypeSelector
+  );
 
   const onSubmit = () => {
-    dispatch(formDeleteFilm.request({ film: film, genre, searchTitle }));
+    dispatch(
+      formDeleteFilm.request({
+        film: film,
+        genre,
+        searchTitle,
+        sortingType,
+        offset,
+      })
+    );
     dispatch(closeForm());
   };
 
   return (
-    <div className="form" ref={wrapperRef}>
+    <div className="delete-form" ref={wrapperRef}>
       <div className="form-header">
         <h3>{modalType?.toUpperCase()} MOVIE</h3>
         <div className="close" onClick={() => dispatch(closeForm())}></div>

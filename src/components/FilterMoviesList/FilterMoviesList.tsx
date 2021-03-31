@@ -28,8 +28,8 @@ const FilterMoviesList: React.FC<FilterMoviesListProps> = ({
       <div className="filter-movies__sort">
         <span>Sorted by</span>
         <select name="sort-type" onChange={onSortChange}>
-          <option value="date">date</option>
-          <option value="name">name</option>
+          <option value="release_date">date</option>
+          <option value="title">name</option>
         </select>
       </div>
     </div>
