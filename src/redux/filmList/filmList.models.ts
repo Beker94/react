@@ -12,9 +12,9 @@ export interface FilmsListState {
 }
 
 export interface FilmOptions {
-  genre: string;
-  searchTitle: string;
-  offset: number;
-  sortingType: string;
+  genre?: string;
+  searchTitle?: string;
+  offset?: number;
+  sortingType?: string;
   limit?: number;
 }

@@ -32,5 +32,12 @@ export const changeGenre = createCustomAction(
   }
 );
 
+export const filmListChanged = createCustomAction(
+  "@filmList/FILM_LIST_CHANGED",
+  (films: Film[]) => {
+    return { payload: films };
+  }
+);
+
 export const clearfilmsList = createCustomAction("@filmList/CLEAR_FILM_LIST");
 export const reloadFilmList = createCustomAction("@filmList/RELOAD_FILM_LIST");

@@ -4,6 +4,7 @@ import {
   searchFilm,
   getMoreFilms,
   clearfilmsList,
+  filmListChanged,
 } from "./../actions/filmList.actions";
 import { FilmsListState } from "../filmList.models";
 
@@ -11,6 +12,7 @@ import { ActionType, createReducer } from "typesafe-actions";
 import { fetchfilmsList } from "../actions/filmList.actions";
 
 import * as Actions from "../actions/filmList.actions";
+import { FILM_LIMIT } from "../../../constants";
 
 export type FilmListActions = ActionType<typeof Actions>;
 
@@ -60,7 +62,7 @@ export const filmListReducer = createReducer<FilmsListState, FilmListActions>(
   .handleAction(getMoreFilms, (state, action) => {
     return {
       ...state,
-      offset: state.offset + 9,
+      offset: state.offset + FILM_LIMIT,
     };
   })
   .handleAction(clearfilmsList, (state, action) => {
@@ -68,5 +70,11 @@ export const filmListReducer = createReducer<FilmsListState, FilmListActions>(
       ...state,
       films: [],
       offset: 0,
+    };
+  })
+  .handleAction(filmListChanged, (state, action) => {
+    return {
+      ...state,
+      films: [...action.payload],
     };
   });

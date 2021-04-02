@@ -7,21 +7,15 @@ import { selectStyle } from "./selectConfig";
 import { useRef } from "react";
 import { useOutsideClickHook } from "../../hooks/outsideClickHook";
 import { closeForm } from "../../redux/modal/actions/modal.actions";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   formAddFilm,
   formEditFilm,
 } from "../../redux/form/actions/form.actions";
-import { RootState } from "../../redux/rootStore";
-import {
-  genreSelector,
-  offsetSelector,
-  searchedFilmSelector,
-  sortingTypeSelector,
-} from "../../redux/selectors";
+
 import { objectToString, stringToObject } from "../../helpers";
-import { clearfilmsList } from "../../redux/filmList/actions/filmList.actions";
-import { SignupSchema } from "./validaion";
+import { filmFormSchema } from "./validaion";
+import ErrorField from "../ErrorField/ErrorField";
 
 interface FormProps {
   film: Film;
@@ -34,44 +28,18 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
   const dispatch = useDispatch();
   useOutsideClickHook(wrapperRef, () => dispatch(closeForm()));
 
-  const genre: string = useSelector<RootState, string>(genreSelector);
-  const searchTitle: string = useSelector<RootState, string>(
-    searchedFilmSelector
-  );
-  const offset: number = useSelector<RootState, number>(offsetSelector);
-  const sortingType: string = useSelector<RootState, string>(
-    sortingTypeSelector
-  );
-
   const formik = useFormik({
     initialValues: { ...film, genres: stringToObject(film.genres) },
-    validationSchema: SignupSchema,
+    validationSchema: filmFormSchema,
     onSubmit: (values) => {
-      dispatch(clearfilmsList());
+      const newFilm = {
+        ...values,
+        genres: objectToString(values.genres),
+      };
       if (modalType === FormType.EDIT) {
-        dispatch(
-          formEditFilm.request({
-            film: {
-              ...values,
-              genres: objectToString(values.genres),
-            },
-            genre,
-            searchTitle,
-            offset,
-            sortingType,
-          })
-        );
+        dispatch(formEditFilm.request(newFilm));
       } else {
-        delete values.id;
-        dispatch(
-          formAddFilm.request({
-            film: { ...values, genres: objectToString(values.genres) },
-            genre,
-            searchTitle,
-            offset,
-            sortingType,
-          })
-        );
+        dispatch(formAddFilm.request(newFilm));
       }
       dispatch(closeForm());
     },
@@ -94,9 +62,7 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
       <label htmlFor={Formfields.title} className="first">
         TITLE
       </label>
-      {formik.errors.title ? (
-        <div className="error">{formik.errors.title}</div>
-      ) : null}
+      <ErrorField error={formik.errors.title} />
       <input
         id={Formfields.title}
         name={Formfields.title}
@@ -105,9 +71,7 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
         value={formik.values.title}
       />
       <label htmlFor={Formfields.tagline}>TAGLINE</label>
-      {formik.errors.tagline ? (
-        <div className="error">{formik.errors.tagline}</div>
-      ) : null}
+      <ErrorField error={formik.errors.tagline} />
       <input
         id={Formfields.tagline}
         name={Formfields.tagline}
@@ -116,9 +80,7 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
         value={formik.values.tagline}
       />
       <label htmlFor={Formfields.release_date}>RELEASE DATE</label>
-      {formik.errors.release_date ? (
-        <div className="error">{formik.errors.release_date}</div>
-      ) : null}
+      <ErrorField error={formik.errors.release_date} />
       <input
         id={Formfields.release_date}
         name={Formfields.release_date}
@@ -127,9 +89,7 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
         value={formik.values.release_date}
       />
       <label htmlFor={Formfields.poster_path}>MOVIE URL</label>
-      {formik.errors.poster_path ? (
-        <div className="error">{formik.errors.poster_path}</div>
-      ) : null}
+      <ErrorField error={formik.errors.poster_path} />
       <input
         id={Formfields.poster_path}
         name={Formfields.poster_path}
@@ -138,9 +98,7 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
         value={formik.values.poster_path}
       />
       <label htmlFor={Formfields.genres}>GENRE</label>
-      {formik.errors.genres ? (
-        <div className="error">{formik.errors.genres}</div>
-      ) : null}
+      <ErrorField error={formik.errors.genres} />
       <Select
         className="select"
         options={Genres}
@@ -152,9 +110,7 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
         styles={selectStyle}
       />
       <label htmlFor={Formfields.overview}>OVERVIEW</label>
-      {formik.errors.overview ? (
-        <div className="error">{formik.errors.overview}</div>
-      ) : null}
+      <ErrorField error={formik.errors.overview} />
       <input
         id={Formfields.overview}
         name={Formfields.overview}
@@ -163,9 +119,7 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
         value={formik.values.overview}
       />
       <label htmlFor={Formfields.runtime}>RUNTIME</label>
-      {formik.errors.runtime ? (
-        <div className="error">{formik.errors.runtime}</div>
-      ) : null}
+      <ErrorField error={formik.errors.runtime} />
       <input
         id={Formfields.runtime}
         name={Formfields.runtime}
@@ -174,9 +128,7 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
         value={formik.values.runtime}
       />
       <label htmlFor={Formfields.vote_average}>RATING</label>
-      {formik.errors.vote_average ? (
-        <div className="error">{formik.errors.vote_average}</div>
-      ) : null}
+      <ErrorField error={formik.errors.vote_average} />
       <input
         id={Formfields.vote_average}
         name={Formfields.vote_average}
@@ -185,9 +137,7 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
         value={formik.values.vote_average}
       />
       <label htmlFor={Formfields.vote_average}>VOTE COUN</label>
-      {formik.errors.vote_count ? (
-        <div className="error">{formik.errors.vote_count}</div>
-      ) : null}
+      <ErrorField error={formik.errors.vote_count} />
       <input
         id={Formfields.vote_count}
         name={Formfields.vote_count}
@@ -196,9 +146,7 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
         value={formik.values.vote_count}
       />
       <label htmlFor={Formfields.vote_average}>BUDGET</label>
-      {formik.errors.budget ? (
-        <div className="error">{formik.errors.budget}</div>
-      ) : null}
+      <ErrorField error={formik.errors.budget} />
       <input
         id={Formfields.budget}
         name={Formfields.budget}
@@ -207,9 +155,7 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
         value={formik.values.budget}
       />
       <label htmlFor={Formfields.vote_average}>REVENUE</label>
-      {formik.errors.revenue ? (
-        <div className="error">{formik.errors.revenue}</div>
-      ) : null}
+      <ErrorField error={formik.errors.revenue} />
       <input
         id={Formfields.revenue}
         name={Formfields.revenue}

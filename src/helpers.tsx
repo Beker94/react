@@ -47,6 +47,25 @@ const filterByGenre = (movies: Film[], selectedGenre: string) => {
   });
 };
 
+const sorting = (movies: Film[], sortingType: string) => {
+  return movies.sort((a: Film, b: Film) => {
+    if (sortingType === "date") {
+      return (
+        new Date(getYearFromString(a.release_date)).getFullYear() -
+        new Date(getYearFromString(b.release_date)).getFullYear()
+      );
+    } else {
+      if (a.title < b.title) {
+        return -1;
+      }
+      if (a.title > b.title) {
+        return 1;
+      }
+      return 0;
+    }
+  });
+};
+
 const filterByUserInput = (movies: Film[], searchFilm: string) => {
   return movies.filter((el) => {
     return el.title.toLowerCase().includes(searchFilm.toLowerCase());
@@ -60,4 +79,5 @@ export {
   getYearFromString,
   objectToString,
   stringToObject,
+  sorting
 };

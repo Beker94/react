@@ -1,9 +1,10 @@
-import { FormPayload } from "./../form.models";
-import { put, call, StrictEffect } from "redux-saga/effects";
+import { filmListChanged } from "./../../filmList/actions/filmList.actions";
+import { put, call, StrictEffect, select } from "redux-saga/effects";
 import { URL } from "../../../constants";
-import { fetchfilmsList } from "../../filmList/actions/filmList.actions";
+
 import { formDeleteFilm } from "../actions/form.actions";
 import { Film } from "../../../interfaces";
+import { allMoviesSelector } from "../../selectors";
 
 export async function deleteFilm(film: Film) {
   const films = await fetch(`${URL}/${film.id}`, {
@@ -20,42 +21,27 @@ export async function deleteFilm(film: Film) {
 }
 
 export function* deleteFilmTask(data: {
-  payload: FormPayload;
+  payload: Film;
 }): Generator<StrictEffect, void, any> {
-  const genre = data.payload.genre;
-  const searchTitle = data.payload.searchTitle;
-  const offset = 8;
-  const sortingType = data.payload.sortingType;
-  const limit = (data.payload.offset / 8) * 9;
+  const allMovies = yield select(allMoviesSelector);
+  const film = data.payload;
   try {
-    const film = data.payload.film;
-
     const res = yield call(deleteFilm, film);
 
     if (res) {
-      yield put(
-        fetchfilmsList.request({
-          genre,
-          searchTitle,
-          offset,
-          sortingType,
-          limit,
-        })
-      );
+      const index = allMovies.indexOf(film);
+      allMovies.splice(index, 1);
+
+      yield put(filmListChanged(allMovies));
     } else {
       yield put(formDeleteFilm.failure("error"));
     }
   } catch (err) {
+    const index = allMovies.indexOf(film);
+    allMovies.splice(index, 1);
+
+    yield put(filmListChanged(allMovies));
     if (err instanceof Error) {
-      yield put(
-        fetchfilmsList.request({
-          genre,
-          searchTitle,
-          offset,
-          sortingType,
-          limit,
-        })
-      );
       yield put(formDeleteFilm.failure(err.message));
     } else {
       yield put(formDeleteFilm.failure("Unknown error :("));

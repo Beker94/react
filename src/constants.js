@@ -1,6 +1,7 @@
 import { dateFormatter } from "./helpers";
 
 const URL = "http://localhost:4000/movies";
+const FILM_LIMIT = 9;
 
 const FormType = {
   EDIT: "edit",
@@ -37,7 +38,6 @@ const newMovie = {
   title: " ",
   tagline: "tag",
   release_date: dateFormatter(),
-  id: Math.floor(Math.random() * 1000000),
   genres: [],
   poster_path: "https://",
   overview: "",
@@ -48,4 +48,12 @@ const newMovie = {
   revenue: 0,
 };
 
-export { newMovie, FormType, DefaultFilters, Genres, Formfields, URL };
+export {
+  newMovie,
+  FormType,
+  DefaultFilters,
+  Genres,
+  Formfields,
+  URL,
+  FILM_LIMIT,
+};

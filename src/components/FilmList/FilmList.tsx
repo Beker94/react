@@ -1,6 +1,4 @@
-import { useDispatch } from "react-redux";
 import { Film } from "../../interfaces";
-import { getMoreFilms } from "../../redux/filmList/actions/filmList.actions";
 
 import { FilmCard } from "../FilmCard";
 
@@ -8,10 +6,11 @@ import "./style.scss";
 
 interface FilmListProps {
   films: Film[];
+
+  showMoreMovies(event: React.MouseEvent): void;
 }
 
-const FilmList: React.FC<FilmListProps> = ({ films }) => {
-  const dispatch = useDispatch();
+const FilmList: React.FC<FilmListProps> = ({ films, showMoreMovies }) => {
   return (
     <>
       <div className="film-count">
@@ -28,12 +27,10 @@ const FilmList: React.FC<FilmListProps> = ({ films }) => {
           <div>No movie found</div>
         )}
       </div>
-      {films.length ? (
-        <div className="film-add" onClick={() => dispatch(getMoreFilms())}>
+      {films.length && (
+        <div className="film-add" onClick={showMoreMovies}>
           More Movies
         </div>
-      ) : (
-        <></>
       )}
     </>
   );
