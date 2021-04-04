@@ -12,7 +12,7 @@ import { ActionType, createReducer } from "typesafe-actions";
 import { fetchfilmsList } from "../actions/filmList.actions";
 
 import * as Actions from "../actions/filmList.actions";
-import { FILM_LIMIT } from "../../../constants";
+import { DefaultFilters, FILM_LIMIT } from "../../../constants";
 
 export type FilmListActions = ActionType<typeof Actions>;
 
@@ -20,8 +20,8 @@ export const initialState: FilmsListState = {
   films: [],
   error: "",
   loading: false,
-  sortingType: "release_date",
-  genre: "",
+  sortingType: DefaultFilters.defaultSort,
+  genre: DefaultFilters.defaultGenre,
   needReload: false,
   searchTitle: "",
   offset: 0,

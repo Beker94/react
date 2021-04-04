@@ -79,5 +79,5 @@ export {
   getYearFromString,
   objectToString,
   stringToObject,
-  sorting
+  sorting,
 };

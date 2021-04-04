@@ -10,7 +10,7 @@ const FormType = {
 };
 
 const DefaultFilters = {
-  defaultSort: "date",
+  defaultSort: "release_date",
   defaultGenre: "All",
 };
 
