@@ -37,10 +37,13 @@ const App: React.FC = () => {
           <Route exact path="/">
             <Header />
           </Route>
-          <Route strict path="/movies">
+          <Route exact path="/movies">
             <Header />
           </Route>
-          <Route strict path="/movie/:id">
+          <Route path="/movies/search">
+            <Header />
+          </Route>
+          <Route path="/movie/:id">
             <MovieDetails />
           </Route>
           <Route path="/404">

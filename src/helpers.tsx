@@ -13,6 +13,10 @@ const dateFormatter = (date: string) => {
   return `${year}-${month}-${day}`;
 };
 
+const getKeyValue = <T extends object, U extends keyof T>(obj: T) => (
+  key: U
+) => obj[key];
+
 const getYearFromString = (string: string) => {
   const [year] = string.split("-");
 
@@ -80,4 +84,5 @@ export {
   objectToString,
   stringToObject,
   sorting,
+  getKeyValue
 };

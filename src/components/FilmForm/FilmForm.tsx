@@ -2,7 +2,7 @@ import "./style.scss";
 import { useFormik } from "formik";
 import { Film } from "../../interfaces";
 import Select from "react-select";
-import { FormType, Genres, Formfields } from "../../constants";
+import { FormType, Genres, Formfields, FormFieldsName } from "../../constants";
 import { selectStyle } from "./selectConfig";
 import { useEffect, useRef } from "react";
 import { useOutsideClickHook } from "../../hooks/outsideClickHook";
@@ -14,7 +14,7 @@ import {
   formEditFilm,
 } from "../../redux/form/actions/form.actions";
 
-import { objectToString, stringToObject } from "../../helpers";
+import { objectToString, stringToObject, getKeyValue } from "../../helpers";
 import { filmFormSchema } from "./validaion";
 import ErrorField from "../ErrorField/ErrorField";
 import { RootState } from "../../redux/rootStore";
@@ -62,7 +62,9 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType, successSubmit }) => {
   if (errors.length) {
     errors.forEach((el: any) => {
       const key = Object.keys(el)[0]!;
-      formik.setFieldError(key, el[key]);
+
+      const value = el[key].replace(key, getKeyValue(FormFieldsName));
+      formik.setFieldError(key, value);
     });
     dispatch(clearErrors());
   }

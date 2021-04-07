@@ -33,6 +33,19 @@ const Formfields = {
   budget: "budget",
   revenue: "revenue",
 };
+const FormFieldsName = {
+  title: "Title",
+  release_date: "Release date",
+  genres: "Genres",
+  poster_path: "MOVIE URL",
+  overview: "Overview",
+  runtime: "Runtime",
+  vote_average: "Vote average",
+  tagline: "Tagline",
+  vote_count: "Vote count",
+  budget: "Budget",
+  revenue: "Revenue",
+};
 
 const newMovie = {
   title: " ",
@@ -56,4 +69,5 @@ export {
   Formfields,
   URL,
   FILM_LIMIT,
+  FormFieldsName,
 };
