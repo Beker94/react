@@ -2,6 +2,9 @@ import {
   changeSorting,
   changeGenre,
   searchFilm,
+  getMoreFilms,
+  clearfilmsList,
+  filmListChanged,
 } from "./../actions/filmList.actions";
 import { FilmsListState } from "../filmList.models";
 
@@ -9,6 +12,7 @@ import { ActionType, createReducer } from "typesafe-actions";
 import { fetchfilmsList } from "../actions/filmList.actions";
 
 import * as Actions from "../actions/filmList.actions";
+import { DefaultFilters, FILM_LIMIT } from "../../../constants";
 
 export type FilmListActions = ActionType<typeof Actions>;
 
@@ -16,10 +20,11 @@ export const initialState: FilmsListState = {
   films: [],
   error: "",
   loading: false,
-  sortingType: "date",
-  genre: "",
+  sortingType: DefaultFilters.defaultSort,
+  genre: DefaultFilters.defaultGenre,
   needReload: false,
   searchTitle: "",
+  offset: 0,
 };
 
 export const filmListReducer = createReducer<FilmsListState, FilmListActions>(
@@ -28,7 +33,7 @@ export const filmListReducer = createReducer<FilmsListState, FilmListActions>(
   .handleAction(fetchfilmsList.success, (state, action) => ({
     ...state,
     loading: false,
-    films: action.payload,
+    films: [...state.films, ...action.payload],
   }))
   .handleAction(fetchfilmsList.request, (state, action) => ({
     ...state,
@@ -53,4 +58,23 @@ export const filmListReducer = createReducer<FilmsListState, FilmListActions>(
     ...state,
     genre: action.payload,
     loading: true,
-  }));
+  }))
+  .handleAction(getMoreFilms, (state, action) => {
+    return {
+      ...state,
+      offset: state.offset + FILM_LIMIT,
+    };
+  })
+  .handleAction(clearfilmsList, (state, action) => {
+    return {
+      ...state,
+      films: [],
+      offset: 0,
+    };
+  })
+  .handleAction(filmListChanged, (state, action) => {
+    return {
+      ...state,
+      films: [...action.payload],
+    };
+  });

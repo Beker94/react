@@ -41,7 +41,8 @@
 
 .form {
   display: flex;
-  position: relative;
+  position: absolute;
+  top: 0;
   flex-direction: column;
   color: white;
   background-color: #232323;

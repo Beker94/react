@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { getYearFromString } from "../../helpers";
 import { Film } from "../../interfaces";
@@ -11,6 +12,13 @@ interface MovieDetailsProps {
 const MovieDetails: React.FC<MovieDetailsProps> = ({ film }) => {
   const dispatch = useDispatch();
 
+  const errorHandler = useCallback((event: any) => {
+    if (event.type === "error") {
+      event.target.src =
+        "https://www.reelviews.net/resources/img/default_poster.jpg";
+    }
+  }, []);
+
   return (
     <div className="movie-details">
       <div className="movie-details__nav">
@@ -20,7 +28,7 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({ film }) => {
         <button onClick={() => dispatch(closeFilmDetails())}>Search</button>
       </div>
       <div className="movie-details__main">
-        <img src={film.poster_path} alt={film.title} />
+        <img src={film.poster_path} alt={film.title} onError={errorHandler} />
         <div className="description">
           <div className="description-header">
             <span className="description-title">

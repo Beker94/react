@@ -47,12 +47,6 @@ const filterByGenre = (movies: Film[], selectedGenre: string) => {
   });
 };
 
-const filterByUserInput = (movies: Film[], searchFilm: string) => {
-  return movies.filter((el) => {
-    return el.title.toLowerCase().includes(searchFilm.toLowerCase());
-  });
-};
-
 const sorting = (movies: Film[], sortingType: string) => {
   return movies.sort((a: Film, b: Film) => {
     if (sortingType === "date") {
@@ -72,12 +66,18 @@ const sorting = (movies: Film[], sortingType: string) => {
   });
 };
 
+const filterByUserInput = (movies: Film[], searchFilm: string) => {
+  return movies.filter((el) => {
+    return el.title.toLowerCase().includes(searchFilm.toLowerCase());
+  });
+};
+
 export {
-  sorting,
   filterByUserInput,
   filterByGenre,
   dateFormatter,
   getYearFromString,
   objectToString,
   stringToObject,
+  sorting,
 };

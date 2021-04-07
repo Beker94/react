@@ -1,6 +1,7 @@
 import { dateFormatter } from "./helpers";
 
 const URL = "http://localhost:4000/movies";
+const FILM_LIMIT = 9;
 
 const FormType = {
   EDIT: "edit",
@@ -9,7 +10,7 @@ const FormType = {
 };
 
 const DefaultFilters = {
-  defaultSort: "date",
+  defaultSort: "release_date",
   defaultGenre: "All",
 };
 
@@ -27,13 +28,16 @@ const Formfields = {
   overview: "overview",
   runtime: "runtime",
   vote_average: "vote_average",
+  tagline: "tagline",
+  vote_count: "vote_count",
+  budget: "budget",
+  revenue: "revenue",
 };
 
 const newMovie = {
   title: " ",
   tagline: "tag",
   release_date: dateFormatter(),
-  id: Math.floor(Math.random() * 1000000),
   genres: [],
   poster_path: "https://",
   overview: "",
@@ -44,4 +48,12 @@ const newMovie = {
   revenue: 0,
 };
 
-export { newMovie, FormType, DefaultFilters, Genres, Formfields, URL };
+export {
+  newMovie,
+  FormType,
+  DefaultFilters,
+  Genres,
+  Formfields,
+  URL,
+  FILM_LIMIT,
+};

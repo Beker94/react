@@ -8,9 +8,13 @@ export interface FilmsListState {
   genre: string;
   needReload: false;
   searchTitle: string;
+  offset: number;
 }
 
 export interface FilmOptions {
-  genre: string;
-  searchTitle: string;
+  genre?: string;
+  searchTitle?: string;
+  offset?: number;
+  sortingType?: string;
+  limit?: number;
 }

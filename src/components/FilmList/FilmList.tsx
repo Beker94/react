@@ -1,4 +1,3 @@
-import { sorting } from "../../helpers";
 import { Film } from "../../interfaces";
 
 import { FilmCard } from "../FilmCard";
@@ -7,10 +6,11 @@ import "./style.scss";
 
 interface FilmListProps {
   films: Film[];
-  sortingType: string;
+
+  showMoreMovies(event: React.MouseEvent): void;
 }
 
-const FilmList: React.FC<FilmListProps> = ({ films, sortingType }) => {
+const FilmList: React.FC<FilmListProps> = ({ films, showMoreMovies }) => {
   return (
     <>
       <div className="film-count">
@@ -20,13 +20,18 @@ const FilmList: React.FC<FilmListProps> = ({ films, sortingType }) => {
       </div>
       <div className={films.length ? "film-list" : "film-list__none"}>
         {films.length ? (
-          sorting(films, sortingType).map((el: any) => {
+          films.map((el: any) => {
             return <FilmCard film={el} key={el.id} />;
           })
         ) : (
           <div>No movie found</div>
         )}
       </div>
+      {films.length && (
+        <div className="film-add" onClick={showMoreMovies}>
+          More Movies
+        </div>
+      )}
     </>
   );
 };

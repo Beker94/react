@@ -9,6 +9,7 @@ const openedFilmSelector = (state: RootState) =>
   state.filmDescription.openedFilm;
 const isOpenSelector = (state: RootState) => state.modal.isOpen;
 const modalTypeSelector = (state: RootState) => state.modal.modal;
+const offsetSelector = (state: RootState) => state.films.offset;
 
 export {
   movieSelector,
@@ -19,4 +20,5 @@ export {
   modalTypeSelector,
   genreSelector,
   searchedFilmSelector,
+  offsetSelector,
 };

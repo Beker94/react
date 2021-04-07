@@ -1,20 +1,18 @@
 import { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { searchFilm } from "../../redux/filmList/actions/filmList.actions";
+import { fetchfilmsList } from "../../redux/filmList/actions/filmList.actions";
 
 import "./style.scss";
 
 const SearchFilm: React.FC = () => {
   const dispatch = useDispatch();
 
-  const onSearchFilm = useCallback(
-    (event) => {
-      event.preventDefault();
+  const onSearchFilm = useCallback((event) => {
+    event.preventDefault();
+    const input = event.target[0].value;
 
-      dispatch(searchFilm(event.target[0].value));
-    },
-    [dispatch]
-  );
+    dispatch(fetchfilmsList.request({ searchTitle: input }));
+  }, []);
 
   return (
     <div className="search">

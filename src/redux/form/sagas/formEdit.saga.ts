@@ -1,9 +1,10 @@
-import { FormPayload } from "./../form.models";
-import { put, call, StrictEffect } from "redux-saga/effects";
+import { filmListChanged } from "./../../filmList/actions/filmList.actions";
+import { put, call, StrictEffect, select } from "redux-saga/effects";
 import { URL } from "../../../constants";
-import { fetchfilmsList } from "../../filmList/actions/filmList.actions";
 import { formEditFilm } from "../actions/form.actions";
 import { Film } from "../../../interfaces";
+import { allMoviesSelector, genreSelector } from "../../selectors";
+import { filterByGenre } from "../../../helpers";
 
 export async function editFilm(film: Film) {
   const films = await fetch(URL, {
@@ -21,15 +22,20 @@ export async function editFilm(film: Film) {
 }
 
 export function* editFilmTask(data: {
-  payload: FormPayload;
+  payload: Film;
 }): Generator<StrictEffect, void, any> {
   try {
-    const film = data.payload.film;
-    const genre = data.payload.genre;
-    const searchTitle = data.payload.searchTitle;
+    const allMovies = yield select(allMoviesSelector);
+    const film = data.payload;
+    const genre = yield select(genreSelector);
+    for (let i = 0; i < allMovies.length; i++) {
+      if (allMovies[i].id === film.id) allMovies[i] = film;
+    }
+
     const res = yield call(editFilm, film);
+
     if (res) {
-      yield put(fetchfilmsList.request({ genre, searchTitle }));
+      yield put(filmListChanged(filterByGenre(allMovies, genre)));
     } else {
       yield put(formEditFilm.failure("error"));
     }
