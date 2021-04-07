@@ -1,10 +1,9 @@
-import { action, createCustomAction } from "typesafe-actions";
+import { createAsyncAction } from "typesafe-actions";
 
 import { Film } from "../../../interfaces";
 
-export const openFilmDetails = (film: Film) =>
-  action("@filmDetails/OPEN_FILM_DETAILS", film);
-
-export const closeFilmDetails = createCustomAction(
-  "@filmDetails/CLOSE_FILM_DETAILS"
-);
+export const fetchFilm = createAsyncAction(
+  "@filmList/FETCH_FILM_REQUEST",
+  "@filmList/FETCH_FILM_SUCCESS",
+  "@filmList/FETCH_FILM_ERROR"
+)<string, Film, string | ErrorEvent>();

@@ -1,12 +1,14 @@
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router";
 import { getYearFromString } from "../../helpers";
+import { useOutsideClickHook } from "../../hooks/outsideClickHook";
 import { Film } from "../../interfaces";
-import { openFilmDetails } from "../../redux/filmDetails/actions/filmDetails.actions";
 import {
   openDeleteForm,
   openEditForm,
 } from "../../redux/modal/actions/modal.actions";
+
 import "./style.scss";
 
 interface FilmProps {
@@ -15,6 +17,9 @@ interface FilmProps {
 
 const FilmCard: React.FC<FilmProps> = ({ film }) => {
   const [showFilmSettings, setShowFilmSettings] = useState(false);
+  const wrapperRef = useRef(null);
+
+  const history = useHistory();
   const dispatch = useDispatch();
   const genres = film.genres
     .map((el) => {
@@ -29,13 +34,14 @@ const FilmCard: React.FC<FilmProps> = ({ film }) => {
     },
     [showFilmSettings]
   );
+  useOutsideClickHook(wrapperRef, () => setShowFilmSettings(!showFilmSettings));
 
   const filmEdit = useCallback(() => {
     dispatch(openEditForm(film));
   }, [film]);
 
   const openFilmInHeader = useCallback(() => {
-    dispatch(openFilmDetails(film));
+    history.push(`/movie/${film.id}`);
     window.scrollTo(0, 0);
   }, [film]);
 
@@ -55,7 +61,7 @@ const FilmCard: React.FC<FilmProps> = ({ film }) => {
   );
 
   const list = (
-    <div className="film-edit__options">
+    <div className="film-edit__options" ref={wrapperRef}>
       <span className="close" onClick={openClosePopup}></span>
       <ul>
         <li onClick={filmEdit}>Edit</li>

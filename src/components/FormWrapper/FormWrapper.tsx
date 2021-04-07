@@ -2,11 +2,7 @@ import "./style.scss";
 
 import { useEffect } from "react";
 
-interface FormWrapperProps {
-  modalType: string | null;
-}
-
-const FormWrapper: React.FC<FormWrapperProps> = ({ children, modalType }) => {
+const FormWrapper: React.FC = ({ children }) => {
   useEffect(() => {
     document.querySelector("body")?.classList.add("overflow-hidden");
     return () => {

@@ -1,5 +1,5 @@
 import { put, call, StrictEffect, select } from "redux-saga/effects";
-import { URL } from "../../../constants";
+import { Formfields, URL } from "../../../constants";
 import { filmListChanged } from "../../filmList/actions/filmList.actions";
 import { formAddFilm } from "../actions/form.actions";
 import { Film } from "../../../interfaces";
@@ -9,6 +9,7 @@ import {
   sortingTypeSelector,
 } from "../../selectors";
 import { filterByGenre, sorting } from "../../../helpers";
+import { ErrorFields } from "../form.models";
 
 export async function addFilm(film: Film) {
   const films = await fetch(URL, {
@@ -21,7 +22,8 @@ export async function addFilm(film: Film) {
   if (films.ok) {
     return await films.json();
   } else {
-    return Promise.reject();
+    const resp = await films.json();
+    return Promise.reject(resp.messages);
   }
 }
 
@@ -40,14 +42,20 @@ export function* addFilmTask(data: {
     const filteredList = filterByGenre(sorting(allMovies, sortingType), genre);
     if (res) {
       yield put(filmListChanged(filteredList));
-    } else {
-      yield put(formAddFilm.failure("error"));
+      yield put(formAddFilm.success(film));
     }
   } catch (err) {
-    if (err instanceof Error) {
-      yield put(formAddFilm.failure(err.message));
-    } else {
-      yield put(formAddFilm.failure("Unknown error :("));
-    }
+    const errors: ErrorFields[] = [];
+    err.forEach((el: string, index: number) => {
+      for (let key in Formfields) {
+        if (el.includes(key)) {
+          const obj: any = {};
+          obj[key] = el;
+          errors.push(obj);
+        }
+      }
+    });
+
+    yield put(formAddFilm.failure(errors));
   }
 }

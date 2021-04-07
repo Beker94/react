@@ -1,3 +1,4 @@
+import { FilmOptions } from "./../../filmList/filmList.models";
 import { filmListChanged } from "./../../filmList/actions/filmList.actions";
 import { put, call, StrictEffect, select } from "redux-saga/effects";
 import { URL } from "../../../constants";
@@ -14,7 +15,7 @@ export async function deleteFilm(film: Film) {
     },
   });
   if (films.ok) {
-    return await films.json();
+    return Promise.resolve(true);
   } else {
     return Promise.reject();
   }
@@ -23,24 +24,23 @@ export async function deleteFilm(film: Film) {
 export function* deleteFilmTask(data: {
   payload: Film;
 }): Generator<StrictEffect, void, any> {
-  const allMovies = yield select(allMoviesSelector);
-  const film = data.payload;
   try {
+    const allMovies = yield select(allMoviesSelector);
+    const film = data.payload;
     const res = yield call(deleteFilm, film);
 
     if (res) {
-      const index = allMovies.indexOf(film);
-      allMovies.splice(index, 1);
-
+      let filmIndex;
+      allMovies.forEach((element: Film, index: number) => {
+        if (film.id === element.id) {
+          filmIndex = index;
+        }
+      });
+      allMovies.splice(filmIndex, 1);
+      yield put(formDeleteFilm.success(film));
       yield put(filmListChanged(allMovies));
-    } else {
-      yield put(formDeleteFilm.failure("error"));
     }
   } catch (err) {
-    const index = allMovies.indexOf(film);
-    allMovies.splice(index, 1);
-
-    yield put(filmListChanged(allMovies));
     if (err instanceof Error) {
       yield put(formDeleteFilm.failure(err.message));
     } else {

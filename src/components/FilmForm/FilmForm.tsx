@@ -4,11 +4,12 @@ import { Film } from "../../interfaces";
 import Select from "react-select";
 import { FormType, Genres, Formfields } from "../../constants";
 import { selectStyle } from "./selectConfig";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useOutsideClickHook } from "../../hooks/outsideClickHook";
 import { closeForm } from "../../redux/modal/actions/modal.actions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
+  clearErrors,
   formAddFilm,
   formEditFilm,
 } from "../../redux/form/actions/form.actions";
@@ -16,17 +17,28 @@ import {
 import { objectToString, stringToObject } from "../../helpers";
 import { filmFormSchema } from "./validaion";
 import ErrorField from "../ErrorField/ErrorField";
+import { RootState } from "../../redux/rootStore";
+import { errorsSelector } from "../../redux/selectors";
+import { ErrorFields } from "../../redux/form/form.models";
 
 interface FormProps {
   film: Film;
   modalType: string | null;
+  successSubmit: boolean;
 }
 
-const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
+const FilmForm: React.FC<FormProps> = ({ film, modalType, successSubmit }) => {
   const wrapperRef = useRef(null);
 
   const dispatch = useDispatch();
   useOutsideClickHook(wrapperRef, () => dispatch(closeForm()));
+  const errors = useSelector<RootState, ErrorFields[]>(errorsSelector);
+
+  useEffect(() => {
+    if (successSubmit) {
+      dispatch(closeForm());
+    }
+  }, [successSubmit]);
 
   const formik = useFormik({
     initialValues: { ...film, genres: stringToObject(film.genres) },
@@ -41,12 +53,19 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
       } else {
         dispatch(formAddFilm.request(newFilm));
       }
-      dispatch(closeForm());
     },
     onReset: (values) => {
       values = { ...film, genres: stringToObject(film.genres) };
     },
   });
+
+  if (errors.length) {
+    errors.forEach((el: any) => {
+      const key = Object.keys(el)[0]!;
+      formik.setFieldError(key, el[key]);
+    });
+    dispatch(clearErrors());
+  }
 
   return (
     <form
@@ -62,7 +81,10 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
       <label htmlFor={Formfields.title} className="first">
         TITLE
       </label>
-      <ErrorField error={formik.errors.title} />
+      <ErrorField
+        error={formik.errors.title}
+        submitCount={formik.submitCount}
+      />
       <input
         id={Formfields.title}
         name={Formfields.title}
@@ -71,7 +93,10 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
         value={formik.values.title}
       />
       <label htmlFor={Formfields.tagline}>TAGLINE</label>
-      <ErrorField error={formik.errors.tagline} />
+      <ErrorField
+        error={formik.errors.tagline}
+        submitCount={formik.submitCount}
+      />
       <input
         id={Formfields.tagline}
         name={Formfields.tagline}
@@ -80,7 +105,10 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
         value={formik.values.tagline}
       />
       <label htmlFor={Formfields.release_date}>RELEASE DATE</label>
-      <ErrorField error={formik.errors.release_date} />
+      <ErrorField
+        error={formik.errors.release_date}
+        submitCount={formik.submitCount}
+      />
       <input
         id={Formfields.release_date}
         name={Formfields.release_date}
@@ -89,7 +117,10 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
         value={formik.values.release_date}
       />
       <label htmlFor={Formfields.poster_path}>MOVIE URL</label>
-      <ErrorField error={formik.errors.poster_path} />
+      <ErrorField
+        error={formik.errors.poster_path}
+        submitCount={formik.submitCount}
+      />
       <input
         id={Formfields.poster_path}
         name={Formfields.poster_path}
@@ -98,7 +129,10 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
         value={formik.values.poster_path}
       />
       <label htmlFor={Formfields.genres}>GENRE</label>
-      <ErrorField error={formik.errors.genres} />
+      <ErrorField
+        error={formik.errors.genres}
+        submitCount={formik.submitCount}
+      />
       <Select
         className="select"
         options={Genres}
@@ -110,7 +144,10 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
         styles={selectStyle}
       />
       <label htmlFor={Formfields.overview}>OVERVIEW</label>
-      <ErrorField error={formik.errors.overview} />
+      <ErrorField
+        error={formik.errors.overview}
+        submitCount={formik.submitCount}
+      />
       <input
         id={Formfields.overview}
         name={Formfields.overview}
@@ -119,7 +156,10 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
         value={formik.values.overview}
       />
       <label htmlFor={Formfields.runtime}>RUNTIME</label>
-      <ErrorField error={formik.errors.runtime} />
+      <ErrorField
+        error={formik.errors.runtime}
+        submitCount={formik.submitCount}
+      />
       <input
         id={Formfields.runtime}
         name={Formfields.runtime}
@@ -128,7 +168,10 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
         value={formik.values.runtime}
       />
       <label htmlFor={Formfields.vote_average}>RATING</label>
-      <ErrorField error={formik.errors.vote_average} />
+      <ErrorField
+        error={formik.errors.vote_average}
+        submitCount={formik.submitCount}
+      />
       <input
         id={Formfields.vote_average}
         name={Formfields.vote_average}
@@ -137,7 +180,10 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
         value={formik.values.vote_average}
       />
       <label htmlFor={Formfields.vote_average}>VOTE COUN</label>
-      <ErrorField error={formik.errors.vote_count} />
+      <ErrorField
+        error={formik.errors.vote_count}
+        submitCount={formik.submitCount}
+      />
       <input
         id={Formfields.vote_count}
         name={Formfields.vote_count}
@@ -146,7 +192,10 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
         value={formik.values.vote_count}
       />
       <label htmlFor={Formfields.vote_average}>BUDGET</label>
-      <ErrorField error={formik.errors.budget} />
+      <ErrorField
+        error={formik.errors.budget}
+        submitCount={formik.submitCount}
+      />
       <input
         id={Formfields.budget}
         name={Formfields.budget}
@@ -155,7 +204,10 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType }) => {
         value={formik.values.budget}
       />
       <label htmlFor={Formfields.vote_average}>REVENUE</label>
-      <ErrorField error={formik.errors.revenue} />
+      <ErrorField
+        error={formik.errors.revenue}
+        submitCount={formik.submitCount}
+      />
       <input
         id={Formfields.revenue}
         name={Formfields.revenue}

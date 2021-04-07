@@ -1,0 +1,29 @@
+@import "../../variables";
+
+.not-found {
+  height: 100vh;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  background-color: #232323;
+  display: contents;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  h1 {
+    color: white;
+    font-weight: 200;
+  }
+  button {
+    margin-top: 10px;
+    height: 50px;
+    width: 239px;
+    border: 1px solid #f65261;
+    border-radius: 3px;
+    margin-left: 10px;
+    font-size: 20px;
+    background-color: #232323;
+    color: #f65261;
+  }
+}

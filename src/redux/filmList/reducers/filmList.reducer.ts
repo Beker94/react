@@ -46,17 +46,17 @@ export const filmListReducer = createReducer<FilmsListState, FilmListActions>(
   }))
   .handleAction(changeSorting, (state, action) => ({
     ...state,
-    sortingType: action.payload,
+    sortingType: action.payload.payloadOptions.sortingType!,
   }))
   .handleAction(searchFilm, (state, action) => {
     return {
       ...state,
-      searchTitle: action.payload,
+      searchTitle: action.payload.payloadOptions.searchTitle!,
     };
   })
   .handleAction(changeGenre, (state, action) => ({
     ...state,
-    genre: action.payload,
+    genre: action.payload.payloadOptions.genre!,
     loading: true,
   }))
   .handleAction(getMoreFilms, (state, action) => {

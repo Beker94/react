@@ -37,7 +37,7 @@ const Formfields = {
 const newMovie = {
   title: " ",
   tagline: "tag",
-  release_date: dateFormatter(),
+  release_date: dateFormatter(new Date()),
   genres: [],
   poster_path: "https://",
   overview: "",

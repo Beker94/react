@@ -17,30 +17,61 @@ import {
   isOpenSelector,
   modalTypeSelector,
   movieSelector,
-  openedFilmSelector,
+  successSubmitSelector,
 } from "./redux/selectors";
 import { RootState } from "./redux/rootStore";
+import { Route, Switch } from "react-router";
+import { SuccesPopap } from "./components/SuccesPopap";
+import { NotFoundPage } from "./components/NotFoundPage";
 
 const App: React.FC = () => {
   const film = useSelector<RootState, Film>(movieSelector);
-  const openedFilm = useSelector<RootState, Film | null>(openedFilmSelector);
   const isOpen = useSelector<RootState, boolean>(isOpenSelector);
   const modalType = useSelector<RootState, string | null>(modalTypeSelector);
+  const successSubmit = useSelector<RootState, boolean>(successSubmitSelector);
 
   return (
     <>
       <ErrorBoundary>
-        {openedFilm ? <MovieDetails film={openedFilm} /> : <Header />}
-
+        <Switch>
+          <Route exact path="/">
+            <Header />
+          </Route>
+          <Route strict path="/movies">
+            <Header />
+          </Route>
+          <Route strict path="/movie/:id">
+            <MovieDetails />
+          </Route>
+          <Route path="/404">
+            <FormWrapper>
+              <NotFoundPage />
+            </FormWrapper>
+          </Route>
+          <Route path="*">
+            <FormWrapper>
+              <NotFoundPage />
+            </FormWrapper>
+          </Route>
+        </Switch>
         <Main />
         <Footer />
+
         {isOpen ? (
-          <FormWrapper modalType={modalType}>
+          <FormWrapper>
             {modalType === FormType.DELETE ? (
               <DeleteForm film={film} modalType={modalType} />
             ) : (
-              <FilmForm film={film} modalType={modalType} />
+              <FilmForm
+                film={film}
+                modalType={modalType}
+                successSubmit={successSubmit}
+              />
             )}
+          </FormWrapper>
+        ) : successSubmit ? (
+          <FormWrapper>
+            <SuccesPopap modalType={modalType} />
           </FormWrapper>
         ) : (
           <></>

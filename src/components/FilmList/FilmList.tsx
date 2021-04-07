@@ -7,10 +7,11 @@ import "./style.scss";
 interface FilmListProps {
   films: Film[];
 
-  showMoreMovies(event: React.MouseEvent): void;
+  showMoreMovies(): void;
 }
 
 const FilmList: React.FC<FilmListProps> = ({ films, showMoreMovies }) => {
+
   return (
     <>
       <div className="film-count">

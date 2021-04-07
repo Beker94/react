@@ -1,0 +1,51 @@
+@import "../../variables";
+
+.popap-form {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  color: white;
+  background-color: #232323;
+  width: 375px;
+  justify-content: center;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.801);
+
+  h2,
+  h4 {
+    text-align: center;
+  }
+  h2 {
+    color: green;
+  }
+
+  .form-header {
+    position: absolute;
+    display: flex;
+    width: 375px;
+    top: 7px;
+    @media (max-width: 400px) {
+      width: 100%;
+    }
+
+    .close {
+      width: 27px;
+      height: 27px;
+      font-weight: 300;
+      top: 10px;
+      right: 10px;
+      position: absolute;
+      cursor: pointer;
+      &:after {
+        font-size: 40px;
+        display: block;
+        content: "×";
+        position: absolute;
+        line-height: 0;
+        top: 9px;
+        right: 0px;
+        color: white;
+        z-index: 1000;
+      }
+    }
+  }
+}
