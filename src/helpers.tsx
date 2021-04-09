@@ -56,7 +56,7 @@ const filterByGenre = (movies: Film[], selectedGenre: string) => {
 
 const sorting = (movies: Film[], sortingType: string) => {
   return movies.sort((a: Film, b: Film) => {
-    if (sortingType === "date") {
+    if (sortingType === "release_date") {
       return (
         new Date(getYearFromString(a.release_date)).getFullYear() -
         new Date(getYearFromString(b.release_date)).getFullYear()
