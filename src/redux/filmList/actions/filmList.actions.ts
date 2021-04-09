@@ -13,8 +13,8 @@ export const changeSorting = createCustomAction(
   "@filmList/CHANGE_SORTING",
   (data: {
     payloadOptions: FilmOptions;
-    shouldReload: boolean;
-    shouldClear: boolean;
+    shouldReload?: boolean;
+    shouldClear?: boolean;
   }) => {
     return { payload: data };
   }
@@ -24,8 +24,8 @@ export const searchFilm = createCustomAction(
   "@filmList/SEARCH_FILM",
   (data: {
     payloadOptions: FilmOptions;
-    shouldReload: boolean;
-    shouldClear: boolean;
+    shouldReload?: boolean;
+    shouldClear?: boolean;
   }) => {
     return { payload: data };
   }
@@ -37,8 +37,8 @@ export const changeGenre = createCustomAction(
   "@filmList/CHANGE_GENRE",
   (data: {
     payloadOptions: FilmOptions;
-    shouldReload: boolean;
-    shouldClear: boolean;
+    shouldReload?: boolean;
+    shouldClear?: boolean;
   }) => {
     return { payload: data };
   }

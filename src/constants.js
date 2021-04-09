@@ -20,7 +20,7 @@ const Genres = [
   { value: "Romance", label: "Romance" },
 ];
 
-const Formfields = {
+const FormFields = {
   title: "title",
   release_date: "release_date",
   genres: "genres",
@@ -66,7 +66,7 @@ export {
   FormType,
   DefaultFilters,
   Genres,
-  Formfields,
+  FormFields,
   URL,
   FILM_LIMIT,
   FormFieldsName,

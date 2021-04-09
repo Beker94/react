@@ -30,8 +30,6 @@ const Main: React.FC = () => {
     dispatch(
       searchFilm({
         payloadOptions: { searchTitle: searchedWord },
-        shouldReload: true,
-        shouldClear: true,
       })
     );
     setSearchTitle(searchedWord);
@@ -42,8 +40,6 @@ const Main: React.FC = () => {
     dispatch(
       changeGenre({
         payloadOptions: { genre: genreChanged },
-        shouldReload: true,
-        shouldClear: true,
       })
     );
 
@@ -56,8 +52,6 @@ const Main: React.FC = () => {
     dispatch(
       changeSorting({
         payloadOptions: { sortingType: sortingChanged },
-        shouldReload: true,
-        shouldClear: true,
       })
     );
   };

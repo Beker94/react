@@ -3,7 +3,7 @@ import { Film } from "../../interfaces";
 export interface FormState {
   film: Film | null;
   successSubmit: boolean;
-  errors: ErrorFields[];
+  errors: ErrorFields;
 }
 
 export interface ErrorFields {

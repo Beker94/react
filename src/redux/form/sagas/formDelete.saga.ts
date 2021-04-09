@@ -1,4 +1,3 @@
-import { FilmOptions } from "./../../filmList/filmList.models";
 import { filmListChanged } from "./../../filmList/actions/filmList.actions";
 import { put, call, StrictEffect, select } from "redux-saga/effects";
 import { URL } from "../../../constants";

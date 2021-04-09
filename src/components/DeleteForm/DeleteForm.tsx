@@ -9,7 +9,7 @@ import "./style.scss";
 
 interface DeleteFormProps {
   film: Film;
-  modalType: string;
+  modalType: string | null;
 }
 
 const DeleteForm: React.FC<DeleteFormProps> = ({ film, modalType }) => {

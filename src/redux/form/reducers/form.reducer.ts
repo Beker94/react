@@ -15,7 +15,7 @@ export type FormActions = ActionType<typeof Actions>;
 export const initialState: FormState = {
   film: null,
   successSubmit: false,
-  errors: [],
+  errors: {},
 };
 
 export const formReducer = createReducer<FormState, FormActions>(initialState)
@@ -39,12 +39,21 @@ export const formReducer = createReducer<FormState, FormActions>(initialState)
     successSubmit: false,
     film: null,
   }))
-  .handleAction(formAddFilm.failure, (state, action) => ({
-    ...state,
-    successSubmit: false,
-    errors: action.payload,
-  }))
+  .handleAction(formAddFilm.failure, (state, action) => {
+    return {
+      ...state,
+      successSubmit: false,
+      errors: action.payload,
+    };
+  })
+  .handleAction(formEditFilm.failure, (state, action) => {
+    return {
+      ...state,
+      successSubmit: false,
+      errors: action.payload,
+    };
+  })
   .handleAction(clearErrors, (state, action) => ({
     ...state,
-    errors: [],
+    errors: {},
   }));

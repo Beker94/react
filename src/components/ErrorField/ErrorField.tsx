@@ -2,11 +2,11 @@ import "./style.scss";
 
 interface ErrorFieldProps {
   error: any;
-  submitCount: number;
+  touched: any;
 }
 
-const ErrorField: React.FC<ErrorFieldProps> = ({ error, submitCount }) => {
-  const className = error && submitCount ? "error" : "no-error";
+const ErrorField: React.FC<ErrorFieldProps> = ({ error, touched }) => {
+  const className = error && touched ? "error" : "no-error";
   return <div className={className}>{error}</div>;
 };
 

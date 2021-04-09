@@ -1,11 +1,10 @@
 import { filmListChanged } from "./../../filmList/actions/filmList.actions";
 import { put, call, StrictEffect, select } from "redux-saga/effects";
-import { Formfields, URL } from "../../../constants";
+import { FormFieldsName, URL } from "../../../constants";
 import { formEditFilm } from "../actions/form.actions";
 import { Film } from "../../../interfaces";
 import { allMoviesSelector, genreSelector } from "../../selectors";
 import { filterByGenre } from "../../../helpers";
-import { ErrorFields } from "../form.models";
 
 export async function editFilm(film: Film) {
   const films = await fetch(URL, {
@@ -44,13 +43,16 @@ export function* editFilmTask(data: {
       yield put(formEditFilm.success(film));
     }
   } catch (err) {
-    const errors: ErrorFields[] = [];
+    const errors: any = {};
+
     err.forEach((el: string, index: number) => {
-      for (let key in Formfields) {
+      for (let key in FormFieldsName) {
         if (el.includes(key)) {
-          const obj: any = {};
-          obj[key] = el;
-          errors.push(obj);
+          const value = el.replace(
+            key,
+            FormFieldsName[key as keyof typeof FormFieldsName]
+          );
+          errors[key] = value;
         }
       }
     });

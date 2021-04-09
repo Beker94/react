@@ -7,10 +7,7 @@ import { Main } from "./components/Main";
 import "./app-styles.scss";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { MovieDetails } from "./components/MovieDetails";
-import { FormType } from "./constants";
 import { FormWrapper } from "./components/FormWrapper";
-import { DeleteForm } from "./components/DeleteForm";
-import { FilmForm } from "./components/FilmForm";
 import { useSelector } from "react-redux";
 import { Film } from "./interfaces";
 import {
@@ -20,65 +17,51 @@ import {
   successSubmitSelector,
 } from "./redux/selectors";
 import { RootState } from "./redux/rootStore";
-import { Route, Switch } from "react-router";
-import { SuccesPopap } from "./components/SuccesPopap";
+import { Route, useRouteMatch } from "react-router";
+
 import { NotFoundPage } from "./components/NotFoundPage";
+import { CustomSwitch } from "./components/CustomSwitch";
 
 const App: React.FC = () => {
   const film = useSelector<RootState, Film>(movieSelector);
   const isOpen = useSelector<RootState, boolean>(isOpenSelector);
   const modalType = useSelector<RootState, string | null>(modalTypeSelector);
   const successSubmit = useSelector<RootState, boolean>(successSubmitSelector);
+  const hasMatchedNotFound = useRouteMatch("/notfoundpage");
 
   return (
     <>
       <ErrorBoundary>
-        <Switch>
-          <Route exact path="/">
-            <Header />
-          </Route>
-          <Route exact path="/movies">
-            <Header />
-          </Route>
-          <Route path="/movies/search">
-            <Header />
-          </Route>
-          <Route path="/movie/:id">
-            <MovieDetails />
-          </Route>
-          <Route path="/404">
-            <FormWrapper>
-              <NotFoundPage />
-            </FormWrapper>
-          </Route>
-          <Route path="*">
-            <FormWrapper>
-              <NotFoundPage />
-            </FormWrapper>
-          </Route>
-        </Switch>
-        <Main />
-        <Footer />
-
-        {isOpen ? (
-          <FormWrapper>
-            {modalType === FormType.DELETE ? (
-              <DeleteForm film={film} modalType={modalType} />
-            ) : (
-              <FilmForm
-                film={film}
-                modalType={modalType}
-                successSubmit={successSubmit}
-              />
-            )}
-          </FormWrapper>
-        ) : successSubmit ? (
-          <FormWrapper>
-            <SuccesPopap modalType={modalType} />
-          </FormWrapper>
-        ) : (
-          <></>
+        <Route path="/notfoundpage">
+          <NotFoundPage />
+        </Route>
+        {!hasMatchedNotFound && (
+          <>
+            <CustomSwitch>
+              <Route exact path="/">
+                <Header />
+              </Route>
+              <Route exact path="/movies">
+                <Header />
+              </Route>
+              <Route path="/movies/search">
+                <Header />
+              </Route>
+              <Route path="/movie/:id">
+                <MovieDetails />
+              </Route>
+            </CustomSwitch>
+            <Main />
+            <Footer />
+          </>
         )}
+
+        <FormWrapper
+          film={film}
+          modalType={modalType}
+          successSubmit={successSubmit}
+          isOpen={isOpen}
+        ></FormWrapper>
       </ErrorBoundary>
     </>
   );

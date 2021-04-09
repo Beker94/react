@@ -1,5 +1,5 @@
 import { put, call, StrictEffect, select } from "redux-saga/effects";
-import { Formfields, URL } from "../../../constants";
+import { FormFieldsName, URL } from "../../../constants";
 import { filmListChanged } from "../../filmList/actions/filmList.actions";
 import { formAddFilm } from "../actions/form.actions";
 import { Film } from "../../../interfaces";
@@ -9,7 +9,6 @@ import {
   sortingTypeSelector,
 } from "../../selectors";
 import { filterByGenre, sorting } from "../../../helpers";
-import { ErrorFields } from "../form.models";
 
 export async function addFilm(film: Film) {
   const films = await fetch(URL, {
@@ -45,13 +44,16 @@ export function* addFilmTask(data: {
       yield put(formAddFilm.success(film));
     }
   } catch (err) {
-    const errors: ErrorFields[] = [];
+    const errors: any = {};
+
     err.forEach((el: string, index: number) => {
-      for (let key in Formfields) {
+      for (let key in FormFieldsName) {
         if (el.includes(key)) {
-          const obj: any = {};
-          obj[key] = el;
-          errors.push(obj);
+          const value = el.replace(
+            key,
+            FormFieldsName[key as keyof typeof FormFieldsName]
+          );
+          errors[key] = value;
         }
       }
     });

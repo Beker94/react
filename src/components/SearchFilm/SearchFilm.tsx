@@ -2,10 +2,7 @@ import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import { useQuery } from "../../hooks/queryHook";
-import {
-  fetchfilmsList,
-  searchFilm,
-} from "../../redux/filmList/actions/filmList.actions";
+import { searchFilm } from "../../redux/filmList/actions/filmList.actions";
 
 import "./style.scss";
 
@@ -27,8 +24,6 @@ const SearchFilm: React.FC = () => {
         dispatch(
           searchFilm({
             payloadOptions: { searchTitle: "" },
-            shouldReload: true,
-            shouldClear: true,
           })
         );
         history.push(`/movies`);

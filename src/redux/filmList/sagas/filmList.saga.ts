@@ -36,8 +36,8 @@ export async function getFilms(options: FilmOptions) {
 export function* getFilmsTask(data: {
   payload: {
     payloadOptions: FilmOptions;
-    shouldReload: boolean;
-    shouldClear: boolean;
+    shouldReload?: boolean;
+    shouldClear?: boolean;
   };
 }): Generator<StrictEffect, void, any> {
   try {
