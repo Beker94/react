@@ -72,8 +72,6 @@ const Main: React.FC = () => {
       dispatch(
         fetchfilmsList.request({
           payloadOptions: {},
-          shouldReload: true,
-          shouldClear: false,
         })
       );
     }
