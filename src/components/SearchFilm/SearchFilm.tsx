@@ -19,14 +19,14 @@ const SearchFilm: React.FC = () => {
       event.preventDefault();
       const input = event.target[0].value;
       if (input) {
-        history.push(`/movies/search/?search=${input}`);
+        history.push(`/search?${input}`);
       } else {
         dispatch(
           searchFilm({
             payloadOptions: { searchTitle: "" },
           })
         );
-        history.push(`/movies`);
+        history.push(`/`);
       }
     },
     [history]

@@ -2,6 +2,7 @@ import {
   changeGenre,
   changeSorting,
   searchFilm,
+  setMoviesCount,
 } from "./../actions/filmList.actions";
 import { FilmOptions } from "./../filmList.models";
 import {
@@ -55,6 +56,7 @@ export function* getFilmsTask(data: {
     };
 
     const res = shouldReload ? yield call(getFilms, options) : [];
+    yield put(setMoviesCount(res.totalAmount));
     if (shouldClear) {
       yield put(clearfilmsList());
     }

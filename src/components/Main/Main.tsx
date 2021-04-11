@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useRouteMatch } from "react-router";
 import { DefaultFilters, FILM_LIMIT } from "../../constants";
-import { useQuery } from "../../hooks/queryHook";
 import { Film } from "../../interfaces";
 import {
   changeGenre,
@@ -19,14 +19,14 @@ import "./style.scss";
 
 const Main: React.FC = () => {
   const dispatch = useDispatch();
-  const query = useQuery();
   const films = useSelector<RootState, Film[]>(allMoviesSelector);
   const offset = useSelector<RootState, number>(offsetSelector);
-  const searchedWord = query.get("search");
+  const searchedWord = useLocation().search.slice(1);
   const [selectedGenre, setGenre] = useState(DefaultFilters.defaultGenre);
-  const [searchTitle, setSearchTitle] = useState("");
+  const [searchTitle, setSearchTitle] = useState<string | null>(null);
+  const hasMatchedNotFound = useRouteMatch("/movie/:id");
 
-  if (searchedWord !== null && searchedWord !== searchTitle) {
+  if (searchedWord !== searchTitle && !hasMatchedNotFound) {
     dispatch(
       searchFilm({
         payloadOptions: { searchTitle: searchedWord },
@@ -68,13 +68,11 @@ const Main: React.FC = () => {
   };
 
   useEffect(() => {
-    if (searchedWord === null) {
-      dispatch(
-        fetchfilmsList.request({
-          payloadOptions: {},
-        })
-      );
-    }
+    dispatch(
+      fetchfilmsList.request({
+        payloadOptions: {},
+      })
+    );
   }, []);
 
   return (

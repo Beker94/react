@@ -13,6 +13,7 @@ const modalTypeSelector = (state: RootState) => state.modal.modal;
 const offsetSelector = (state: RootState) => state.films.offset;
 const successSubmitSelector = (state: RootState) => state.form.successSubmit;
 const errorsSelector = (state: RootState) => state.form.errors;
+const moviesCountSelector = (state: RootState) => state.films.moviesCount;
 
 const optionsSelector = (state: RootState) => {
   return {
@@ -37,4 +38,5 @@ export {
   successSubmitSelector,
   optionsSelector,
   errorsSelector,
+  moviesCountSelector,
 };

@@ -1,3 +1,4 @@
+import { FormFieldsName } from "./constants";
 import { Film, Genre } from "./interfaces";
 
 const dateFormatter = (date: string) => {
@@ -54,6 +55,23 @@ const filterByGenre = (movies: Film[], selectedGenre: string) => {
   });
 };
 
+const getErrors = (arr: string[]) => {
+  const errors: any = {};
+  arr.forEach((el: string, index: number) => {
+    for (let key in FormFieldsName) {
+      if (el.includes(key)) {
+        const value = el.replace(
+          key,
+          FormFieldsName[key as keyof typeof FormFieldsName]
+        );
+        errors[key] = value;
+      }
+    }
+  });
+
+  return errors;
+};
+
 const sorting = (movies: Film[], sortingType: string) => {
   return movies.sort((a: Film, b: Film) => {
     if (sortingType === "release_date") {
@@ -88,4 +106,5 @@ export {
   stringToObject,
   sorting,
   getKeyValue,
+  getErrors,
 };

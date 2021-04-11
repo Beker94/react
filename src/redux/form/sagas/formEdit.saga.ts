@@ -1,10 +1,10 @@
 import { filmListChanged } from "./../../filmList/actions/filmList.actions";
 import { put, call, StrictEffect, select } from "redux-saga/effects";
-import { FormFieldsName, URL } from "../../../constants";
+import { URL } from "../../../constants";
 import { formEditFilm } from "../actions/form.actions";
 import { Film } from "../../../interfaces";
 import { allMoviesSelector, genreSelector } from "../../selectors";
-import { filterByGenre } from "../../../helpers";
+import { filterByGenre, getErrors } from "../../../helpers";
 
 export async function editFilm(film: Film) {
   const films = await fetch(URL, {
@@ -16,9 +16,12 @@ export async function editFilm(film: Film) {
   });
   if (films.ok) {
     return await films.json();
-  } else {
+  } else if (films.status === 400) {
     const resp = await films.json();
     return Promise.reject(resp.messages);
+  } else {
+    alert(`${films.status}: ${films.statusText}`);
+    return Promise.reject();
   }
 }
 
@@ -43,19 +46,7 @@ export function* editFilmTask(data: {
       yield put(formEditFilm.success(film));
     }
   } catch (err) {
-    const errors: any = {};
-
-    err.forEach((el: string, index: number) => {
-      for (let key in FormFieldsName) {
-        if (el.includes(key)) {
-          const value = el.replace(
-            key,
-            FormFieldsName[key as keyof typeof FormFieldsName]
-          );
-          errors[key] = value;
-        }
-      }
-    });
+    const errors = getErrors(err);
 
     yield put(formEditFilm.failure(errors));
   }

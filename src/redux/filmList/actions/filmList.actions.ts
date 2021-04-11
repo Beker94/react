@@ -50,6 +50,12 @@ export const filmListChanged = createCustomAction(
     return { payload: films };
   }
 );
+export const setMoviesCount = createCustomAction(
+  "@filmList/SET_MOVIES_COUNT",
+  (count: number) => {
+    return { payload: count };
+  }
+);
 
 export const clearfilmsList = createCustomAction("@filmList/CLEAR_FILM_LIST");
 export const reloadFilmList = createCustomAction("@filmList/RELOAD_FILM_LIST");

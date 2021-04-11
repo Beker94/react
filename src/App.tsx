@@ -41,10 +41,7 @@ const App: React.FC = () => {
               <Route exact path="/">
                 <Header />
               </Route>
-              <Route exact path="/movies">
-                <Header />
-              </Route>
-              <Route path="/movies/search">
+              <Route path="/search">
                 <Header />
               </Route>
               <Route path="/movie/:id">
@@ -56,12 +53,16 @@ const App: React.FC = () => {
           </>
         )}
 
-        <FormWrapper
-          film={film}
-          modalType={modalType}
-          successSubmit={successSubmit}
-          isOpen={isOpen}
-        ></FormWrapper>
+        {isOpen || successSubmit ? (
+          <FormWrapper
+            film={film}
+            modalType={modalType}
+            successSubmit={successSubmit}
+            isOpen={isOpen}
+          />
+        ) : (
+          <></>
+        )}
       </ErrorBoundary>
     </>
   );

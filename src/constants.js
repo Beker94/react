@@ -61,6 +61,12 @@ const newMovie = {
   revenue: 0,
 };
 
+const messageObject = {
+  EDIT: "edited",
+  DELETE: "deleted",
+  ADD: "added",
+};
+
 export {
   newMovie,
   FormType,
@@ -70,4 +76,5 @@ export {
   URL,
   FILM_LIMIT,
   FormFieldsName,
+  messageObject,
 };

@@ -33,10 +33,6 @@ const MovieDetails: React.FC = () => {
     }
   }, []);
 
-  if (!film && !loading) {
-    history.push("/404");
-  }
-
   return (
     <div className="movie-details">
       <div className="movie-details__nav">
@@ -45,7 +41,7 @@ const MovieDetails: React.FC = () => {
         </h3>
         <button
           onClick={() => {
-            history.push("/movies");
+            history.push("/");
           }}
         >
           Search

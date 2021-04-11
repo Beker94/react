@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useDispatch } from "react-redux";
-import { FormType } from "../../constants";
+import { messageObject } from "../../constants";
 import { useOutsideClickHook } from "../../hooks/outsideClickHook";
 
 import { closeSuccessForm } from "../../redux/form/actions/form.actions";
@@ -8,29 +8,18 @@ import { closeForm } from "../../redux/modal/actions/modal.actions";
 
 import "./style.scss";
 
-interface SuccesPopapProps {
+interface SuccessPopapProps {
   modalType: string | null;
 }
 
-const SuccesPopap: React.FC<SuccesPopapProps> = ({ modalType }) => {
+const SuccessPopap: React.FC<SuccessPopapProps> = ({ modalType }) => {
   const wrapperRef = useRef(null);
   const dispatch = useDispatch();
   useOutsideClickHook(wrapperRef, () => {
     dispatch(closeSuccessForm());
     dispatch(closeForm());
   });
-  let succecType = "";
-  switch (modalType) {
-    case FormType.DELETE:
-      succecType = "deleted";
-      break;
-    case FormType.EDIT:
-      succecType = "edited";
-      break;
-    case FormType.ADD:
-      succecType = "added";
-      break;
-  }
+  const successType = messageObject[modalType as keyof typeof messageObject];
 
   return (
     <div className="popap-form" ref={wrapperRef}>
@@ -44,9 +33,9 @@ const SuccesPopap: React.FC<SuccesPopapProps> = ({ modalType }) => {
         ></div>
       </div>
       <h2>CONGRATULATIONS!</h2>
-      <h4>The movie has been {succecType}.</h4>
+      <h4>The movie has been {successType}.</h4>
     </div>
   );
 };
 
-export default SuccesPopap;
+export default SuccessPopap;

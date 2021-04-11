@@ -8,6 +8,7 @@ export interface FilmsListState {
   genre: string;
   needReload: false;
   searchTitle: string;
+  moviesCount: number;
   offset: number;
 }
 

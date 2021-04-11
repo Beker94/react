@@ -16,7 +16,7 @@ export async function deleteFilm(film: Film) {
   if (films.ok) {
     return Promise.resolve(true);
   } else {
-    return Promise.reject();
+    alert(`${films.status}: ${films.statusText}`);
   }
 }
 
