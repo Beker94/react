@@ -62,9 +62,9 @@ const newMovie = {
 };
 
 const messageObject = {
-  EDIT: "edited",
-  DELETE: "deleted",
-  ADD: "added",
+  edit: "edited",
+  delete: "deleted",
+  add: "added",
 };
 
 export {

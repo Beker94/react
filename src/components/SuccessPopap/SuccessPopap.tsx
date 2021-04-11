@@ -20,7 +20,7 @@ const SuccessPopap: React.FC<SuccessPopapProps> = ({ modalType }) => {
     dispatch(closeForm());
   });
   const successType = messageObject[modalType as keyof typeof messageObject];
-
+  debugger;
   return (
     <div className="popap-form" ref={wrapperRef}>
       <div className="form-header">
