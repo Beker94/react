@@ -37,7 +37,7 @@ const FilmList: React.FC<FilmListProps> = ({ films, showMoreMovies }) => {
           More Movies
         </div>
       ) : (
-        <div className="film-add">No More Movies</div>
+        <></>
       )}
     </>
   );

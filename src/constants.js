@@ -1,5 +1,3 @@
-import { dateFormatter } from "./helpers";
-
 const URL = "http://localhost:4000/movies";
 const FILM_LIMIT = 9;
 
@@ -50,7 +48,7 @@ const FormFieldsName = {
 const newMovie = {
   title: " ",
   tagline: "tag",
-  release_date: dateFormatter(new Date()),
+  release_date: "2021-01-01",
   genres: [],
   poster_path: "https://",
   overview: "",

@@ -97,6 +97,11 @@ const filterByUserInput = (movies: Film[], searchFilm: string) => {
   });
 };
 
+const getSearchWord = (url: string) => {
+  const index = url.lastIndexOf("/") + 1;
+  return url.slice(index, url.length);
+};
+
 export {
   filterByUserInput,
   filterByGenre,
@@ -107,4 +112,5 @@ export {
   sorting,
   getKeyValue,
   getErrors,
+  getSearchWord,
 };

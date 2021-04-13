@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useRouteMatch } from "react-router";
 import { DefaultFilters, FILM_LIMIT } from "../../constants";
+import { getSearchWord } from "../../helpers";
 import { Film } from "../../interfaces";
 import {
   changeGenre,
@@ -21,7 +22,7 @@ const Main: React.FC = () => {
   const dispatch = useDispatch();
   const films = useSelector<RootState, Film[]>(allMoviesSelector);
   const offset = useSelector<RootState, number>(offsetSelector);
-  const searchedWord = useLocation().search.slice(1);
+  const searchedWord = getSearchWord(useLocation().pathname);
   const [selectedGenre, setGenre] = useState(DefaultFilters.defaultGenre);
   const [searchTitle, setSearchTitle] = useState<string | null>(null);
   const hasMatchedNotFound = useRouteMatch("/movie/:id");

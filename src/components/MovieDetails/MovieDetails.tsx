@@ -33,6 +33,10 @@ const MovieDetails: React.FC = () => {
     }
   }, []);
 
+  if (!film && !loading) {
+    history.push("/notfoundpage");
+  }
+
   return (
     <div className="movie-details">
       <div className="movie-details__nav">

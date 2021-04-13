@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router";
-import { useQuery } from "../../hooks/queryHook";
+import { useHistory, useLocation } from "react-router";
+import { getSearchWord } from "../../helpers";
 import { searchFilm } from "../../redux/filmList/actions/filmList.actions";
 
 import "./style.scss";
@@ -9,8 +9,7 @@ import "./style.scss";
 const SearchFilm: React.FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const query = useQuery();
-  const searchedWord = query.get("search") || "";
+  const searchedWord = getSearchWord(useLocation().pathname);
 
   const [inputValue, setInputValue] = useState(searchedWord);
 
@@ -19,7 +18,7 @@ const SearchFilm: React.FC = () => {
       event.preventDefault();
       const input = event.target[0].value;
       if (input) {
-        history.push(`/search?${input}`);
+        history.push(`/search/${input}`);
       } else {
         dispatch(
           searchFilm({
