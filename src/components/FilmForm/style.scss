@@ -53,6 +53,12 @@
     margin-top: 90px;
   }
 
+  .css-b8ldur-Input {
+    div {
+      opacity: 0;
+    }
+  }
+
   input {
     background-color: #555;
     margin: 20px;
@@ -98,6 +104,11 @@
     .css-ljyx4p-Control {
       margin: 5px 20px 5px 20px;
       height: 35px;
+    }
+    .css-b8ldur-Input {
+      div {
+        display: none;
+      }
     }
   }
 }

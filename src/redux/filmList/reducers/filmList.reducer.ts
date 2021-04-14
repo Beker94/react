@@ -5,6 +5,7 @@ import {
   getMoreFilms,
   clearfilmsList,
   filmListChanged,
+  setMoviesCount,
 } from "./../actions/filmList.actions";
 import { FilmsListState } from "../filmList.models";
 
@@ -24,6 +25,7 @@ export const initialState: FilmsListState = {
   genre: DefaultFilters.defaultGenre,
   needReload: false,
   searchTitle: "",
+  moviesCount: 0,
   offset: 0,
 };
 
@@ -46,17 +48,20 @@ export const filmListReducer = createReducer<FilmsListState, FilmListActions>(
   }))
   .handleAction(changeSorting, (state, action) => ({
     ...state,
-    sortingType: action.payload,
+    offset: 0,
+    sortingType: action.payload.payloadOptions.sortingType!,
   }))
   .handleAction(searchFilm, (state, action) => {
     return {
       ...state,
-      searchTitle: action.payload,
+      offset: 0,
+      searchTitle: action.payload.payloadOptions.searchTitle!,
     };
   })
   .handleAction(changeGenre, (state, action) => ({
     ...state,
-    genre: action.payload,
+    genre: action.payload.payloadOptions.genre!,
+    offset: 0,
     loading: true,
   }))
   .handleAction(getMoreFilms, (state, action) => {
@@ -70,6 +75,12 @@ export const filmListReducer = createReducer<FilmsListState, FilmListActions>(
       ...state,
       films: [],
       offset: 0,
+    };
+  })
+  .handleAction(setMoviesCount, (state, action) => {
+    return {
+      ...state,
+      moviesCount: action.payload,
     };
   })
   .handleAction(filmListChanged, (state, action) => {

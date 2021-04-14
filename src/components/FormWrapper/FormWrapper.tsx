@@ -1,22 +1,71 @@
 import "./style.scss";
 
 import { useEffect } from "react";
+import { DeleteForm } from "../DeleteForm";
+import { Film } from "../../interfaces";
+import { FilmForm } from "../FilmForm";
+import { SuccessPopap } from "../SuccessPopap";
+import { FormType } from "../../constants";
 
 interface FormWrapperProps {
+  film: Film;
   modalType: string | null;
+  successSubmit: boolean;
+  isOpen: boolean;
 }
 
-const FormWrapper: React.FC<FormWrapperProps> = ({ children, modalType }) => {
+const FormWrapper: React.FC<FormWrapperProps> = ({
+  film,
+  modalType,
+  successSubmit,
+  isOpen,
+}) => {
   useEffect(() => {
     document.querySelector("body")?.classList.add("overflow-hidden");
     return () => {
       document.querySelector("body")?.classList.remove("overflow-hidden");
     };
-  }, []);
+  }, [isOpen, successSubmit]);
+
+  function renderSwitch(
+    modalType: string | null,
+    film: Film,
+    successSubmit: boolean
+  ) {
+    if (successSubmit) {
+      return <SuccessPopap modalType={modalType} />;
+    }
+
+    switch (modalType) {
+      case FormType.DELETE:
+        return <DeleteForm film={film} modalType={modalType} />;
+
+      case FormType.ADD:
+        return (
+          <FilmForm
+            film={film}
+            modalType={modalType}
+            successSubmit={successSubmit}
+          />
+        );
+
+      case FormType.EDIT:
+        return (
+          <FilmForm
+            film={film}
+            modalType={modalType}
+            successSubmit={successSubmit}
+          />
+        );
+
+      default:
+        return <></>;
+    }
+  }
 
   return (
     <div className="form-wrapper" id="wrapper">
-      {children}
+      {renderSwitch(modalType, film, successSubmit)}
     </div>
   );
 };

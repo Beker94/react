@@ -7,19 +7,27 @@ export const fetchfilmsList = createAsyncAction(
   "@filmList/FETCH_REQUEST",
   "@filmList/FETCH_SUCCESS",
   "@filmList/FETCH_ERROR"
-)<FilmOptions, Film[], string | ErrorEvent>();
+)<any, Film[], string | ErrorEvent>();
 
 export const changeSorting = createCustomAction(
   "@filmList/CHANGE_SORTING",
-  (sortingType: string) => {
-    return { payload: sortingType };
+  (data: {
+    payloadOptions: FilmOptions;
+    shouldReload?: boolean;
+    shouldClear?: boolean;
+  }) => {
+    return { payload: data };
   }
 );
 
 export const searchFilm = createCustomAction(
   "@filmList/SEARCH_FILM",
-  (searchTitle: string) => {
-    return { payload: searchTitle };
+  (data: {
+    payloadOptions: FilmOptions;
+    shouldReload?: boolean;
+    shouldClear?: boolean;
+  }) => {
+    return { payload: data };
   }
 );
 
@@ -27,8 +35,12 @@ export const getMoreFilms = createCustomAction("@filmList/GET_MORE_FILMS");
 
 export const changeGenre = createCustomAction(
   "@filmList/CHANGE_GENRE",
-  (genre: string) => {
-    return { payload: genre };
+  (data: {
+    payloadOptions: FilmOptions;
+    shouldReload?: boolean;
+    shouldClear?: boolean;
+  }) => {
+    return { payload: data };
   }
 );
 
@@ -36,6 +48,12 @@ export const filmListChanged = createCustomAction(
   "@filmList/FILM_LIST_CHANGED",
   (films: Film[]) => {
     return { payload: films };
+  }
+);
+export const setMoviesCount = createCustomAction(
+  "@filmList/SET_MOVIES_COUNT",
+  (count: number) => {
+    return { payload: count };
   }
 );
 

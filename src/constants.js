@@ -1,5 +1,3 @@
-import { dateFormatter } from "./helpers";
-
 const URL = "http://localhost:4000/movies";
 const FILM_LIMIT = 9;
 
@@ -20,7 +18,7 @@ const Genres = [
   { value: "Romance", label: "Romance" },
 ];
 
-const Formfields = {
+const FormFields = {
   title: "title",
   release_date: "release_date",
   genres: "genres",
@@ -33,11 +31,24 @@ const Formfields = {
   budget: "budget",
   revenue: "revenue",
 };
+const FormFieldsName = {
+  title: "Title",
+  release_date: "Release date",
+  genres: "Genres",
+  poster_path: "MOVIE URL",
+  overview: "Overview",
+  runtime: "Runtime",
+  vote_average: "Vote average",
+  tagline: "Tagline",
+  vote_count: "Vote count",
+  budget: "Budget",
+  revenue: "Revenue",
+};
 
 const newMovie = {
   title: " ",
   tagline: "tag",
-  release_date: dateFormatter(),
+  release_date: "2021-01-01",
   genres: [],
   poster_path: "https://",
   overview: "",
@@ -48,12 +59,20 @@ const newMovie = {
   revenue: 0,
 };
 
+const messageObject = {
+  edit: "edited",
+  delete: "deleted",
+  add: "added",
+};
+
 export {
   newMovie,
   FormType,
   DefaultFilters,
   Genres,
-  Formfields,
+  FormFields,
   URL,
   FILM_LIMIT,
+  FormFieldsName,
+  messageObject,
 };

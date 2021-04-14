@@ -1,7 +1,8 @@
 import {
   changeGenre,
-  getMoreFilms,
+  changeSorting,
   searchFilm,
+  setMoviesCount,
 } from "./../actions/filmList.actions";
 import { FilmOptions } from "./../filmList.models";
 import {
@@ -13,12 +14,7 @@ import {
 } from "redux-saga/effects";
 import { DefaultFilters, FILM_LIMIT, URL } from "../../../constants";
 import { clearfilmsList, fetchfilmsList } from "../actions/filmList.actions";
-import {
-  genreSelector,
-  searchedFilmSelector,
-  offsetSelector,
-  sortingTypeSelector,
-} from "../../selectors";
+import { optionsSelector } from "../../selectors";
 
 export async function getFilms(options: FilmOptions) {
   const films = await fetch(
@@ -39,72 +35,31 @@ export async function getFilms(options: FilmOptions) {
 }
 
 export function* getFilmsTask(data: {
-  payload: FilmOptions;
+  payload: {
+    payloadOptions: FilmOptions;
+    shouldReload?: boolean;
+    shouldClear?: boolean;
+  };
 }): Generator<StrictEffect, void, any> {
   try {
-    let needClear = true;
-    let needReload = true;
-    const genre = yield select(genreSelector);
-    const searchTitle = yield select(searchedFilmSelector);
-    const offset = yield select(offsetSelector);
-    const sortingType = yield select(sortingTypeSelector);
+    const {
+      payloadOptions,
+      shouldReload = true,
+      shouldClear = true,
+    } = data.payload;
 
-    const state = {
-      genre,
-      searchTitle,
-      offset,
-      sortingType,
-    };
+    const stateOptions = yield select(optionsSelector);
+
     const options = {
-      ...state,
-      ...data.payload,
+      ...stateOptions,
+      ...payloadOptions,
     };
 
-    switch (Object.keys(data.payload)[0]) {
-      case "searchTitle":
-        if (data.payload.searchTitle !== searchTitle) {
-          yield put(searchFilm(data.payload.searchTitle!));
-          options.offset = 0;
-        } else {
-          needReload = false;
-          needClear = false;
-        }
-
-        break;
-      case "genre":
-        if (data.payload.genre !== genre) {
-          yield put(changeGenre(data.payload.genre!));
-          options.offset = 0;
-        } else {
-          needReload = false;
-          needClear = false;
-        }
-
-        break;
-      case "sortingType":
-        if (data.payload.sortingType !== sortingType) {
-          yield put(changeGenre(data.payload.sortingType!));
-          options.offset = 0;
-        } else {
-          needReload = false;
-          needClear = false;
-        }
-        break;
-      case "offset":
-        yield put(getMoreFilms());
-        needClear = false;
-        options.offset = offset + FILM_LIMIT;
-        break;
-      default:
-        needClear = false;
-        break;
-    }
-
-    const res = needReload ? yield call(getFilms, options) : [];
-    if (needClear) {
+    const res = shouldReload ? yield call(getFilms, options) : [];
+    yield put(setMoviesCount(res.totalAmount));
+    if (shouldClear) {
       yield put(clearfilmsList());
     }
-
     if (res.data) {
       yield put(fetchfilmsList.success(res.data));
     } else {
@@ -120,5 +75,8 @@ export function* getFilmsTask(data: {
 }
 
 export function* filmsRootSaga() {
+  yield takeLatest(searchFilm, getFilmsTask);
+  yield takeLatest(changeGenre, getFilmsTask);
+  yield takeLatest(changeSorting, getFilmsTask);
   yield takeLatest(fetchfilmsList.request, getFilmsTask);
 }

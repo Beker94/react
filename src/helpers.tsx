@@ -1,3 +1,4 @@
+import { FormFieldsName } from "./constants";
 import { Film, Genre } from "./interfaces";
 
 const dateFormatter = (date: string) => {
@@ -11,6 +12,13 @@ const dateFormatter = (date: string) => {
     newDate.getDate() < 10 ? `0${newDate.getDate()}` : newDate.getDate();
 
   return `${year}-${month}-${day}`;
+};
+
+const getKeyValue = function <T extends object, U extends keyof T>(
+  obj: T,
+  key: U
+) {
+  return obj[key];
 };
 
 const getYearFromString = (string: string) => {
@@ -47,9 +55,26 @@ const filterByGenre = (movies: Film[], selectedGenre: string) => {
   });
 };
 
+const getErrors = (arr: string[]) => {
+  const errors: any = {};
+  arr.forEach((el: string, index: number) => {
+    for (let key in FormFieldsName) {
+      if (el.includes(key)) {
+        const value = el.replace(
+          key,
+          FormFieldsName[key as keyof typeof FormFieldsName]
+        );
+        errors[key] = value;
+      }
+    }
+  });
+
+  return errors;
+};
+
 const sorting = (movies: Film[], sortingType: string) => {
   return movies.sort((a: Film, b: Film) => {
-    if (sortingType === "date") {
+    if (sortingType === "release_date") {
       return (
         new Date(getYearFromString(a.release_date)).getFullYear() -
         new Date(getYearFromString(b.release_date)).getFullYear()
@@ -72,6 +97,11 @@ const filterByUserInput = (movies: Film[], searchFilm: string) => {
   });
 };
 
+const getSearchWord = (url: string) => {
+  const index = url.lastIndexOf("/") + 1;
+  return url.slice(index, url.length);
+};
+
 export {
   filterByUserInput,
   filterByGenre,
@@ -80,4 +110,7 @@ export {
   objectToString,
   stringToObject,
   sorting,
+  getKeyValue,
+  getErrors,
+  getSearchWord,
 };

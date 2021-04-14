@@ -1,4 +1,7 @@
+import { useSelector } from "react-redux";
 import { Film } from "../../interfaces";
+import { RootState } from "../../redux/rootStore";
+import { moviesCountSelector } from "../../redux/selectors";
 
 import { FilmCard } from "../FilmCard";
 
@@ -7,10 +10,12 @@ import "./style.scss";
 interface FilmListProps {
   films: Film[];
 
-  showMoreMovies(event: React.MouseEvent): void;
+  showMoreMovies(): void;
 }
 
 const FilmList: React.FC<FilmListProps> = ({ films, showMoreMovies }) => {
+  const moviesCount = useSelector<RootState, number>(moviesCountSelector);
+
   return (
     <>
       <div className="film-count">
@@ -27,10 +32,12 @@ const FilmList: React.FC<FilmListProps> = ({ films, showMoreMovies }) => {
           <div>No movie found</div>
         )}
       </div>
-      {films.length && (
+      {films.length < moviesCount ? (
         <div className="film-add" onClick={showMoreMovies}>
           More Movies
         </div>
+      ) : (
+        <></>
       )}
     </>
   );
