@@ -2,43 +2,36 @@ import "./style.scss";
 import { useFormik } from "formik";
 import { Film } from "../../interfaces";
 import Select from "react-select";
-import { FormType, Genres, FormFields } from "../../constants";
+import { Genres, FormFields } from "../../constants";
 import { selectStyle } from "./selectConfig";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import { useOutsideClickHook } from "../../hooks/outsideClickHook";
-import { closeForm } from "../../redux/modal/actions/modal.actions";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  clearErrors,
-  formAddFilm,
-  formEditFilm,
-} from "../../redux/form/actions/form.actions";
-
 import { objectToString, stringToObject } from "../../helpers";
 import { filmFormSchema } from "./validaion";
 import ErrorField from "../ErrorField/ErrorField";
-import { RootState } from "../../redux/rootStore";
-import { errorsSelector } from "../../redux/selectors";
 import { ErrorFields } from "../../redux/form/form.models";
+import { error } from "node:console";
 
 interface FormProps {
   film: Film;
   modalType: string | null;
-  successSubmit: boolean;
+  errors: ErrorFields;
+  closeForm(): void;
+  submitForm(film: Film): void;
+  clearErrors(): void;
 }
 
-const FilmForm: React.FC<FormProps> = ({ film, modalType, successSubmit }) => {
+const FilmForm: React.FC<FormProps> = ({
+  film,
+  modalType,
+  errors,
+  closeForm,
+  submitForm,
+  clearErrors,
+}) => {
   const wrapperRef = useRef(null);
 
-  const dispatch = useDispatch();
-  useOutsideClickHook(wrapperRef, () => dispatch(closeForm()));
-  const errors = useSelector<RootState, ErrorFields>(errorsSelector);
-
-  useEffect(() => {
-    if (successSubmit) {
-      dispatch(closeForm());
-    }
-  }, [successSubmit]);
+  useOutsideClickHook(wrapperRef, closeForm);
 
   const formik = useFormik({
     initialValues: { ...film, genres: stringToObject(film.genres) },
@@ -48,21 +41,18 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType, successSubmit }) => {
         ...values,
         genres: objectToString(values.genres),
       };
-      if (modalType === FormType.EDIT) {
-        dispatch(formEditFilm.request(newFilm));
-      } else {
-        dispatch(formAddFilm.request(newFilm));
-      }
+
+      submitForm(newFilm);
     },
     onReset: (values) => {
       values = { ...film, genres: stringToObject(film.genres) };
     },
   });
 
-  if (Object.keys(errors).length) {
+  if (Object.keys(errors).length && errors !== formik.errors) {
     formik.setErrors(errors);
 
-    dispatch(clearErrors());
+    clearErrors();
   }
 
   return (
@@ -74,7 +64,7 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType, successSubmit }) => {
     >
       <div className="form-header">
         <h3>{modalType?.toUpperCase()} MOVIE</h3>
-        <div className="close" onClick={() => dispatch(closeForm())}></div>
+        <div className="close" onClick={closeForm}></div>
       </div>
       <label htmlFor={FormFields.title} className="first">
         TITLE
@@ -166,7 +156,7 @@ const FilmForm: React.FC<FormProps> = ({ film, modalType, successSubmit }) => {
         name={FormFields.runtime}
         type="number"
         onChange={formik.handleChange}
-        value={formik.values.runtime}
+        value={formik.values.runtime!}
         onBlur={formik.handleBlur}
       />
       <label htmlFor={FormFields.vote_average}>RATING</label>

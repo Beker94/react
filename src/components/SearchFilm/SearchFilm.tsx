@@ -42,7 +42,7 @@ const SearchFilm: React.FC = () => {
           type="text"
           placeholder="What do you want to watch?"
           value={inputValue}
-          onInput={handleInput}
+          onChange={handleInput}
         />
         <button>SEARCH</button>
       </form>

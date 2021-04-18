@@ -6,7 +6,7 @@ interface Film {
   id?: number;
   poster_path: string;
   overview: string;
-  runtime: number;
+  runtime: number | null;
   vote_average: number;
   vote_count: number;
   budget: number;

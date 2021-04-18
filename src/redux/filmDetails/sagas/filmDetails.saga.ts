@@ -8,7 +8,7 @@ export async function getFilm(id: number) {
   if (film.ok) {
     return await film.json();
   } else {
-    return Promise.reject();
+    return Promise.reject(film.statusText);
   }
 }
 
@@ -19,17 +19,9 @@ export function* getFilmTask(data: {
     const id = data.payload;
     const res = yield call(getFilm, +id);
 
-    if (res) {
-      yield put(fetchFilm.success(res));
-    } else {
-      yield put(fetchFilm.failure("error"));
-    }
+    yield put(fetchFilm.success(res));
   } catch (err) {
-    if (err instanceof Error) {
-      yield put(fetchFilm.failure(err.message));
-    } else {
-      yield put(fetchFilm.failure("Unknown error :("));
-    }
+    yield put(fetchFilm.failure(err));
   }
 }
 

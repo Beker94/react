@@ -6,6 +6,7 @@ import { Film } from "../../interfaces";
 import { FilmForm } from "../FilmForm";
 import { SuccessPopap } from "../SuccessPopap";
 import { FormType } from "../../constants";
+import { FilmFormWrapper } from "../FilmFormWrapper";
 
 interface FormWrapperProps {
   film: Film;
@@ -42,7 +43,7 @@ const FormWrapper: React.FC<FormWrapperProps> = ({
 
       case FormType.ADD:
         return (
-          <FilmForm
+          <FilmFormWrapper
             film={film}
             modalType={modalType}
             successSubmit={successSubmit}
@@ -51,7 +52,7 @@ const FormWrapper: React.FC<FormWrapperProps> = ({
 
       case FormType.EDIT:
         return (
-          <FilmForm
+          <FilmFormWrapper
             film={film}
             modalType={modalType}
             successSubmit={successSubmit}
