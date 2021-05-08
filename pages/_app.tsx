@@ -30,6 +30,8 @@ import "../components/Header/style.scss";
 import "./movie/style.scss";
 import "../app-styles.scss";
 import { useRouter } from "next/router";
+import App from "next/app";
+import { Main } from "../components/Main";
 
 function MyApp({ Component, pageProps }) {
   const film = useSelector<RootState, Film>(movieSelector);
@@ -44,6 +46,7 @@ function MyApp({ Component, pageProps }) {
       <Component {...pageProps} />
       {!notFound && (
         <>
+          <Main />
           <Footer />
         </>
       )}
@@ -61,5 +64,10 @@ function MyApp({ Component, pageProps }) {
     </>
   );
 }
+
+MyApp.getInitialProps = async (appContext) => {
+  const appProps = await App.getInitialProps(appContext);
+  return { ...appProps };
+};
 
 export default wrapper.withRedux(MyApp);

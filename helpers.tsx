@@ -14,6 +14,15 @@ const dateFormatter = (date: string) => {
   return `${year}-${month}-${day}`;
 };
 
+const side = {
+  get isClient(): boolean {
+    return typeof window === "object";
+  },
+  get isServer(): boolean {
+    return typeof window === "undefined";
+  },
+};
+
 const getKeyValue = function <T extends object, U extends keyof T>(
   obj: T,
   key: U
@@ -113,4 +122,5 @@ export {
   getKeyValue,
   getErrors,
   getSearchWord,
+  side,
 };

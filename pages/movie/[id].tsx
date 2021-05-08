@@ -1,34 +1,27 @@
 import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getYearFromString } from "../../helpers";
+import { getYearFromString, side } from "../../helpers";
 import { Film } from "../../components/interfaces";
 
 import { fetchFilm } from "../../redux/filmDetails/actions/filmDetails.actions";
-import { RootState, SagaStore, wrapper } from "../../redux/rootStore";
+import { RootState, SagaStore } from "../../redux/rootStore";
 import { openedFilmSelector } from "../../redux/selectors";
 
 import { useRouter } from "next/router";
 import { END } from "@redux-saga/core";
-import { Main } from "../../components/Main";
 
-interface MovieDetailsProps {
-  id: string;
-  ssrFilm?: Film;
-  ssrLoading?: boolean;
-}
-
-const MovieDetails: React.FC<MovieDetailsProps> = ({ ssrFilm, ssrLoading }) => {
+const MovieDetails = ({ isFirstRender }) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { id } = router.query;
 
   useEffect(() => {
-    if (id === "string") {
+    if (id === "string" && !isFirstRender) {
       dispatch(fetchFilm.request(id));
     }
-  }, [id, ssrFilm]);
+  }, [id]);
 
-  let film = useSelector<RootState, Film | null>(openedFilmSelector) || ssrFilm;
+  let film = useSelector<RootState, Film | null>(openedFilmSelector);
 
   const errorHandler = useCallback((event: any) => {
     if (event.type === "error") {
@@ -85,33 +78,20 @@ const MovieDetails: React.FC<MovieDetailsProps> = ({ ssrFilm, ssrLoading }) => {
           )}
         </div>
       </div>
-      <Main ssrFilms={[]} />
     </>
   );
 };
 
-export const getServerSideProps = wrapper.getServerSideProps(
-  async ({ query, store, req, res }) => {
-    if (typeof query.id === "string") {
-      let film = store.getState().filmDescription.openedFilm;
-      let loading = true;
+MovieDetails.getInitialProps = async ({ store, query }) => {
+  if (side.isServer) {
+    store.dispatch(fetchFilm.request(query.id));
 
-      if (!store.getState().filmDescription.openedFilm) {
-        store.dispatch(fetchFilm.request(query.id));
-        store.dispatch(END);
-        await (store as SagaStore).sagaTask.toPromise();
-        film = store.getState().filmDescription.openedFilm;
-        loading = false;
-      }
-
-      return {
-        props: {
-          ssrFilm: film,
-          ssrLoading: loading,
-        },
-      };
-    }
+    store.dispatch(END);
+    await (store as SagaStore).sagaTask.toPromise();
+    return { isFirstRender: true };
   }
-);
+
+  return { isFirstRender: false };
+};
 
 export default MovieDetails;

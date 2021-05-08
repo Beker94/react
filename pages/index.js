@@ -1,33 +1,34 @@
 import { END } from "@redux-saga/core";
 import { Header } from "../components/Header";
 import { Main } from "../components/Main";
+import { side } from "../helpers";
 
 import { fetchfilmsList } from "../redux/filmList/actions/filmList.actions";
-import { wrapper } from "../redux/rootStore";
 
-function Home({ ssrFilms }) {
+function Home() {
   return (
     <>
       <Header></Header>
-      <Main ssrFilms={ssrFilms} />
     </>
   );
 }
 
-export const getStaticProps = wrapper.getStaticProps(async ({ store }) => {
-  store.dispatch(
-    fetchfilmsList.request({
-      payloadOptions: {},
-    })
-  );
+Home.getInitialProps = async ({ store, query }) => {
+  if (side.isServer) {
+    store.dispatch(
+      fetchfilmsList.request({
+        payloadOptions: {},
+      })
+    );
 
-  store.dispatch(END);
+    store.dispatch(END);
 
-  await store.sagaTask.toPromise();
+    await store.sagaTask.toPromise();
 
-  return {
-    props: { ssrFilms: store.getState().films.films || [] },
-  };
-});
+    return { isFirstRender: true };
+  }
+
+  return { isFirstRender: false };
+};
 
 export default Home;

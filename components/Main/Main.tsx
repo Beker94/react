@@ -17,15 +17,10 @@ import { FilmList } from "../FilmList";
 import { FilterMoviesList } from "../FilterMoviesList";
 import { useRouter } from "next/router";
 
-interface MainProps {
-  ssrFilms: Film[];
-}
-
-const Main: React.FC<MainProps> = ({ ssrFilms }) => {
+const Main = () => {
   const dispatch = useDispatch();
-  let films = useSelector<RootState, Film[]>(allMoviesSelector) || ssrFilms;
+  let films = useSelector<RootState, Film[]>(allMoviesSelector);
   const offset = useSelector<RootState, number>(offsetSelector);
-  const [serverFilms, setserverFilms] = useState(ssrFilms);
 
   const router = useRouter();
 
@@ -33,18 +28,13 @@ const Main: React.FC<MainProps> = ({ ssrFilms }) => {
   const [selectedGenre, setGenre] = useState(DefaultFilters.defaultGenre);
   const [searchTitle, setSearchTitle] = useState<string | null>(null);
 
-  if (serverFilms.length) {
-    films = serverFilms;
-  }
-
-  if (searchedWord !== searchTitle && ssrFilms.length) {
+  if (searchedWord && searchedWord !== searchTitle) {
     dispatch(
       searchFilm({
         payloadOptions: { searchTitle: searchedWord },
       })
     );
     setSearchTitle(searchedWord);
-    setserverFilms([]);
   }
 
   const handleChangeGenre = (event: React.MouseEvent) => {

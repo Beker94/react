@@ -1,11 +1,12 @@
 import { END } from "@redux-saga/core";
+import { side } from "../../helpers";
 import { fetchfilmsList } from "../../redux/filmList/actions/filmList.actions";
-import { SagaStore, wrapper } from "../../redux/rootStore";
+import { SagaStore } from "../../redux/rootStore";
 
 import Home from "../index";
 
-export const getServerSideProps = wrapper.getServerSideProps(
-  async ({ query, store }) => {
+Home.getInitialProps = async ({ store, query }) => {
+  if (side.isServer) {
     store.dispatch(
       fetchfilmsList.request({
         payloadOptions: { searchTitle: query.search },
@@ -15,11 +16,9 @@ export const getServerSideProps = wrapper.getServerSideProps(
     store.dispatch(END);
 
     await (store as SagaStore).sagaTask.toPromise();
-
-    return {
-      props: { ssrFilms: store.getState().films.films || [] },
-    };
+    return { isFirstRender: true };
   }
-);
+  return { isFirstRender: false };
+};
 
 export default Home;
