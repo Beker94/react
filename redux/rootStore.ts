@@ -30,7 +30,6 @@ const bindMiddleware = (middleware) => {
 let shouldHydrate = true;
 
 export function rootReducer(state: any, action: AnyAction) {
-  console.log(state, action);
   switch (action.type) {
     case HYDRATE:
       if (shouldHydrate) {

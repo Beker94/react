@@ -1,7 +1,6 @@
 import { wrapper } from "../redux/rootStore";
 import "../styles/globals.css";
 import { Footer } from "../components/Footer";
-import { FormWrapper } from "../components/FormWrapper";
 import { useSelector } from "react-redux";
 import {
   isOpenSelector,
@@ -32,6 +31,9 @@ import "../app-styles.scss";
 import { useRouter } from "next/router";
 import App from "next/app";
 import { Main } from "../components/Main";
+import { lazy, Suspense } from "react";
+
+const FormWrapper = lazy(() => import("../components/FormWrapper/FormWrapper"));
 
 function MyApp({ Component, pageProps }) {
   const film = useSelector<RootState, Film>(movieSelector);
@@ -52,12 +54,14 @@ function MyApp({ Component, pageProps }) {
       )}
 
       {isOpen || successSubmit ? (
-        <FormWrapper
-          film={film}
-          modalType={modalType}
-          successSubmit={successSubmit}
-          isOpen={isOpen}
-        />
+        <Suspense fallback={<div>Загрузка...</div>}>
+          <FormWrapper
+            film={film}
+            modalType={modalType}
+            successSubmit={successSubmit}
+            isOpen={isOpen}
+          />
+        </Suspense>
       ) : (
         <></>
       )}
